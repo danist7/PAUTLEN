@@ -80,9 +80,10 @@ zona de finalización del programa).
 
 void escribir_operando(FILE* fpasm, char* nombre, int es_variable){
   if (es_variable==1)
-    fprintf(fpasm, "push dword [_%s]", nombre);
+    fprintf(fpasm, "push dword [_%s]\n", nombre);
   if (es_variable==0)
-    fprintf(fpasm, "push dword %s", nombre);
+    fprintf(fpasm, "mov eax, %s", nombre);
+    fprintf(fpasm, "push dword eax");
 }
 /*
 Función que debe ser invocada cuando se sabe un operando deuna operación
@@ -94,7 +95,7 @@ con un 1 u otra cosa (como por ejemplo 34) con un 0. Recuerda que en el
 primer caso internamente se representará como _b1 y, sin embargo, en el
 segundo se representará tal y como esté en el argumento (34).
 */
-void asignar(FILE* fpasm, char* nombre, int es_variable);
+void asignar(FILE* fpasm, char* nombre, int es_variable);/*Dani*/
 /*
 - Genera el código para asignar valor a la variable de nombre nombre.
 - Se toma el valor de la cima de la pila.
@@ -117,19 +118,19 @@ controlar si el divisor es “0” y en ese caso se debe saltar a la rutina de e
 controlado (restaurando el puntero de pila en ese caso y comprobando en el retorno
 que no se produce “Segmentation Fault”)
 */
-void sumar(FILE* fpasm, int es_variable_1, int es_variable_2);
-void restar(FILE* fpasm, int es_variable_1, int es_variable_2);
-void multiplicar(FILE* fpasm, int es_variable_1, int es_variable_2);
-void dividir(FILE* fpasm, int es_variable_1, int es_variable_2);
-void o(FILE* fpasm, int es_variable_1, int es_variable_2);
-void y(FILE* fpasm, int es_variable_1, int es_variable_2);
-void cambiar_signo(FILE* fpasm, int es_variable);
+void sumar(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
+void restar(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
+void multiplicar(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
+void dividir(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
+void o(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
+void y(FILE* fpasm, int es_variable_1, int es_variable_2);/*Lucia*/
+void cambiar_signo(FILE* fpasm, int es_variable);/*Lucia*/
 /*
 Función aritmética de cambio de signo.
 Es análoga a las binarias, excepto que sólo requiere de un acceso a la pila ya
 que sólo usa un operando.
 */
-void no(FILE* fpasm, int es_variable, int cuantos_no);
+void no(FILE* fpasm, int es_variable, int cuantos_no);/*Lucia*/
 /*
 Función monádica lógica de negación. No hay un código de operación de la ALU
 que realice esta operación por lo que se debe codificar un algoritmo que, si
@@ -146,12 +147,12 @@ si se cumple la comparación y “0” si no se cumple), se deja en la pila como
 resto de operaciones. Se deben usar etiquetas para poder gestionar los saltos
 necesarios para implementar las comparaciones.
 */
-void igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);
-void distinto(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);
-void menor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);
-void mayor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);
-void menor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);
-void mayor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);
+void igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Lucia*/
+void distinto(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Lucia*/
+void menor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Lucia*/
+void mayor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Luis*/
+void menor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Luis*/
+void mayor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Luis*/
 /* FUNCIONES DE ESCRITURA Y LECTURA */
 /*
 Se necesita saber el tipo de datos que se va a procesar (ENTERO o BOOLEANO) ya
@@ -160,5 +161,5 @@ tipo.
 Se deben insertar en la pila los argumentos necesarios, realizar la llamada
 (call) a la función de librería correspondiente y limpiar la pila.
 */
-void leer(FILE* fpasm, char* nombre, int tipo);
-void escribir(FILE* fpasm, int es_variable, int tipo);
+void leer(FILE* fpasm, char* nombre, int tipo);/*Luis*/
+void escribir(FILE* fpasm, int es_variable, int tipo);/*Luis*/
