@@ -24,7 +24,7 @@ mensajes para la identificación de errores en tiempo de ejecución.
 
 // DUDA: pa que sirve el tipo si siempre la declaramos como dd no?
 void declarar_variable(FILE* fpasm, char * nombre, int tipo, int tamano){
-  fprintf(fpasm, "_%c resd %d\n", tamano);
+  fprintf(fpasm, "_%s resd %d\n", nombre, tamano);
 }
 /*
   Para ser invocada en la sección .bss cada vez que se quiera declarar una
