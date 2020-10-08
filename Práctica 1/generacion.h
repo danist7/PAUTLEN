@@ -1,9 +1,13 @@
 #ifndef GENERACION_H
 #define GENERACION_H
+
 #include <stdio.h>;
+
+
 /* Declaraciones de tipos de datos del compilador */
 #define ENTERO 0
 #define BOOLEANO 1
+
 /* OBSERVACIÓN GENERAL A TODAS LAS FUNCIONES:
 Todas ellas escriben el código NASM a un FILE* proporcionado como primer
 argumento.
@@ -14,13 +18,13 @@ Código para el principio de la sección .bss.
 Con seguridad sabes que deberás reservar una variable entera para guardar el
 puntero de pila extendido (esp). Se te sugiere el nombre __esp para esta variable.
 */
+
 void escribir_subseccion_data(FILE* fpasm);
 /*
 Declaración (con directiva db) de las variables que contienen el texto de los
 mensajes para la identificación de errores en tiempo de ejecución.
 En este punto, al menos, debes ser capaz de detectar la división por 0.
 */
-
 
 void declarar_variable(FILE* fpasm, char * nombre, int tipo, int tamano);
 /*

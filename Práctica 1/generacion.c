@@ -1,47 +1,64 @@
 #include <stdio.h>
 #include "generacion.h"
 
-/* OBSERVACIÓN GENERAL A TODAS LAS FUNCIONES:
-Todas ellas escriben el código NASM a un FILE* proporcionado como primer
-argumento.
-*/
-void escribir_cabecera_bss(FILE* fpasm);
+// DUDA: no se si la pila se reserva con tamaño 1, supongo que más pero ha puesto eso en el chat
+void escribir_cabecera_bss(FILE* fpasm){
+  fprintf(fpasm, "segment .bss\n");
+  fprintf(fpasm, "__esp resd 1\n");
+}
 /*
-Código para el principio de la sección .bss.
-Con seguridad sabes que deberás reservar una variable entera para guardar el
+  Código para el principio de la sección .bss.
+  Con seguridad sabes que deberás reservar una variable entera para guardar el
 puntero de pila extendido (esp). Se te sugiere el nombre __esp para esta variable.
 */
-void escribir_subseccion_data(FILE* fpasm);
+
+void escribir_subseccion_data(FILE* fpasm){
+  fprintf(fpasm, "segment .data\n");
+  //TODO: escribir cada mensaje de error segun vayamos creandolos
+}
 /*
-Declaración (con directiva db) de las variables que contienen el texto de los
+  Declaración (con directiva db) de las variables que contienen el texto de los
 mensajes para la identificación de errores en tiempo de ejecución.
-En este punto, al menos, debes ser capaz de detectar la división por 0.
+  En este punto, al menos, debes ser capaz de detectar la división por 0.
 */
 
-
-void declarar_variable(FILE* fpasm, char * nombre, int tipo, int tamano);
+// DUDA: pa que sirve el tipo si siempre la declaramos como dd no?
+void declarar_variable(FILE* fpasm, char * nombre, int tipo, int tamano){
+  fprintf(fpasm, "_%c resd %d\n", tamano);
+}
 /*
-Para ser invocada en la sección .bss cada vez que se quiera declarar una
+  Para ser invocada en la sección .bss cada vez que se quiera declarar una
 variable:
-- El argumento nombre es el de la variable.
-- tipo puede ser ENTERO o BOOLEANO (observa la declaración de las constantes
+  - El argumento nombre es el de la variable.
+  - tipo puede ser ENTERO o BOOLEANO (observa la declaración de las constantes
 del principio del fichero).
-- Esta misma función se invocará cuando en el compilador se declaren
+  - Esta misma función se invocará cuando en el compilador se declaren
 vectores, por eso se adjunta un argumento final (tamano) que para esta
 primera práctica siempre recibirá el valor 1.
 */
-void escribir_segmento_codigo(FILE* fpasm);
+
+void escribir_segmento_codigo(FILE* fpasm){
+  fprintf(fpasm, "segment .text\n")
+  fprintf(fpasm, "global main\n");
+  fprintf(fpasm, "extern scan_int, scan_boolean\n")
+  fprintf(fpasm, "extern print_int, print_boolean, print_string, print_blank, print_endofline\n");
+}
 /*
 Para escribir el comienzo del segmento .text, básicamente se indica que se
 exporta la etiqueta main y que se usarán las funciones declaradas en la librería
 alfalib.o
 */
-void escribir_inicio_main(FILE* fpasm);
+
+void escribir_inicio_main(FILE* fpasm){
+  fprintf(fpasm, "main:\n")
+  fprintf(fpasm, "mov esp, [__esp]\n");
+}
 /*
 En este punto se debe escribir, al menos, la etiqueta main y la sentencia que
 guarda el puntero de pila en su variable (se recomienda usar __esp).
 */
 void escribir_fin(FILE* fpasm);
+
 /*
 Al final del programa se escribe:
 - El código NASM para salir de manera controlada cuando se detecta un error
