@@ -15,6 +15,7 @@ puntero de pila extendido (esp). Se te sugiere el nombre __esp para esta variabl
 void escribir_subseccion_data(FILE* fpasm){
   fprintf(fpasm, "segment .data\n");
   //TODO: escribir cada mensaje de error segun vayamos creandolos
+  fprintf(fpasm, "mensaje_error_div_0 dd \"División por cero\",0\n");
 }
 /*
   Declaración (con directiva db) de las variables que contienen el texto de los
@@ -51,14 +52,21 @@ alfalib.o
 
 void escribir_inicio_main(FILE* fpasm){
   fprintf(fpasm, "main:\n")
-  fprintf(fpasm, "mov esp, [__esp]\n");
+  fprintf(fpasm, "mov [__esp], esp\n");
 }
 /*
 En este punto se debe escribir, al menos, la etiqueta main y la sentencia que
 guarda el puntero de pila en su variable (se recomienda usar __esp).
 */
-void escribir_fin(FILE* fpasm);
 
+void escribir_fin(FILE* fpasm){
+  fprintf(fpasm, "error_div_0: push dword mensaje_error_div_0\n");
+  fprintf(fpasm, "call print_string\n");
+  fprintf(fpasm, "add esp, 4\n");
+  fprintf(fpasm, "jmp near fin\n");
+  fprintf(fpasm, "fin: mov esp, [_esp]\n");
+  fprintf(fpasm, "ret\n");
+}
 /*
 Al final del programa se escribe:
 - El código NASM para salir de manera controlada cuando se detecta un error
@@ -69,7 +77,13 @@ zona de finalización del programa).
 ·Restaurar el valor del puntero de pila (a partir de su variable __esp)
 ·Salir del programa (ret).
 */
-void escribir_operando(FILE* fpasm, char* nombre, int es_variable);
+
+void escribir_operando(FILE* fpasm, char* nombre, int es_variable){
+  if (es_variable==1)
+    fprintf(fpasm, "push dword [_%s]", nombre);
+  if (es_variable==0)
+    fprintf(fpasm, "push dword %s", nombre);
+}
 /*
 Función que debe ser invocada cuando se sabe un operando deuna operación
 aritmético-lógica y se necesita introducirlo en la pila.
