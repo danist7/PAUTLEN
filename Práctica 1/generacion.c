@@ -422,12 +422,12 @@ void distinto(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/*Lu
 
 void menor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/*Lucia*/{
   /* Si es un registro guarda v en ebx*/
-  if(es_variable == 1){
+  if(es_variable1 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ebx */
-  else if(es_variable == 0){
+  else if(es_variable1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Si es un registro guarda v2 en ecx*/
@@ -449,9 +449,88 @@ void menor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/
 }
 
 
-void mayor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Luis*/
-void menor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Luis*/
-void mayor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Luis*/
+void mayor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta){
+  /* Si es un registro guarda v en ebx*/
+  if(es_variable1 == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ebx */
+  else if(es_variable1 == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+  /* Si es un registro guarda v2 en ecx*/
+  if(es_variable2 == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ecx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ecx */
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+  fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "jge mayorigual_escribe_%d\n", etiqueta);
+  fprintf(fpasm, "push dword 0\n");
+  fprintf(fpasm, "jmp mayorigual_%d\n", etiqueta);
+  fprintf(fpasm, "mayorigual_escribe_%d:\n", etiqueta);
+  fprintf(fpasm, "push dword 1\n");
+  fprintf(fpasm, "mayorigual_%d:\n", etiqueta);
+}
+void menor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)
+  /* Si es un registro guarda v en ebx*/
+  if(es_variable1 == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ebx */
+  else if(es_variable1 == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+  /* Si es un registro guarda v2 en ecx*/
+  if(es_variable2 == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ecx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ecx */
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+  fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "jl menor_escribe_%d\n", etiqueta);
+  fprintf(fpasm, "push dword 0\n");
+  fprintf(fpasm, "jmp menor_%d\n", etiqueta);
+  fprintf(fpasm, "menor_escribe_%d:\n", etiqueta);
+  fprintf(fpasm, "push dword 1\n");
+  fprintf(fpasm, "menor_%d:\n", etiqueta);
+}
+void mayor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)
+  /* Si es un registro guarda v en ebx*/
+  if(es_variable1 == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ebx */
+  else if(es_variable1 == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+  /* Si es un registro guarda v2 en ecx*/
+  if(es_variable2 == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ecx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ecx */
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+  fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "jl mayor_escribe_%d\n", etiqueta);
+  fprintf(fpasm, "push dword 0\n");
+  fprintf(fpasm, "jmp mayor_%d\n", etiqueta);
+  fprintf(fpasm, "mayor_escribe_%d:\n", etiqueta);
+  fprintf(fpasm, "push dword 1\n");
+  fprintf(fpasm, "mayorigual_%d:\n", etiqueta);
+}
+
 /* FUNCIONES DE ESCRITURA Y LECTURA */
 /*
 Se necesita saber el tipo de datos que se va a procesar (ENTERO o BOOLEANO) ya
@@ -460,5 +539,35 @@ tipo.
 Se deben insertar en la pila los argumentos necesarios, realizar la llamada
 (call) a la función de librería correspondiente y limpiar la pila.
 */
-void leer(FILE* fpasm, char* nombre, int tipo);/*Luis*/
-void escribir(FILE* fpasm, int es_variable, int tipo);/*Luis*/
+void leer(FILE* fpasm, char* nombre, int tipo){
+  /* Se prepara la pila */
+  fprintf(fpasm, "push dword [_%s]\n", nombre);
+  /* Llamada a alfalib.o (distinta para enteros y booleanos) */
+  if (tipo = ENTERO) {
+    fprintf(fpasm, "call scan_int\n");
+  } else if (tipo = BOOLEANO) {
+    fprintf(fpasm, "call scan_boolean\n");
+  }
+  /* Restaurar la pila */
+  fprintf(fpasm, "add esp, 4\n");
+}
+
+void escribir(FILE* fpasm, int es_variable, int tipo)
+  /* Si es un registro guarda v en ebx*/
+  if(es_variable1 == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+   fprintf(fpasm, "push dword eax\n");
+  }
+  /* Se prepara la pila */
+  /* Llamada a alfalib.o (distinta para enteros y booleanos) */
+  if (tipo = ENTERO) {
+    fprintf(fpasm, "call print_int\n");
+  } else if (tipo = BOOLEANO) {
+    fprintf(fpasm, "call print_boolean\n");
+  }
+  /* Restaurar la pila */
+  fprintf(fpasm, "add esp, 4\n");
+  /* Imprimir un salto de linea */
+  fprintf(fpasm, "call print_endofline\n");
+}
