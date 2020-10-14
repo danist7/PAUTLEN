@@ -277,14 +277,75 @@ void o(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
 
 }
 
-void y(FILE* fpasm, int es_variable_1, int es_variable_2);/*Lucia*/
-void cambiar_signo(FILE* fpasm, int es_variable);/*Lucia*/
+void y(FILE* fpasm, int es_variable_1, int es_variable_2)/*Lucia*/{
+  /* Si es un registro guarda v1 en ebx*/
+  if(es_variable1 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword eax\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ebx */
+  else if(es_variable1 == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+  /* Si es un registro guarda v2 en ecx*/
+  if(es_variable2 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword eax\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ecx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ecx */
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+  fprintf(fpasm, "and ebx, ecx\n");
+  fprintf(fpasm, "push dword ebx\n");
+}
+
+void cambiar_signo(FILE* fpasm, int es_variable)/*Lucia*/{
+  /* Si es un registro guarda v en ebx*/
+  if(es_variable == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword eax\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ebx */
+  else if(es_variable == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+
+  fprintf(fpasm, "neg ebx\n");
+  fprintf(fpasm, "push dword ebx\n");
+}
 /*
 Función aritmética de cambio de signo.
 Es análoga a las binarias, excepto que sólo requiere de un acceso a la pila ya
 que sólo usa un operando.
 */
-void no(FILE* fpasm, int es_variable, int cuantos_no);/*Lucia*/
+void no(FILE* fpasm, int es_variable, int cuantos_no)/*Lucia*/{
+  /* Si es un registro guarda v en ebx*/
+  if(es_variable == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ebx */
+  else if(es_variable == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+
+  fprintf(fpasm, "cmp ebx, 0\n", );
+  /* Si son iguales escribe un 1 en la pila */
+  fprintf(fpasm, "je no_uno_%d\n", cuantos_no);
+  /* Sino escribe un 0 */
+  fprintf(fpasm, "push dword 0\n");
+  fprintf(fpasm, "jmp fin_%d\n", cuantos_no);
+  fprintf(fpasm, "no_uno_%d:\n", cuantos_no);
+  fprintf(fpasm, "push dword 1\n");
+  fprintf(fpasm, "no_%d:\n", cuantos_no);
+}
 /*
 Función monádica lógica de negación. No hay un código de operación de la ALU
 que realice esta operación por lo que se debe codificar un algoritmo que, si
@@ -301,9 +362,93 @@ si se cumple la comparación y “0” si no se cumple), se deja en la pila como
 resto de operaciones. Se deben usar etiquetas para poder gestionar los saltos
 necesarios para implementar las comparaciones.
 */
-void igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Lucia*/
-void distinto(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Lucia*/
-void menor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Lucia*/
+void igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/*Lucia*/{
+  /* Si es un registro guarda v en ebx*/
+  if(es_variable == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ebx */
+  else if(es_variable == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+  /* Si es un registro guarda v2 en ecx*/
+  if(es_variable2 == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ecx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ecx */
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+  fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "je igual_escribe_%d\n", etiqueta);
+  fprintf(fpasm, "push dword 0\n");
+  fprintf(fpasm, "jmp igual_%d\n", etiqueta);
+  fprintf(fpasm, "igual_escribe_%d:\n", etiqueta);
+  fprintf(fpasm, "push dword 1\n");
+  fprintf(fpasm, "igual_%d:\n", etiqueta);
+}
+
+
+void distinto(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/*Lucia*/{
+  /* Si es un registro guarda v en ebx*/
+  if(es_variable == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ebx */
+  else if(es_variable == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+  /* Si es un registro guarda v2 en ecx*/
+  if(es_variable2 == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ecx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ecx */
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+  fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "jne distinto_escribe_%d\n", etiqueta);
+  fprintf(fpasm, "push dword 0\n");
+  fprintf(fpasm, "jmp distinto_%d\n", etiqueta);
+  fprintf(fpasm, "distinto_escribe_%d:\n", etiqueta);
+  fprintf(fpasm, "push dword 1\n");
+  fprintf(fpasm, "distinto_%d:\n", etiqueta);
+}
+
+
+void menor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/*Lucia*/{
+  /* Si es un registro guarda v en ebx*/
+  if(es_variable == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ebx */
+  else if(es_variable == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+  /* Si es un registro guarda v2 en ecx*/
+  if(es_variable2 == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ecx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ecx */
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+  fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "jle menorigual_escribe_%d\n", etiqueta);
+  fprintf(fpasm, "push dword 0\n");
+  fprintf(fpasm, "jmp menorigual_%d\n", etiqueta);
+  fprintf(fpasm, "menorigual_escribe_%d:\n", etiqueta);
+  fprintf(fpasm, "push dword 1\n");
+  fprintf(fpasm, "menorigual_%d:\n", etiqueta);
+}
+
+
 void mayor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Luis*/
 void menor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Luis*/
 void mayor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta);/*Luis*/
