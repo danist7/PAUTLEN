@@ -99,7 +99,7 @@ segundo se representará tal y como esté en el argumento (34).
 void asignar(FILE* fpasm, char* nombre, int es_variable){/*Dani*/
   if (es_variable==1){
      /* Se guarda la referencia en eax*/
-    fprintf(fpasm, "pop dword eax\n", nombre);
+    fprintf(fpasm, "pop dword eax\n");
     /*Se accede a la referencia con [] */
     fprintf(fpasm, "mov dword [_%s], [eax]\n", nombre);
   }
@@ -129,17 +129,154 @@ controlado (restaurando el puntero de pila en ese caso y comprobando en el retor
 que no se produce “Segmentation Fault”)
 */
 void sumar(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
+  /* Guarda variable 1 en ebx*/
   if(es_variable1 == 1){
-
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword eax\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
   else if(es_variable1 == 0){
-
+     fprintf(fpasm, "pop dword ebx\n");
   }
+  /* Guarda variable 2 en ecx*/
+  if(es_variable2 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword eax\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ecx, [eax]\n");
+  }
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+
+
+  fprintf(fpasm, "add ebx, ecx\n");
+  fprintf(fpasm, "push dword ebx\n");
+
+
 }
-void restar(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
-void multiplicar(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
-void dividir(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
-void o(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
+
+void restar(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
+  /* Guarda variable 1 en ebx*/
+  if(es_variable1 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword eax\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  else if(es_variable1 == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+  /* Guarda variable 2 en ecx*/
+  if(es_variable2 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword eax\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ecx, [eax]\n");
+  }
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+
+  fprintf(fpasm, "sub ebx, ecx\n");
+  fprintf(fpasm, "push dword ebx\n");
+
+}
+
+void multiplicar(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
+
+  /* Guarda variable 1 en eax*/
+  if(es_variable1 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword ebx\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword eax, [ebx]\n");
+  }
+  else if(es_variable1 == 0){
+     fprintf(fpasm, "pop dword eax\n");
+  }
+  /* Guarda variable 2 en ecx*/
+  if(es_variable2 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword ebx\n";
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ecx, [ebx]\n");
+  }
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+
+
+  /* Multiplica el contenido de eax por el de ecx*/
+  fprintf(fpasm, "imul ecx\n");
+  /*El resultado se guarda en eax*/
+  fprintf(fpasm, "push dword eax\n");
+}
+
+void dividir(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
+  /* Guarda variable 1 en eax*/
+  if(es_variable1 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword ebx\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword eax, [ebx]\n");
+  }
+  else if(es_variable1 == 0){
+     fprintf(fpasm, "pop dword eax\n");
+  }
+  /* Guarda variable 2 en ecx*/
+  if(es_variable2 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword ebx\n";
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ecx, [ebx]\n");
+  }
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+
+  /* Comprueba si el dividor es 0*/
+  fprintf(fpasm, "cmp ecx, 0\n",);
+  fprintf(fpasm, "je error_div_0\n",);
+
+  /* Extiende eax*/
+  fprintf(fpasm, "cdq eax\n");
+  /* Divide el contenido de eax entre el de ecx*/
+  fprintf(fpasm, "idiv ecx\n");
+  /*El resultado se guarda en eax*/
+  fprintf(fpasm, "push dword eax\n");
+
+}
+
+void o(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
+  /* Guarda variable 1 en ebx*/
+  if(es_variable1 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword eax\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  else if(es_variable1 == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+  /* Guarda variable 2 en ecx*/
+  if(es_variable2 == 1){
+    /* Se guarda la referencia en eax*/
+   fprintf(fpasm, "pop dword eax\n");
+   /*Se accede a la referencia con [] */
+   fprintf(fpasm, "mov dword ecx, [eax]\n");
+  }
+  else if(es_variable2 == 0){
+     fprintf(fpasm, "pop dword ecx\n");
+  }
+
+
+  fprintf(fpasm, "or ebx, ecx\n");
+  fprintf(fpasm, "push dword ebx\n");
+
+}
+
 void y(FILE* fpasm, int es_variable_1, int es_variable_2);/*Lucia*/
 void cambiar_signo(FILE* fpasm, int es_variable);/*Lucia*/
 /*
