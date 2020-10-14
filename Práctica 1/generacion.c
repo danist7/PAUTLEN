@@ -81,9 +81,10 @@ zona de finalización del programa).
 void escribir_operando(FILE* fpasm, char* nombre, int es_variable){
   if (es_variable==1)
     fprintf(fpasm, "push dword [_%s]\n", nombre);
-  if (es_variable==0)
-    fprintf(fpasm, "mov eax, %s", nombre);
+  else if (es_variable==0){
+    fprintf(fpasm, "mov dword eax, %s", nombre);
     fprintf(fpasm, "push dword eax");
+  }
 }
 /*
 Función que debe ser invocada cuando se sabe un operando deuna operación
@@ -95,7 +96,16 @@ con un 1 u otra cosa (como por ejemplo 34) con un 0. Recuerda que en el
 primer caso internamente se representará como _b1 y, sin embargo, en el
 segundo se representará tal y como esté en el argumento (34).
 */
-void asignar(FILE* fpasm, char* nombre, int es_variable);/*Dani*/
+void asignar(FILE* fpasm, char* nombre, int es_variable){/*Dani*/
+  if (es_variable==1){
+     /* Se guarda la referencia en eax*/
+    fprintf(fpasm, "pop dword eax\n", nombre);
+    /*Se accede a la referencia con [] */
+    fprintf(fpasm, "mov dword [_%s], [eax]\n", nombre);
+  }
+  else if (es_variable==0)
+    fprintf(fpasm, "pop dword [_%s]\n", nombre);
+}
 /*
 - Genera el código para asignar valor a la variable de nombre nombre.
 - Se toma el valor de la cima de la pila.
@@ -118,7 +128,14 @@ controlar si el divisor es “0” y en ese caso se debe saltar a la rutina de e
 controlado (restaurando el puntero de pila en ese caso y comprobando en el retorno
 que no se produce “Segmentation Fault”)
 */
-void sumar(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
+void sumar(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
+  if(es_variable1 == 1){
+
+  }
+  else if(es_variable1 == 0){
+
+  }
+}
 void restar(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
 void multiplicar(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
 void dividir(FILE* fpasm, int es_variable_1, int es_variable_2);/*Dani*/
