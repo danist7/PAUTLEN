@@ -15,6 +15,9 @@ all : $(EXES)
 
 $(EXES) : % : %.o $(AUX_OBJ).o
 	$(CC) $(CFLAGS) -o $@ $@.o $(AUX_OBJ).o $(AUX)
+	./$@ $@.asm
+	nasm -g -o $@.o -f elf32 $@.asm
+	gcc -m32 -o $@ $@.o lib/alfalib.o
 
 $(AUX_OBJ) : % : %.c %.h
 	$(CC) $(CFLAGS) -c $<
