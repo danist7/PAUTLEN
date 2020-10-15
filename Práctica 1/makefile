@@ -3,7 +3,7 @@
 
 CC := gcc
 CFLAGS := -Wall -g -std=c99
-AUX := 
+AUX :=
 
 #Ficheros a ejecutar
 EXES = ejemplo1
@@ -20,3 +20,4 @@ $(AUX_OBJ) : % : %.c %.h
 
 clean :
 	rm -rfv *.o core $(EXES)
+	$(filter-out alfalib.o,$(wildcard *.o))
