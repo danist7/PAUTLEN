@@ -64,7 +64,7 @@ void escribir_fin(FILE* fpasm){
   fprintf(fpasm, "call print_string\n");
   fprintf(fpasm, "add esp, 4\n");
   fprintf(fpasm, "jmp near fin\n");
-  fprintf(fpasm, "fin: mov esp, [_esp]\n");
+  fprintf(fpasm, "fin: mov esp, [__esp]\n");
   fprintf(fpasm, "ret\n");
 }
 /*
@@ -80,10 +80,10 @@ zona de finalización del programa).
 
 void escribir_operando(FILE* fpasm, char* nombre, int es_variable){
   if (es_variable==1)
-    fprintf(fpasm, "push dword [_%s]\n", nombre);
+    fprintf(fpasm, "push dword _%s\n", nombre);
   else if (es_variable==0){
-    fprintf(fpasm, "mov dword eax, %s", nombre);
-    fprintf(fpasm, "push dword eax");
+    fprintf(fpasm, "mov dword eax, %s\n", nombre);
+    fprintf(fpasm, "push dword eax\n");
   }
 }
 /*
@@ -524,7 +524,7 @@ void mayor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
      fprintf(fpasm, "pop dword ecx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
-  fprintf(fpasm, "jl mayor_escribe_%d\n", etiqueta);
+  fprintf(fpasm, "jg mayor_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp mayor_%d\n", etiqueta);
   fprintf(fpasm, "mayor_escribe_%d:\n", etiqueta);
@@ -544,9 +544,9 @@ void leer(FILE* fpasm, char* nombre, int tipo){
   /* Se prepara la pila */
   fprintf(fpasm, "push dword [_%s]\n", nombre);
   /* Llamada a alfalib.o (distinta para enteros y booleanos) */
-  if (tipo = ENTERO) {
+  if (tipo == ENTERO) {
     fprintf(fpasm, "call scan_int\n");
-  } else if (tipo = BOOLEANO) {
+  } else if (tipo == BOOLEANO) {
     fprintf(fpasm, "call scan_boolean\n");
   }
   /* Restaurar la pila */
@@ -562,9 +562,9 @@ void escribir(FILE* fpasm, int es_variable, int tipo){
   }
   /* Se prepara la pila */
   /* Llamada a alfalib.o (distinta para enteros y booleanos) */
-  if (tipo = ENTERO) {
+  if (tipo == ENTERO) {
     fprintf(fpasm, "call print_int\n");
-  } else if (tipo = BOOLEANO) {
+  } else if (tipo == BOOLEANO) {
     fprintf(fpasm, "call print_boolean\n");
   }
   /* Restaurar la pila */
