@@ -8,6 +8,7 @@ AUX :=
 #Ficheros a ejecutar
 EXES = ejemplo1 ejemplo2
 AUX_OBJ = generacion
+EXES_ASM = f1 f2 f3 f4
 
 #Targets
 all : $(EXES)
@@ -19,4 +20,4 @@ $(AUX_OBJ) : % : %.c %.h
 	$(CC) $(CFLAGS) -c $<
 
 clean :
-	rm -rfv *.o *.asm core $(EXES)
+	rm -rfv *.o *.asm core $(EXES) $(EXES_ASM)

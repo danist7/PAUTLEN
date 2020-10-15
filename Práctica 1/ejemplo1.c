@@ -28,7 +28,7 @@ int main (int argc, char** argv)
   /* z = 7 + y */
   escribir_operando(salida,"7",0);
   escribir_operando(salida,"y",1);
-  sumar(salida,0,1);
+  sumar(salida,0,1);/* Al reves de como se meten en la pila*/
   asignar(salida,"z",0);
   /* printf(z); */
   escribir_operando(salida,"z",1);
