@@ -39,9 +39,9 @@ primera práctica siempre recibirá el valor 1.
 */
 
 void escribir_segmento_codigo(FILE* fpasm){
-  fprintf(fpasm, "segment .text\n")
+  fprintf(fpasm, "segment .text\n");
   fprintf(fpasm, "global main\n");
-  fprintf(fpasm, "extern scan_int, scan_boolean\n")
+  fprintf(fpasm, "extern scan_int, scan_boolean\n");
   fprintf(fpasm, "extern print_int, print_boolean, print_string, print_blank, print_endofline\n");
 }
 /*
@@ -51,7 +51,7 @@ alfalib.o
 */
 
 void escribir_inicio_main(FILE* fpasm){
-  fprintf(fpasm, "main:\n")
+  fprintf(fpasm, "main:\n");
   fprintf(fpasm, "mov [__esp], esp\n");
 }
 /*
@@ -130,23 +130,23 @@ que no se produce “Segmentation Fault”)
 */
 void sumar(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
   /* Guarda variable 1 en ebx*/
-  if(es_variable1 == 1){
+  if(es_variable_1 == 1){
     /* Se guarda la referencia en eax*/
    fprintf(fpasm, "pop dword eax\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
-  else if(es_variable1 == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Guarda variable 2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
     /* Se guarda la referencia en eax*/
    fprintf(fpasm, "pop dword eax\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword ecx, [eax]\n");
   }
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
 
@@ -159,23 +159,23 @@ void sumar(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
 
 void restar(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
   /* Guarda variable 1 en ebx*/
-  if(es_variable1 == 1){
+  if(es_variable_1 == 1){
     /* Se guarda la referencia en eax*/
    fprintf(fpasm, "pop dword eax\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
-  else if(es_variable1 == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Guarda variable 2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
     /* Se guarda la referencia en eax*/
    fprintf(fpasm, "pop dword eax\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword ecx, [eax]\n");
   }
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
 
@@ -187,25 +187,25 @@ void restar(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
 void multiplicar(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
 
   /* Guarda variable 1 en eax*/
-  if(es_variable1 == 1){
+  if(es_variable_1 == 1){
     /* Se guarda la referencia en eax*/
    fprintf(fpasm, "pop dword ebx\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword eax, [ebx]\n");
   }
-  else if(es_variable1 == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword eax\n");
   }
   /* Guarda variable 2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
     /* Se guarda la referencia en eax*/
-   fprintf(fpasm, "pop dword ebx\n";
+   fprintf(fpasm, "pop dword ebx\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword ecx, [ebx]\n");
   }
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0)
      fprintf(fpasm, "pop dword ecx\n");
-  }
+
 
 
   /* Multiplica el contenido de eax por el de ecx*/
@@ -216,29 +216,29 @@ void multiplicar(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
 
 void dividir(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
   /* Guarda variable 1 en eax*/
-  if(es_variable1 == 1){
+  if(es_variable_1 == 1){
     /* Se guarda la referencia en eax*/
    fprintf(fpasm, "pop dword ebx\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword eax, [ebx]\n");
   }
-  else if(es_variable1 == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword eax\n");
   }
   /* Guarda variable 2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
     /* Se guarda la referencia en eax*/
-   fprintf(fpasm, "pop dword ebx\n";
+   fprintf(fpasm, "pop dword ebx\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword ecx, [ebx]\n");
   }
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
 
   /* Comprueba si el dividor es 0*/
-  fprintf(fpasm, "cmp ecx, 0\n",);
-  fprintf(fpasm, "je error_div_0\n",);
+  fprintf(fpasm, "cmp ecx, 0\n");
+  fprintf(fpasm, "je error_div_0\n");
 
   /* Extiende eax*/
   fprintf(fpasm, "cdq eax\n");
@@ -251,23 +251,23 @@ void dividir(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
 
 void o(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
   /* Guarda variable 1 en ebx*/
-  if(es_variable1 == 1){
+  if(es_variable_1 == 1){
     /* Se guarda la referencia en eax*/
    fprintf(fpasm, "pop dword eax\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
-  else if(es_variable1 == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Guarda variable 2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
     /* Se guarda la referencia en eax*/
    fprintf(fpasm, "pop dword eax\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword ecx, [eax]\n");
   }
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
 
@@ -279,25 +279,25 @@ void o(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
 
 void y(FILE* fpasm, int es_variable_1, int es_variable_2)/*Lucia*/{
   /* Si es un registro guarda v1 en ebx*/
-  if(es_variable1 == 1){
+  if(es_variable_1 == 1){
     /* Se guarda la referencia en eax*/
    fprintf(fpasm, "pop dword eax\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ebx */
-  else if(es_variable1 == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Si es un registro guarda v2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
     /* Se guarda la referencia en eax*/
    fprintf(fpasm, "pop dword eax\n");
    /*Se accede a la referencia con [] */
    fprintf(fpasm, "mov dword ecx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ecx */
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
   fprintf(fpasm, "and ebx, ecx\n");
@@ -336,7 +336,7 @@ void no(FILE* fpasm, int es_variable, int cuantos_no)/*Lucia*/{
      fprintf(fpasm, "pop dword ebx\n");
   }
 
-  fprintf(fpasm, "cmp ebx, 0\n", );
+  fprintf(fpasm, "cmp ebx, 0\n");
   /* Si son iguales escribe un 1 en la pila */
   fprintf(fpasm, "je no_uno_%d\n", cuantos_no);
   /* Sino escribe un 0 */
@@ -362,23 +362,23 @@ si se cumple la comparación y “0” si no se cumple), se deja en la pila como
 resto de operaciones. Se deben usar etiquetas para poder gestionar los saltos
 necesarios para implementar las comparaciones.
 */
-void igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/*Lucia*/{
+void igual(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta)/*Lucia*/{
   /* Si es un registro guarda v en ebx*/
-  if(es_variable == 1){
+  if(es_variable_1 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ebx */
-  else if(es_variable == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Si es un registro guarda v2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ecx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ecx */
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
@@ -391,23 +391,23 @@ void igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/*Lucia
 }
 
 
-void distinto(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/*Lucia*/{
+void distinto(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta)/*Lucia*/{
   /* Si es un registro guarda v en ebx*/
-  if(es_variable == 1){
+  if(es_variable_1 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ebx */
-  else if(es_variable == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Si es un registro guarda v2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ecx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ecx */
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
@@ -420,23 +420,23 @@ void distinto(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/*Lu
 }
 
 
-void menor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/*Lucia*/{
+void menor_igual(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta)/*Lucia*/{
   /* Si es un registro guarda v en ebx*/
-  if(es_variable1 == 1){
+  if(es_variable_1 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ebx */
-  else if(es_variable1 == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Si es un registro guarda v2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ecx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ecx */
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
@@ -449,23 +449,23 @@ void menor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)/
 }
 
 
-void mayor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta){
+void mayor_igual(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
   /* Si es un registro guarda v en ebx*/
-  if(es_variable1 == 1){
+  if(es_variable_1 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ebx */
-  else if(es_variable1 == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Si es un registro guarda v2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ecx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ecx */
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
@@ -476,23 +476,23 @@ void mayor_igual(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta){
   fprintf(fpasm, "push dword 1\n");
   fprintf(fpasm, "mayorigual_%d:\n", etiqueta);
 }
-void menor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)
+void menor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
   /* Si es un registro guarda v en ebx*/
-  if(es_variable1 == 1){
+  if(es_variable_1 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ebx */
-  else if(es_variable1 == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Si es un registro guarda v2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ecx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ecx */
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
@@ -503,23 +503,24 @@ void menor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)
   fprintf(fpasm, "push dword 1\n");
   fprintf(fpasm, "menor_%d:\n", etiqueta);
 }
-void mayor(FILE* fpasm, int es_variable1, int es_variable2, int etiqueta)
+
+void mayor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
   /* Si es un registro guarda v en ebx*/
-  if(es_variable1 == 1){
+  if(es_variable_1 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ebx */
-  else if(es_variable1 == 0){
+  else if(es_variable_1 == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Si es un registro guarda v2 en ecx*/
-  if(es_variable2 == 1){
+  if(es_variable_2 == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ecx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ecx */
-  else if(es_variable2 == 0){
+  else if(es_variable_2 == 0){
      fprintf(fpasm, "pop dword ecx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
@@ -552,9 +553,9 @@ void leer(FILE* fpasm, char* nombre, int tipo){
   fprintf(fpasm, "add esp, 4\n");
 }
 
-void escribir(FILE* fpasm, int es_variable, int tipo)
+void escribir(FILE* fpasm, int es_variable, int tipo){
   /* Si es un registro guarda v en ebx*/
-  if(es_variable1 == 1){
+  if(es_variable == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ebx, [eax]\n");
    fprintf(fpasm, "push dword eax\n");

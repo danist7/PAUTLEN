@@ -1,7 +1,7 @@
 #ifndef GENERACION_H
 #define GENERACION_H
 
-#include <stdio.h>;
+#include <stdio.h>
 
 
 /* Declaraciones de tipos de datos del compilador */
