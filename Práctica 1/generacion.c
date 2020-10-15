@@ -342,7 +342,7 @@ void no(FILE* fpasm, int es_variable, int cuantos_no)/*Lucia*/{
   fprintf(fpasm, "je no_uno_%d\n", cuantos_no);
   /* Sino escribe un 0 */
   fprintf(fpasm, "push dword 0\n");
-  fprintf(fpasm, "jmp fin_%d\n", cuantos_no);
+  fprintf(fpasm, "jmp no_%d\n", cuantos_no);
   fprintf(fpasm, "no_uno_%d:\n", cuantos_no);
   fprintf(fpasm, "push dword 1\n");
   fprintf(fpasm, "no_%d:\n", cuantos_no);
