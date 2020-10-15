@@ -19,5 +19,4 @@ $(AUX_OBJ) : % : %.c %.h
 	$(CC) $(CFLAGS) -c $<
 
 clean :
-	rm -rfv *.o core $(EXES) \
-	$(filter-out alfalib.o,$(wildcard *.o))
+	rm -rfv *.o *.asm core $(EXES)
