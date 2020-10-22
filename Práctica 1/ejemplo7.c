@@ -1,10 +1,6 @@
 #include "generacion.h"
 int main (int argc, char ** argv)
 {
-  int etiqueta = 0;
-  int getiqueta = 0;
-  int etiquetas[MAX_ETIQUETAS];
-  int cima_etiquetas=-1;
   FILE * fd_asm;
   fd_asm = fopen(argv[1],"w");
   escribir_subseccion_data(fd_asm);
@@ -15,8 +11,7 @@ int main (int argc, char ** argv)
   //Declaramos la funcion. Vamos a imprimir su etiqueta y decir que tiene una variable local.
   //function int doble(int arg)
   //{
-  //
-  int auxArg;
+  //int auxArg;
   declararFuncion(fd_asm,"doble",1);
   //auxArg = arg; Asignacion de parametro a variable local. Solo hay un parametro.
   escribirParametro(fd_asm,0,1);
