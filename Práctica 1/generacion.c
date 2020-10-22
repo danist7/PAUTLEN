@@ -795,20 +795,14 @@ void escribirVariableLocal(FILE* fpasm, int posicion_variable_local){
 la posición posicion_variable_local (recuerda que ordenadas con origen 1)
 */
 
-void asignarDestinoEnPila(FILE* fpasm, int es_variable);//Luis
-/*
-● Función para poder asignar a un destino que no es una variable “global” (tipo _x) por
-ejemplo parámetros o variables locales (ya que en ese caso su nombre real de alto nivel, no
-se tiene en cuenta pues es realmente un desplazamiento a partir de ebp: ebp+4 o ebp-8 por
-ejemplo).
-● Se debe asumir que en la pila estará
-○ Primero (en la cima) la dirección donde hay que asignar
-○ Debajo (se ha introducido en la pila antes) lo que hay que asignar
-● es_variable
-○ Es 1 si la expresión que se va a asignar es algo asimilable a una variable
-(identificador, o elemento de vector)
-○ Es 0 en caso contrario (constante u otro tipo de expresión)
-*/
+void asignarDestinoEnPila(FILE* fpasm, int es_variable){
+  fprintf(fpasm, "pop dword eax\n");
+  fprintf(fpasm, "pop dword ebx\n");
+  if(es_variable == 1){
+    fprintf(fpasm, "mov ebx [ebx]\n");
+  }
+  fprintf(fpasm, "mov [eax] ebx\n");
+}
 
 void operandoEnPilaAArgumento(FILE * fd_asm, int es_variable){
   if (es_variable == 1) {
