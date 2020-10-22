@@ -589,7 +589,14 @@ void escribir(FILE* fpasm, int es_variable, int tipo){
 }
 
 
-void ifthenelse_inicio(FILE * fpasm, int exp_es_variable, int etiqueta);//Dani
+void ifthenelse_inicio(FILE * fpasm, int exp_es_variable, int etiqueta){//Dani
+  fprintf(fpasm, "pop eax\n");
+  if(exp_es_variable == 1)
+    fprintf(fpasm, "mov eax,[eax]\n");
+
+  fprintf(fpasm, "cmp eax, 0\n");
+  fprintf(fpasm, "je near fin_then_%d\n",etiqueta);
+}
 /* Generación de código para el inicio de una estructura if-then-else
 ● Como es el inicio de uno bloque de control de flujo de programa que requiere de una nueva
 etiqueta deben ejecutarse antes las tareas correspondientes a esta situación
@@ -599,7 +606,15 @@ elemento de vector)
 ○ Es 0 en caso contrario (constante u otro tipo de expresión) */
 
 
-void ifthen_inicio(FILE * fpasm, int exp_es_variable, int etiqueta);//Dani
+void ifthen_inicio(FILE * fpasm, int exp_es_variable, int etiqueta){//Dani
+  fprintf(fpasm, "pop eax\n");
+  if(exp_es_variable == 1)
+    fprintf(fpasm, "mov eax,[eax]\n");
+
+  fprintf(fpasm, "cmp eax, 0\n");
+  fprintf(fpasm, "je near fin_then_%d\n",etiqueta);
+
+}
 /*
 ● Generación de código para el inicio de una estructura if-then
 ● Como es el inicio de uno bloque de control de flujo de programa que requiere de una nueva
@@ -610,7 +625,9 @@ elemento de vector)
 ○ Es 0 en caso contrario (constante u otro tipo de expresión)
 */
 
-void ifthen_fin(FILE * fpasm, int etiqueta);//Dani
+void ifthen_fin(FILE * fpasm, int etiqueta){//Dani
+  fprintf(fpasm, "fin_then_%d\n",etiqueta);
+}
 /*
 ● Generación de código para el fin de una estructura if-then
 ● Como es el fin de uno bloque de control de flujo de programa que hace uso de la etiqueta
@@ -620,7 +637,10 @@ según se ha explicado
 puesto que se ha liberado la última de ellas.
 */
 
-void ifthenelse_fin_then( FILE * fpasm, int etiqueta);//Dani
+void ifthenelse_fin_then( FILE * fpasm, int etiqueta){//Dani
+  fprintf(fpasm, "jmp near fin_ifelse_%d\n",etiqueta);
+  fprintf(fpasm, "fin_then_%d\n",etiqueta);
+}
 /*
 ● Generación de código para el fin de la rama then de una estructura if-then-else
 ● Sólo necesita usar la etiqueta adecuada, aunque es el final de una rama, luego debe venir
@@ -628,7 +648,9 @@ otra (la rama else) antes de que se termine la estructura y se tenga que ajustar
 por lo que sólo se necesita que se utilice la etiqueta que corresponde al momento actual.
 */
 
-void ifthenelse_fin( FILE * fpasm, int etiqueta)//Dani
+void ifthenelse_fin( FILE * fpasm, int etiqueta){//Dani
+  fprintf(fpasm, "fin_ifelse_%d\n",etiqueta);
+}
 /*
 ● Generación de código para el fin de una estructura if-then-else
 ● Como es el fin de uno bloque de control de flujo de programa que hace uso de la etiqueta
@@ -638,7 +660,9 @@ según se ha explicado
 puesto que se ha liberado la última de ellas.
 */
 
-void while_inicio(FILE * fpasm, int etiqueta);//Dani
+void while_inicio(FILE * fpasm, int etiqueta){//Dani
+  fprintf(fpasm, "while_inicio_%d\n",etiqueta);
+}
 /*
 ● Generación de código para el inicio de una estructura while
 ● Como es el inicio de uno bloque de control de flujo de programa que requiere de una nueva
