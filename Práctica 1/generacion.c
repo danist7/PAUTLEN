@@ -658,12 +658,12 @@ elemento de vector)
 void while_exp_pila (FILE * fpasm, int exp_es_variable, int etiqueta){
 
   /* Si es un registro guarda v en ebx*/
-  if(expr_es_variable == 1){
+  if(exp_es_variable == 1){
    fprintf(fpasm, "pop dword eax\n");
    fprintf(fpasm, "mov dword ebx, [eax]\n");
   }
   /* Si es un valor solo se extrae en ebx */
-  else if(expr_es_variable_ == 0){
+  else if(exp_es_variable == 0){
      fprintf(fpasm, "pop dword ebx\n");
   }
   /* Si son iguales saltamos al final del while */
@@ -697,8 +697,8 @@ puesto que se ha liberado la última de ellas.
 void escribir_elemento_vector(FILE * fpasm,char * nombre_vector, int tam_max, int exp_es_direccion){
   fprintf(fpasm, "pop dword eax\n");
   /* Si es < 0 el programa continua */
-  if(expr_es_direccion == 1){
-    fprintf(fpasm, "mov dword eax, [eax]\n", );
+  if(exp_es_direccion == 1){
+    fprintf(fpasm, "mov dword eax, [eax]\n");
   }
   /* Si son iguales saltamos al error */
   fprintf(fpasm, "cmp eax 0\n");
