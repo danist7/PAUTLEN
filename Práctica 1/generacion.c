@@ -379,15 +379,16 @@ void igual(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta)/*Luc
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  /* USANDO SET
   fprintf(fpasm, "sete eax\n");
-  fprintf(fpasm, "push eax 0\n");
-  /* USANDO JUMPS
+  fprintf(fpasm, "push eax 0\n"); */
+  /* USANDO JUMPS */
   fprintf(fpasm, "je igual_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp igual_%d\n", etiqueta);
   fprintf(fpasm, "igual_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "igual_%d:\n", etiqueta);*/
+  fprintf(fpasm, "igual_%d:\n", etiqueta);
 }
 
 
@@ -411,15 +412,16 @@ void distinto(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta)/*
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  /* USANDO SET
   fprintf(fpasm, "setne eax\n");
-  fprintf(fpasm, "push eax 0\n");
-  /* USANDO JUMPS
+  fprintf(fpasm, "push eax 0\n");*/
+  /* USANDO JUMPS */
   fprintf(fpasm, "jne distinto_escribe_%d\n", etiqueta);
-  fprintf(fpasm, "push dword 0\n");
+  fprintf(fpasm, "push dword 0\/* USANDO SETn");
   fprintf(fpasm, "jmp distinto_%d\n", etiqueta);
   fprintf(fpasm, "distinto_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "distinto_%d:\n", etiqueta);*/
+  fprintf(fpasm, "distinto_%d:\n", etiqueta);
 }
 
 
@@ -443,15 +445,16 @@ void menor_igual(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  /* USANDO SET
   fprintf(fpasm, "setle eax\n");
-  fprintf(fpasm, "push eax 0\n");
-  /* USANDO JUMPS
+  fprintf(fpasm, "push eax 0\n");*/
+  /* USANDO JUMPS */
   fprintf(fpasm, "jle menorigual_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp menorigual_%d\n", etiqueta);
   fprintf(fpasm, "menorigual_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "menorigual_%d:\n", etiqueta);*/
+  fprintf(fpasm, "menorigual_%d:\n", etiqueta);
 }
 
 
@@ -475,15 +478,16 @@ void mayor_igual(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  /* USANDO SET
   fprintf(fpasm, "setge eax\n");
-  fprintf(fpasm, "push eax 0\n");
-  /* USANDO JUMPS
+  fprintf(fpasm, "push eax 0\n"); */
+  /* USANDO JUMPS */
   fprintf(fpasm, "jge mayorigual_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp mayorigual_%d\n", etiqueta);
   fprintf(fpasm, "mayorigual_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "mayorigual_%d:\n", etiqueta);*/
+  fprintf(fpasm, "mayorigual_%d:\n", etiqueta);
 }
 void menor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
   /* Si es un registro guarda v en ebx*/
@@ -505,15 +509,16 @@ void menor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  /* USANDO SET
   fprintf(fpasm, "setl eax\n");
-  fprintf(fpasm, "push eax 0\n");
-  /* USANDO JUMPS
+  fprintf(fpasm, "push eax 0\n");*/
+  /* USANDO JUMPS */
   fprintf(fpasm, "jl menor_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp menor_%d\n", etiqueta);
   fprintf(fpasm, "menor_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "menor_%d:\n", etiqueta);*/
+  fprintf(fpasm, "menor_%d:\n", etiqueta);
 }
 
 void mayor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
@@ -536,15 +541,16 @@ void mayor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  /* USANDO SET
   fprintf(fpasm, "setg eax\n");
-  fprintf(fpasm, "push eax 0\n");
-  /* USANDO JUMPS
+  fprintf(fpasm, "push eax 0\n");*/
+  /* USANDO JUMPS */
   fprintf(fpasm, "jg mayor_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp mayor_%d\n", etiqueta);
   fprintf(fpasm, "mayor_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "mayor_%d:\n", etiqueta*/
+  fprintf(fpasm, "mayor_%d:\n", etiqueta);
 }
 
 /* FUNCIONES DE ESCRITURA Y LECTURA */
