@@ -631,7 +631,21 @@ elemento de vector)
 ○ Es 0 en caso contrario (constante u otro tipo de expresión)
 */
 
-void while_exp_pila (FILE * fpasm, int exp_es_variable, int etiqueta);//Lucia
+void while_exp_pila (FILE * fpasm, int exp_es_variable, int etiqueta){
+
+  /* Si es un registro guarda v en ebx*/
+  if(expr_es_variable == 1){
+   fprintf(fpasm, "pop dword eax\n");
+   fprintf(fpasm, "mov dword ebx, [eax]\n");
+  }
+  /* Si es un valor solo se extrae en ebx */
+  else if(expr_es_variable_ == 0){
+     fprintf(fpasm, "pop dword ebx\n");
+  }
+  /* Si son iguales saltamos al final del while */
+  fprintf(fpasm, "cmp ebx 0\n");
+  fprintf(fpasm, "je while_fin_%d\n", etiqueta);
+}
 /*
 ● Generación de código para el momento en el que se ha generado el código de la expresión
 de control del bucle
@@ -643,7 +657,10 @@ o elemento de vector)
 ○ Es 0 en caso contrario (constante u otro tipo de expresión)
 */
 
-void while_fin( FILE * fpasm, int etiqueta);//Lucia
+void while_fin( FILE * fpasm, int etiqueta){
+  fprintf(fpasm, "jmp while_inicio_%d\n", etiqueta);
+  fprintf(fpasm, "while_fin_%d:\n", etiqueta);
+}
 /*
 ● Generación de código para el final de una estructura while
 ● Como es el fin de uno bloque de control de flujo de programa que hace uso de la etiqueta
@@ -653,7 +670,23 @@ según se ha explicado
 puesto que se ha liberado la última de ellas.
 */
 
-void escribir_elemento_vector(FILE * fpasm,char * nombre_vector, int tam_max, int exp_es_direccion);//Lucia
+void escribir_elemento_vector(FILE * fpasm,char * nombre_vector, int tam_max, int exp_es_direccion){
+  fprintf(fpasm, "pop dword eax\n");
+  /* Si es < 0 el programa continua */
+  if(expr_es_direccion == 1){
+    fprintf(fpasm, "mov dword eax, [eax]\n", );
+  }
+  /* Si son iguales saltamos al error */
+  fprintf(fpasm, "cmp eax 0\n");
+  fprintf(fpasm, "jl fin_indice_fuera_rango\n");
+  /* Si el indice es mayor se termina el programa */
+  fprintf(fpasm, "cmp eax, %d-1\n", tam_max);
+  fprintf(fpasm, "jg fin_indice_fuera_rango\n");
+
+  fprintf(fpasm, "mov edx, _%s\n", nombre_vector);
+  fprintf(fpasm, "lea eax, [edx + eax*4]\n");
+  fprintf(fpasm, "push dword eax\n");
+}
 /*
 ● Generación de código para indexar un vector
 ○ Cuyo nombre es nombre_vector
@@ -665,7 +698,14 @@ void escribir_elemento_vector(FILE * fpasm,char * nombre_vector, int tam_max, in
 tarea.
 */
 
-void declararFuncion(FILE * fd_asm, char * nombre_funcion, int num_var_loc);//Lucia
+void declararFuncion(FILE * fd_asm, char * nombre_funcion, int num_var_loc){
+  /* etiqueta de la funcion */
+  fprintf(fd_asm, "_%s:\n", nombre_funcion);
+  fprintf(fd_asm, "push ebp\n");
+  fprintf(fd_asm, "mov ebp, esp\n");
+  /* Reservar espacio para las variables locales en pila */
+  fprintf(fd_asm, "sub esp, 4*%d\n", num_var_loc);
+}
 /*
 ● Generación de código para iniciar la declaración de una función.
 ● Es necesario proporcionar
@@ -673,7 +713,14 @@ void declararFuncion(FILE * fd_asm, char * nombre_funcion, int num_var_loc);//Lu
 ○ Su número de variables locales
 */
 
-void retornarFuncion(FILE * fd_asm, int es_variable);//Lucia
+void retornarFuncion(FILE * fd_asm, int es_variable){
+  fprintf(fd_asm, "pop dword eax\n");
+  if (es_variable)
+      fprintf(fd_asm, "mov eax, [eax]\n");
+  fprintf(fd_asm, "mov esp, ebp\n");
+  fprintf(fd_asm, "pop dword ebp\n");
+  fprintf(fd_asm, "ret\n");
+}
 /*
 ● Generación de código para el retorno de una función.
 ○ La expresión que se retorna está en la cima de la pila.
