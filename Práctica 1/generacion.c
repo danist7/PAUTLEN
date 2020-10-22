@@ -379,12 +379,15 @@ void igual(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta)/*Luc
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "sete eax\n");
+  fprintf(fpasm, "push eax 0\n");
+  /* USANDO JUMPS
   fprintf(fpasm, "je igual_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp igual_%d\n", etiqueta);
   fprintf(fpasm, "igual_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "igual_%d:\n", etiqueta);
+  fprintf(fpasm, "igual_%d:\n", etiqueta);*/
 }
 
 
@@ -408,12 +411,15 @@ void distinto(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta)/*
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "setne eax\n");
+  fprintf(fpasm, "push eax 0\n");
+  /* USANDO JUMPS
   fprintf(fpasm, "jne distinto_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp distinto_%d\n", etiqueta);
   fprintf(fpasm, "distinto_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "distinto_%d:\n", etiqueta);
+  fprintf(fpasm, "distinto_%d:\n", etiqueta);*/
 }
 
 
@@ -437,12 +443,15 @@ void menor_igual(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "setle eax\n");
+  fprintf(fpasm, "push eax 0\n");
+  /* USANDO JUMPS
   fprintf(fpasm, "jle menorigual_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp menorigual_%d\n", etiqueta);
   fprintf(fpasm, "menorigual_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "menorigual_%d:\n", etiqueta);
+  fprintf(fpasm, "menorigual_%d:\n", etiqueta);*/
 }
 
 
@@ -466,12 +475,15 @@ void mayor_igual(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "setge eax\n");
+  fprintf(fpasm, "push eax 0\n");
+  /* USANDO JUMPS
   fprintf(fpasm, "jge mayorigual_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp mayorigual_%d\n", etiqueta);
   fprintf(fpasm, "mayorigual_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "mayorigual_%d:\n", etiqueta);
+  fprintf(fpasm, "mayorigual_%d:\n", etiqueta);*/
 }
 void menor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
   /* Si es un registro guarda v en ebx*/
@@ -493,12 +505,15 @@ void menor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "setl eax\n");
+  fprintf(fpasm, "push eax 0\n");
+  /* USANDO JUMPS
   fprintf(fpasm, "jl menor_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp menor_%d\n", etiqueta);
   fprintf(fpasm, "menor_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "menor_%d:\n", etiqueta);
+  fprintf(fpasm, "menor_%d:\n", etiqueta);*/
 }
 
 void mayor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
@@ -521,12 +536,15 @@ void mayor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
      fprintf(fpasm, "pop dword ebx\n");
   }
   fprintf(fpasm, "cmp ebx, ecx\n");
+  fprintf(fpasm, "setg eax\n");
+  fprintf(fpasm, "push eax 0\n");
+  /* USANDO JUMPS
   fprintf(fpasm, "jg mayor_escribe_%d\n", etiqueta);
   fprintf(fpasm, "push dword 0\n");
   fprintf(fpasm, "jmp mayor_%d\n", etiqueta);
   fprintf(fpasm, "mayor_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "mayor_%d:\n", etiqueta);
+  fprintf(fpasm, "mayor_%d:\n", etiqueta*/
 }
 
 /* FUNCIONES DE ESCRITURA Y LECTURA */
@@ -752,56 +770,54 @@ void retornarFuncion(FILE * fd_asm, int es_variable){
 ○ Puede ser un valor concreto (en ese caso exp_es_direccion vale 0)
 */
 
-void escribirParametro(FILE* fpasm, int pos_parametro, int num_total_parametros);//Lucia
+void escribirParametro(FILE* fpasm, int pos_parametro, int num_total_parametros){
+  int d_ebp;
+
+  d_ebp = 4*(1 + num_total_parametros - pos_parametro);
+  fprintf(fpasm, "lea eax, [ebp + %d]\n", d_ebp);
+  fprintf(fpasm, "push dword eax\n");
+}
 /*
 ● Función para dejar en la cima de la pila la dirección efectiva del parámetro que ocupa la
 posición pos_parametro (recuerda que los parámetros se ordenan con origen 0) de un total
 de num_total_parametros
 */
 
-void escribirVariableLocal(FILE* fpasm, int posicion_variable_local);//Luis
+void escribirVariableLocal(FILE* fpasm, int posicion_variable_local){
+  int d_ebp;
+
+  d_ebp = 4*posicion_variable_local;
+  fprintf(fpasm, "lea eax, [ebp - %d]\n", d_ebp);
+  fprintf(fpasm, "push dword eax\n");
+}
 /*
 ● Función para dejar en la cima de la pila la dirección efectiva de la variable local que ocupa
 la posición posicion_variable_local (recuerda que ordenadas con origen 1)
 */
 
-void asignarDestinoEnPila(FILE* fpasm, int es_variable);//Luis
-/*
-● Función para poder asignar a un destino que no es una variable “global” (tipo _x) por
-ejemplo parámetros o variables locales (ya que en ese caso su nombre real de alto nivel, no
-se tiene en cuenta pues es realmente un desplazamiento a partir de ebp: ebp+4 o ebp-8 por
-ejemplo).
-● Se debe asumir que en la pila estará
-○ Primero (en la cima) la dirección donde hay que asignar
-○ Debajo (se ha introducido en la pila antes) lo que hay que asignar
-● es_variable
-○ Es 1 si la expresión que se va a asignar es algo asimilable a una variable
-(identificador, o elemento de vector)
-○ Es 0 en caso contrario (constante u otro tipo de expresión)
-*/
+void asignarDestinoEnPila(FILE* fpasm, int es_variable){
+  fprintf(fpasm, "pop dword eax\n");
+  fprintf(fpasm, "pop dword ebx\n");
+  if(es_variable == 1){
+    fprintf(fpasm, "mov ebx [ebx]\n");
+  }
+  fprintf(fpasm, "mov [eax] ebx\n");
+}
 
-void operandoEnPilaAArgumento(FILE * fd_asm, int es_variable);//Luis
-/*
-● Como habrás visto en el material, nuestro convenio de llamadas a las funciones asume que
-los argumentos se pasan por valor, esto significa que siempre se dejan en la pila “valores” y
-no “variables”
-● Esta función realiza la tarea de dado un operando escrito en la pila y sabiendo si es variable
-o no (es_variable) se deja en la pila el valor correspondiente
-*/
+void operandoEnPilaAArgumento(FILE * fd_asm, int es_variable){
+  if (es_variable == 1) {
+    fprintf(fd_asm, "pop eax\n");
+    fprintf(fd_asm, "mov eax, [eax]\n");
+    fprintf(fd_asm, "push eax\n");
+  }
+}
 
-void llamarFuncion(FILE * fd_asm, char * nombre_funcion, int num_argumentos);//Luis
-/*
-● Esta función genera código para llamar a la función nombre_funcion asumiendo que los
-argumentos están en la pila en el orden fijado en el material de la asignatura.
-● Debe dejar en la cima de la pila el retorno de la función tras haberla limpiado de sus
-argumentos
-● Para limpiar la pila puede utilizar la función de nombre limpiarPila
-*/
+void llamarFuncion(FILE * fd_asm, char * nombre_funcion, int num_argumentos){
+  fprintf(fd_asm, "call %s\n", nombre_funcion);
+  limpiarPila(fd_asm, num_argumentos);
+  fprintf(fd_asm, "push dword eax\n");
+}
 
-void limpiarPila(FILE * fd_asm, int num_argumentos);//Luis
-/*
-● Genera código para limpiar la pila tras invocar una función
-● Esta función es necesaria para completar la llamada a métodos, su gestión dificulta el
-conocimiento por parte de la función de llamada del número de argumentos que hay en la
-pila
-*/
+void limpiarPila(FILE * fd_asm, int num_argumentos){
+  fprintf(fd_asm, "add esp, %d\n", num_argumentos*4);
+}
