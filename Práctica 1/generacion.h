@@ -7,6 +7,7 @@
 /* Declaraciones de tipos de datos del compilador */
 #define ENTERO 0
 #define BOOLEANO 1
+#define MAX_ETIQUETAS 300
 
 /* OBSERVACIÓN GENERAL A TODAS LAS FUNCIONES:
 Todas ellas escriben el código NASM a un FILE* proporcionado como primer
@@ -178,7 +179,7 @@ otra (la rama else) antes de que se termine la estructura y se tenga que ajustar
 por lo que sólo se necesita que se utilice la etiqueta que corresponde al momento actual.
 */
 
-void ifthenelse_fin( FILE * fpasm, int etiqueta)
+void ifthenelse_fin( FILE * fpasm, int etiqueta);
 /*
 ● Generación de código para el fin de una estructura if-then-else
 ● Como es el fin de uno bloque de control de flujo de programa que hace uso de la etiqueta
@@ -286,7 +287,7 @@ no “variables”
 o no (es_variable) se deja en la pila el valor correspondiente
 */
 
-void llamarFuncion(FILE * fd_asm, char * nombre_funcion, int num_argumentos)
+void llamarFuncion(FILE * fd_asm, char * nombre_funcion, int num_argumentos);
 /*
 ● Esta función genera código para llamar a la función nombre_funcion asumiendo que los
 argumentos están en la pila en el orden fijado en el material de la asignatura.
