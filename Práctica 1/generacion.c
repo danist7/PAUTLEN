@@ -608,7 +608,7 @@ elemento de vector)
 */
 
 void ifthen_fin(FILE * fpasm, int etiqueta){//Dani
-  fprintf(fpasm, "fin_then_%d\n",etiqueta);
+  fprintf(fpasm, "fin_then_%d:\n",etiqueta);
 }
 /*
 ● Generación de código para el fin de una estructura if-then
@@ -621,7 +621,7 @@ puesto que se ha liberado la última de ellas.
 
 void ifthenelse_fin_then( FILE * fpasm, int etiqueta){//Dani
   fprintf(fpasm, "jmp near fin_ifelse_%d\n",etiqueta);
-  fprintf(fpasm, "fin_then_%d\n",etiqueta);
+  fprintf(fpasm, "fin_then_%d:\n",etiqueta);
 }
 /*
 ● Generación de código para el fin de la rama then de una estructura if-then-else
@@ -631,7 +631,7 @@ por lo que sólo se necesita que se utilice la etiqueta que corresponde al momen
 */
 
 void ifthenelse_fin( FILE * fpasm, int etiqueta){//Dani
-  fprintf(fpasm, "fin_ifelse_%d\n",etiqueta);
+  fprintf(fpasm, "fin_ifelse_%d:\n",etiqueta);
 }
 /*
 ● Generación de código para el fin de una estructura if-then-else
@@ -643,7 +643,7 @@ puesto que se ha liberado la última de ellas.
 */
 
 void while_inicio(FILE * fpasm, int etiqueta){//Dani
-  fprintf(fpasm, "while_inicio_%d\n",etiqueta);
+  fprintf(fpasm, "while_inicio_%d:\n",etiqueta);
 }
 /*
 ● Generación de código para el inicio de una estructura while
