@@ -238,7 +238,7 @@ void dividir(FILE* fpasm, int es_variable_1, int es_variable_2){/*Dani*/
   fprintf(fpasm, "je error_div_0\n");
 
   /* Extiende eax*/
-  fprintf(fpasm, "cdq eax\n");
+  fprintf(fpasm, "cdq\n");
   /* Divide el contenido de eax entre el de ecx*/
   fprintf(fpasm, "idiv ecx\n");
   /*El resultado se guarda en eax*/
@@ -526,7 +526,7 @@ void mayor(FILE* fpasm, int es_variable_1, int es_variable_2, int etiqueta){
   fprintf(fpasm, "jmp mayor_%d\n", etiqueta);
   fprintf(fpasm, "mayor_escribe_%d:\n", etiqueta);
   fprintf(fpasm, "push dword 1\n");
-  fprintf(fpasm, "mayorigual_%d:\n", etiqueta);
+  fprintf(fpasm, "mayor_%d:\n", etiqueta);
 }
 
 /* FUNCIONES DE ESCRITURA Y LECTURA */
