@@ -6,9 +6,9 @@ CFLAGS := -Wall -g -std=c99
 AUX :=
 
 #Ficheros a ejecutar
-EXES = ejemplo1 ejemplo2 ejemplo3 ejemplo4
+EXES = ejemplo1 ejemplo2 ejemplo3 ejemplo4 ejemplo6
 AUX_OBJ = generacion
-EXES_ASM = ejemplo1ASM ejemplo2ASM ejemplo3ASM ejemplo4ASM
+EXES_ASM = ejemplo1ASM ejemplo2ASM ejemplo3ASM ejemplo4ASM ejemplo6ASM
 
 #Targets
 all : $(EXES)

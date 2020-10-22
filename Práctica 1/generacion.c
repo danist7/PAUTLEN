@@ -742,7 +742,7 @@ no “variables”
 o no (es_variable) se deja en la pila el valor correspondiente
 */
 
-void llamarFuncion(FILE * fd_asm, char * nombre_funcion, int num_argumentos)//Luis
+void llamarFuncion(FILE * fd_asm, char * nombre_funcion, int num_argumentos);//Luis
 /*
 ● Esta función genera código para llamar a la función nombre_funcion asumiendo que los
 argumentos están en la pila en el orden fijado en el material de la asignatura.
