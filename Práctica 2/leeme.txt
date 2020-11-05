@@ -1,9 +1,10 @@
-El fichero entrada1.txt no contiene ningún error morfológico y el programa pruebaMorfo genera el fichero salida1.txt
+El fichero entrada1.txt no contiene ningï¿½n error morfolï¿½gico y el
+programa pruebaMorfo genera el fichero salida1.txt
 
 
-
-Los ficheros de prueba que contienen errores (entrada2.txt y entrada3.txt), además de generar un fichero de salida,
-muestran un mensaje por stderr según se indica continuación:
+Los ficheros de prueba que contienen errores (entrada2.txt y entrada3.txt),
+ademï¿½s de generar un fichero de salida, muestran un mensaje por
+stderr segï¿½n se indica continuaciï¿½n:
 
 entrada2.txt
 ============
@@ -24,8 +25,4 @@ Genera el fichero de salida salida3.txt y muestra por stderr el siguiente mensaj
 
 
 
-La aparición de cualquier símbolo no permitido funcionaría de manera similar al comportamiento de la entrada3.
-
-
-
-
+La apariciï¿½n de cualquier sï¿½mbolo no permitido funcionarï¿½a de manera similar al comportamiento de la entrada3.
