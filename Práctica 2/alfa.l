@@ -1,48 +1,53 @@
 %{
-#include <stdio.h>
+#include "tokens.h"
 %}
 %option noyywrap
+%option nodefault
 %%
-TOK_MAIN {return 100;}
-TOK_INT {return 101;}
-TOK_BOOLEAN {return 102;}
-TOK_ARRAY {return 103;}
-TOK_FUNCTION {return 104;}
-TOK_IF {return 105;}
-TOK_ELSE {return 106;}
-TOK_WHILE {return 107;}
-TOK_SCANF {return 108;}
-TOK_PRINTF {return 109;}
-TOK_RETURN {return 110;}
-TOK_PUNTOYCOMA {return 200;}
-TOK_COMA {return 201;}
-TOK_PARENTESISIZQUIERDO {return 202;}
-TOK_PARENTESISDERECHO {return 203;}
-TOK_CORCHETEIZQUIERDO {return 204;}
-TOK_CORCHETEDERECHO {return 205;}
-TOK_LLAVEIZQUIERDA {return 206;}
-TOK_LLAVEDERECHA {return 207;}
-TOK_ASIGNACION {return 208;}
-TOK_MAS {return 209;}
-TOK_MENOS {return 210;}
-TOK_DIVISION {return 211;}
-TOK_ASTERISCO {return 212;}
-TOK_AND {return 213;}
-TOK_OR {return 214;}
-TOK_NOT {return 215;}
-TOK_IGUAL {return 216;}
-TOK_DISTINTO {return 217;}
-TOK_MENORIGUAL {return 218;}
-TOK_MAYORIGUAL {return 219;}
-TOK_MENOR {return 220;}
-TOK_MAYOR {return 221;}
-TOK_IDENTIFICADOR {return 300;}
-TOK_CONSTANTE_ENTERA {return 400;}
-TOK_TRUE {return 401;}
-TOK_FALSE {return 402;}
-TOK_ERROR {return -1;}
+[ \t\n] {}
+"//".*\n {}
+
+main {return TOK_MAIN;}
+int {return TOK_INT;}
+boolean {return TOK_BOOLEAN;}
+array {return TOK_ARRAY;}
+function {return TOK_FUNCTION;}
+if {return TOK_IF;}
+else {return TOK_ELSE;}
+while {return TOK_WHILE;}
+scanf {return TOK_SCANF;}
+printf {return TOK_PRINTF;}
+return {return TOK_RETURN;}
+
+";" {return TOK_PUNTOYCOMA;}
+"," {return TOK_COMA;}
+"(" {return TOK_PARENTESISIZQUIERDO;}
+")" {return TOK_PARENTESISDERECHO;}
+"[" {return TOK_CORCHETEIZQUIERDO;}
+"]" {return TOK_CORCHETEDERECHO;}
+"{" {return TOK_LLAVEIZQUIERDA;}
+"}" {return TOK_LLAVEDERECHA;}
+"=" {return TOK_ASIGNACION;}
+"+" {return TOK_MAS;}
+"-" {return TOK_MENOS;}
+"/" {return TOK_DIVISION;}
+"*" {return TOK_ASTERISCO;}
+"&&" {return TOK_AND;}
+"||" {return TOK_OR;}
+"!" {return TOK_NOT;}
+"==" {return TOK_IGUAL;}
+"!=" {return TOK_DISTINTO;}
+"<=" {return TOK_MENORIGUAL;}
+">=" {return TOK_MAYORIGUAL;}
+"<" {return TOK_MENOR;}
+">" {return TOK_MAYOR;}
+
+true {return TOK_TRUE;}
+false {return TOK_FALSE;}
+
+[a-zA-Z]([a-zA-Z0-9]){0,99} {return TOK_IDENTIFICADOR;}
+[0-9]+ {return TOK_CONSTANTE_ENTERA;}
+
+[a-zA-Z]([a-zA-Z0-9]){100,} {return TOK_ERROR;}
+ . {return TOK_ERROR;}
 %%
-int main()
-{
-return yylex();
-}
