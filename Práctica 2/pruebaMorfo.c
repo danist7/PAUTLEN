@@ -14,17 +14,17 @@ int main(int argc, char const *argv[]) {
   if (argc != 3){
     printf("Se requiere fichero de entrada y de salida\n");
     printf("$prueba <fichero_entrada> <fichero_salida>\n");
-    return 0;
+    return 1;
   }
 
   if ((yyin = fopen(argv[1], "r")) == NULL) {
     printf("Error al abrir fichero de entrada\n");
-    return 0;
+    return 1;
   }
 
   if ((fout = fopen(argv[2], "w")) == NULL) {
     printf("Error al abrir fichero de salida\n");
-    return 0;
+    return 1;
   }
 
   /*if ((yyout = fopen("aux.txt", "wr")) == NULL) {
@@ -148,8 +148,10 @@ int main(int argc, char const *argv[]) {
         break;
       case TOK_ERROR:
         //fprintf(fout, "TOK_ERROR\t%d\t%.*s\n", TOK_ERROR , yyleng, yytext);
-        // Lo he puesto asi para que coincida la salida 2
-        return;
+        // Esta comentado porque como se ve en salida2  al encontrar un ERROR
+        // no encuentra nada y para el programa
+        printf("[ERROR] Se ha encontrado un TOK_ERROR, se parará el análisis morfológico\n");
+        return 0;
       default:
         fprintf(fout, "ERROR");
         break;
@@ -159,4 +161,5 @@ int main(int argc, char const *argv[]) {
   fclose(yyin);
   fclose(fout);
   fclose(yyout);
+  return 0;
 }
