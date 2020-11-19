@@ -1,5 +1,5 @@
 %{
-#include "tokens.h"
+#include "y.tab.h"
 %}
 %option noyywrap
 %option nodefault
