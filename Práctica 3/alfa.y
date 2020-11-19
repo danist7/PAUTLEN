@@ -63,22 +63,33 @@ programa                  :   TOK_MAIN TOK_LLAVEIZQUIERDA declaraciones funcione
                               {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }")}
                           ;
 declaraciones             :   declaracion
+                              {fprintf(yyout,";R2:\t<declaraciones> ::= <declaracion>")}
                           |   declaracion declaraciones
+                              {fprintf(yyout,";R3:\t<declaraciones> ::= <declaracion> <declaraciones>")}
                           ;
 declaracion               :   clase identificadores TOK_PUNTOYCOMA
+                              {fprintf(yyout,";R4:\t<declaracion> ::= <clase> <identificadores>")}
                           ;
 clase                     :   clase_escalar
+                              {fprintf(yyout,";R5:\t<clase> ::= <clase_escalar>")}
                           |   clase_vector
+                              {fprintf(yyout,";R7:\t<clase> ::= <clase_vector>")}
                           ;
 clase_escalar             :   tipo
+                              {fprintf(yyout,";R9:\t<clase_escalar> ::= <tipo>")}
                           ;
 tipo                      :   TOK_INT
+                              {fprintf(yyout,";R10:\t<tipo> ::= int")}
                           |   TOK_BOOLEAN
+                              {fprintf(yyout,";R11:\t<tipo> ::= boolean")}
                           ;
 clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO constante_entera TOK_CORCHETEDERECHO
+                              {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]")}
                           ;
 identificadores           :   identificador
+                              {fprintf(yyout,";R18:\t<tipo> ::= <identificador>")}
                           |   identificador TOK_COMA identificadores
+                              {fprintf(yyout,";R19:\t<tipo> ::= <identificador> , <identificadores>")}
                           ;
 funciones                 :   funcion funciones
                           |   %empty
