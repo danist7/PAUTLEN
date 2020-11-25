@@ -92,88 +92,147 @@ identificadores           :   identificador
                               {fprintf(yyout,";R19:\t<tipo> ::= <identificador> , <identificadores>")}
                           ;
 funciones                 :   funcion funciones
+                              {fprintf(yyout,";R20:\t<funciones> ::= <funcion> <funciones>")}
                           |   %empty
+                              {fprintf(yyout,";R21:\t<funciones> ::= ")}
                           ;
 funcion                   :   TOK_FUNCTION tipo identificador TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA declaraciones_funcion sentencias TOK_LLAVEDERECHA
+                              {fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }")}
                           ;
 parametros_funcion        :   parametro_funcion resto_parametros_funcion
+                              {fprintf(yyout,";R23:\t<parametros_funcion> ::= <parametro_funcion> <resto_parametros_funcion>")}
                           |   %empty
+                              fprintf(yyout,";R24:\t<parametros_funcion> ::= ")}
                           ;
 resto_parametros_funcion  :   TOK_PUNTOYCOMA parametro_funcion resto_parametros_funcion
+                              fprintf(yyout,";R25:\t<resto_parametros_funcion> ::= ; <parametro_funcion> <resto_parametros_funcion>")}
                           |   %empty
+                              fprintf(yyout,";R26:\t<resto_parametros_funcion> ::= ")}
                           ;
 parametro_funcion         :   tipo identificador
+                              fprintf(yyout,";R27:\t<parametro_funcion> ::= <tipo> <identificador>")}
                           ;
 declaraciones_funcion     :   declaraciones
+                              fprintf(yyout,";R28:\t<declaraciones_funcion> ::= <declaraciones>")}
                           |   %empty
+                              fprintf(yyout,";R29:\t<declaraciones_funcion> ::= ")}
                           ;
 sentencias                :   sentencia
+                              fprintf(yyout,";R30:\t<sentencias> ::= <sentencia>")}
                           |   sentencia sentencias
+                              fprintf(yyout,";R31:\t<sentencias> ::= <sentencia> <sentencias>")}
                           ;
 sentencia                 :   sentencia_simple
+                              fprintf(yyout,";R32:\t<sentencia> ::= <sentencia_simple> ;")}
                           |   bloque
+                              fprintf(yyout,";R33:\t<sentencia> ::= <bloque>")}
                           ;
 sentencia_simple          :   asignacion
+                              fprintf(yyout,";R34:\t<sentencia_simple> ::= <asignacion>")}
                           |   lectura
+                              fprintf(yyout,";R35:\t<sentencia_simple> ::= <lectura>")}
                           |   escritura
+                              fprintf(yyout,";R36:\t<sentencia_simple> ::= <escritura>")}
                           |   retorno_funcion
+                              fprintf(yyout,";R38:\t<sentencia_simple> ::= <retorno_funcion>")}
                           ;
 bloque                    :   condicional
+                              fprintf(yyout,";R40:\t<bloque> ::= <condicional>")}
                           |   bucle
+                              fprintf(yyout,";R41:\t<bloque> ::= <bucle>")}
                           ;
 asignacion                :   identificador TOK_ASIGNACION exp
+                              fprintf(yyout,";R43:\t<asignacion> ::= <identificador> = <exp>")}
                           |   elemento_vector TOK_ASIGNACION exp
+                              fprintf(yyout,";R44:\t<asignacion> ::= <elemento_vector> = <exp>")}
                           ;
 elemento_vector           :   identificador TOK_CORCHETEIZQUIERDO exp TOK_CORCHETEDERECHO
+                              fprintf(yyout,";R48:\t<elemento_vector> ::= <identificador> [ <exp> ]")}
                           ;
 condicional               :   TOK_IF TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }")}
                           |   TOK_IF TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA TOK_ELSE TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              fprintf(yyout,";R51:\t<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }")}
                           ;
 bucle                     :   TOK_WHILE TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }")}
                           ;
 lectura                   :   TOK_SCANF identificador
+                              fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>")}
                           ;
 escritura                 :   TOK_PRINTF exp
+                              fprintf(yyout,";R56:\t<escritura>  ::= printf <exp>")}
                           ;
 retorno_funcion           :   TOK_RETURN exp
+                              fprintf(yyout,";R61:\t<retorno_funcion> ::= return <exp>")}
                           ;
 exp                       :   exp TOK_MAS exp
+                              fprintf(yyout,";R72:\t<exp> ::= <exp> + <exp>")}
                           |   exp TOK_MENOS exp
+                              fprintf(yyout,";R73:\t<exp> ::= <exp> - <exp>")}
                           |   exp TOK_DIVISION exp
+                              fprintf(yyout,";R74:\t<exp> ::= <exp> / <exp>")}
                           |   exp TOK_ASTERISCO exp
+                              fprintf(yyout,";R75:\t<exp> ::= <exp> * <exp>")}
                           |   TOK_MENOS exp
+                              fprintf(yyout,";R76:\t<exp> ::= - <exp>")}
                           |   exp TOK_AND exp
+                              fprintf(yyout,";R77:\t<exp> ::= exp> && <exp>")}
                           |   exp TOK_OR exp
+                              fprintf(yyout,";R78:\t<exp> ::= <exp> || <exp>")}
                           |   TOK_NOT exp
+                              fprintf(yyout,";R79:\t<exp> ::= ! <exp>")}
                           |   identificador
+                              fprintf(yyout,";R80:\t<exp> ::= <identificador>")}
                           |   constante
+                              fprintf(yyout,";R81:\t<exp> ::= <constante>")}
                           |   TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO
+                              fprintf(yyout,";R82:\t<exp> ::= ( <exp> )")}
                           |   TOK_PARENTESISIZQUIERDO comparacion TOK_PARENTESISDERECHO
+                              fprintf(yyout,";R83:\t<exp> ::= ( <comparacion> )")}
                           |   elemento_vector
+                              fprintf(yyout,";R85:\t<exp> ::= <elemento_vector>")}
                           |   identificador TOK_PARENTESISIZQUIERDO lista_expresiones TOK_PARENTESISDERECHO
+                              fprintf(yyout,";R88:\t<exp> ::= <identificador> ( <lista_expresiones> )")}
                           ;
 lista_expresiones         :   exp resto_lista_expresiones
+                              fprintf(yyout,";R89:\t<lista_expresiones> ::= <exp> <resto_lista_expresiones>")}
                           |   %empty
+                              fprintf(yyout,";R90:\t<lista_expresiones> ::= ")}
                           ;
 resto_lista_expresiones   :   TOK_COMA exp resto_lista_expresiones
+                              fprintf(yyout,";R91:\t<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>")}
                           |   %empty
+                              fprintf(yyout,";R92:\t<resto_lista_expresiones> ::= ")}
                           ;
 comparacion               :   exp TOK_IGUAL exp
+                              fprintf(yyout,";R93:\t<comparacion> ::= <exp> == <exp>")}
                           |   exp TOK_DISTINTO exp
+                              fprintf(yyout,";R94:\t<comparacion> ::= <exp> != <exp>")}
                           |   exp TOK_MENORIGUAL exp
+                              fprintf(yyout,";R95:\t<comparacion> ::= <exp> <= <exp>")}
                           |   exp TOK_MAYORIGUAL exp
+                              fprintf(yyout,";R96:\t<comparacion> ::= <exp> >= <exp>")}
                           |   exp TOK_MENOR exp
+                              fprintf(yyout,";R97:\t<comparacion> ::= <exp> < <exp>")}
                           |   exp TOK_MAYOR exp
+                              fprintf(yyout,";R98:\t<comparacion> ::= <exp> > <exp>")}
                           ;
 constante                 :   constante_logica
+                              fprintf(yyout,";R99:\t<constante> ::= <constante_logica>")}
                           |   constante_entera
+                              fprintf(yyout,";R100:\t<constante> ::= <constante_entera>")}
                           ;
 constante_logica          :   TOK_TRUE
+                              fprintf(yyout,";R102:\t<constante_logica> ::= true")}
                           |   TOK_FALSE
+                              fprintf(yyout,";R103:\t<constante_logica> ::= false")}
                           ;
 constante_entera          :   TOK_CONSTANTE_ENTERA
+                              fprintf(yyout,";R104:\t<constante_entera> ::= TOK_CONSTANTE_ENTERA")}
                           ;
 identificador             :   TOK_IDENTIFICADOR
+                              fprintf(yyout,";R108:\t<identificador> ::= TOK_IDENTIFICADOR")}
 %%
 
 int main() {
