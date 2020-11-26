@@ -2,12 +2,13 @@
 #include <stdlib.h>
 
 
+
 extern FILE* yyin;
 extern FILE* yyout;
+extern int yyparse();
 
-void main(int argc, char const *argv[]) {
-  int token;
-  FILE* fout;
+int main(int argc, char const *argv[]) {
+
 
   if (argc != 3){
     printf("Se requiere fichero de entrada y de salida\n");
@@ -29,4 +30,6 @@ void main(int argc, char const *argv[]) {
 
   fclose(yyin);
   fclose(yyout);
+  
+  return 0;
 }
