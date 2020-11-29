@@ -164,7 +164,7 @@ lectura                   :   TOK_SCANF identificador
                               {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");}
                           ;
 escritura                 :   TOK_PRINTF exp
-                              {fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");}
+                              {fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");}
                           ;
 retorno_funcion           :   TOK_RETURN exp
                               {fprintf(yyout,";R61:\t<retorno_funcion> ::= return <exp>\n");}
@@ -239,5 +239,14 @@ identificador             :   TOK_IDENTIFICADOR
 %%
 
 void yyerror(const char *s){
-  extern 
+  extern size_t nlines;
+  extern size_t ncols;
+  extern int err_morf;
+  extern int yyleng;
+  if(!err_morf){
+    printf("****Error sintáctico en [lin %lu col %lu]\n",nlines, ncols-yyleng);
+    return;
+  }
+  err_morf = 0;
+  return;
 }

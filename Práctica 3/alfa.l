@@ -2,7 +2,7 @@
 #include "y.tab.h"
 
 size_t ncols = 1;
-sizw_t nlines = 1;
+size_t nlines = 1;
 int err_morf;
 %}
 
@@ -96,6 +96,6 @@ false {  ncols += yyleng; fprintf(yyout, ";D:\t%s\n", yytext);
 [0-9]+                      {  ncols += yyleng; fprintf(yyout, ";D:\t%s\n", yytext);
                                return TOK_CONSTANTE_ENTERA;}
 
-[a-zA-Z]([a-zA-Z0-9]){100,} {printf("****Error morfologico en [lin %lu col %lu]. Cadena demasiado larga",nlines, ncols); err_morf = 1; return TOK_ERROR;}
- . { printf("****Error morfologico en [lin %lu col %lu]",nlines, ncols); err_morf = 1; return TOK_ERROR;}
+[a-zA-Z]([a-zA-Z0-9]){100,} {printf("****Error morfologico en [lin %lu col %lu]. Cadena demasiado larga\n",nlines, ncols); err_morf = 1; return TOK_ERROR;}
+ . { printf("****Error morfologico en [lin %lu col %lu]: simbolo no permitido (%s)\n",nlines, ncols,yytext); err_morf = 1; return TOK_ERROR;}
 %%

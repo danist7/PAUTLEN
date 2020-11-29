@@ -42,7 +42,7 @@
 ;R108:	<identificador> ::= TOK_IDENTIFICADOR
 ;D:	;
 ;R80:	<exp> ::= <identificador>
-;R56:	<escritura> ::= printf <exp>
+;R56: <escritura> ::= printf <exp>
 ;R36:	<sentencia_simple> ::= <escritura>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
 ;D:	}
