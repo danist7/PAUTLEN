@@ -10,9 +10,9 @@
 ;D:	resultado
 ;R108:	<identificador> ::= TOK_IDENTIFICADOR
 ;D:	;
-;R18:	<tipo> ::= <identificador>
-;R19:	<tipo> ::= <identificador> , <identificadores>
-;R4:	<declaracion> ::= <clase> <identificadores>
+;R18:	<identificadores> ::= <identificador>
+;R19:	<identificadores> ::= <identificador> , <identificadores>
+;R4:	<declaracion> ::= <clase> <identificadores> ;
 ;D:	scanf
 ;R2:	<declaraciones> ::= <declaracion>
 ;R21:	<funciones> ::= 
@@ -20,6 +20,33 @@
 ;R108:	<identificador> ::= TOK_IDENTIFICADOR
 ;R54:	<lectura> ::= scanf <identificador>
 ;R35:	<sentencia_simple> ::= <lectura>
-;R32:	<sentencia> ::= <sentencia_simple> ;
 ;D:	;
+;R32:	<sentencia> ::= <sentencia_simple> ;
+;D:	resultado
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+;D:	=
+;D:	x
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+;D:	*
+;R80:	<exp> ::= <identificador>
+;D:	x
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+;D:	;
+;R80:	<exp> ::= <identificador>
+;R75:	<exp> ::= <exp> * <exp>
+;R43:	<asignacion> ::= <identificador> = <exp>
+;R34:	<sentencia_simple> ::= <asignacion>
+;R32:	<sentencia> ::= <sentencia_simple> ;
+;D:	printf
+;D:	resultado
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+;D:	;
+;R80:	<exp> ::= <identificador>
+;R56:	<escritura> ::= printf <exp>
+;R36:	<sentencia_simple> ::= <escritura>
+;R32:	<sentencia> ::= <sentencia_simple> ;
+;D:	}
 ;R30:	<sentencias> ::= <sentencia>
+;R31:	<sentencias> ::= <sentencia> <sentencias>
+;R31:	<sentencias> ::= <sentencia> <sentencias>
+;R1:	<programa> ::= main { <declaraciones> <funciones> <sentencias> }

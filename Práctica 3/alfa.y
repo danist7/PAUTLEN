@@ -71,7 +71,7 @@ declaraciones             :   declaracion
                               {fprintf(yyout,";R3:\t<declaraciones> ::= <declaracion> <declaraciones>\n");}
                           ;
 declaracion               :   clase identificadores TOK_PUNTOYCOMA
-                              {fprintf(yyout,";R4:\t<declaracion> ::= <clase> <identificadores>\n");}
+                              {fprintf(yyout,";R4:\t<declaracion> ::= <clase> <identificadores> ;\n");}
                           ;
 clase                     :   clase_escalar
                               {fprintf(yyout,";R5:\t<clase> ::= <clase_escalar>\n");}
@@ -90,9 +90,9 @@ clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO constante_ent
                               {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");}
                           ;
 identificadores           :   identificador
-                              {fprintf(yyout,";R18:\t<tipo> ::= <identificador>\n");}
+                              {fprintf(yyout,";R18:\t<identificadores> ::= <identificador>\n");}
                           |   identificador TOK_COMA identificadores
-                              {fprintf(yyout,";R19:\t<tipo> ::= <identificador> , <identificadores>\n");}
+                              {fprintf(yyout,";R19:\t<identificadores> ::= <identificador> , <identificadores>\n");}
                           ;
 funciones                 :   funcion funciones
                               {fprintf(yyout,";R20:\t<funciones> ::= <funcion> <funciones>\n");}
@@ -125,7 +125,7 @@ sentencias                :   sentencia
                           |   sentencia sentencias
                               {fprintf(yyout,";R31:\t<sentencias> ::= <sentencia> <sentencias>\n");}
                           ;
-sentencia                 :   sentencia_simple
+sentencia                 :   sentencia_simple TOK_PUNTOYCOMA
                               {fprintf(yyout,";R32:\t<sentencia> ::= <sentencia_simple> ;\n");}
                           |   bloque
                               {fprintf(yyout,";R33:\t<sentencia> ::= <bloque>\n");}
@@ -164,7 +164,7 @@ lectura                   :   TOK_SCANF identificador
                               {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");}
                           ;
 escritura                 :   TOK_PRINTF exp
-                              {fprintf(yyout,";R56:\t<escritura>  ::= printf <exp>\n");}
+                              {fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");}
                           ;
 retorno_funcion           :   TOK_RETURN exp
                               {fprintf(yyout,";R61:\t<retorno_funcion> ::= return <exp>\n");}
@@ -239,5 +239,5 @@ identificador             :   TOK_IDENTIFICADOR
 %%
 
 void yyerror(const char *s){
-  return;
+  extern 
 }
