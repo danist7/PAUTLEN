@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
+int main(int argc, char const *argv[]) {
+
+
+  if (argc != 3){
+    printf("Se requiere fichero de entrada y de salida\n");
+    printf("./pruebaTabla <fichero_entrada> <fichero_salida>\n");
+    return 1;
+  }
+
+  if ((yyin = fopen(argv[1], "r")) == NULL) {
+    printf("Error al abrir fichero de entrada\n");
+    return 1;
+  }
+
+  if ((yyout = fopen(argv[2], "w")) == NULL) {
+    printf("Error al abrir fichero de salida\n");
+    return 1;
+  }
+
+  // AQUI AÑADIMOS LAS FUNCIONES DE LA TABLA
+
+  fclose(yyin);
+  fclose(yyout);
+
+  return 0;
+}
