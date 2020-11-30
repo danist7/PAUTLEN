@@ -1,40 +1,20 @@
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef TABLA_SIMBOLOS_H
+#define TABLA_SIMBOLOS_H
 
-#include "tabla_simbolos.h"
-#include "tabla_hash.h"
 
-struct tabla_smb {
-  tabla_hash *tabla_global;
-  tabla_hash *tabla_local;
-};
+#define MAX_LOCAL_TB 1024
 
-tabla_smb *crear_tabla_smb(void){
-  tabla_smb *tb_smb;
+typedef struct tabla_smb tabla_smb;
 
-  tb_smb = (tb_smb*)malloc(sizeof(tabla_smb));
-  if(!tb_smb){
-    printf("Error reservando memoria para la tabla de simbolos\n");
-    return NULL;
-  }
+tabla_smb *crear_tabla_smb(void);
 
-  tb_smb->tabla_global = crear_tabla_hash(); //TODO
-  if(!tb_smb->tabla_global){
-    printf("Error reservando memoria para la tabla global de la tabla de simbolos\n");
-    return NULL;
-  }
+void liberar_tabla_smb(tabla_smb* tb_smb);
 
-  tb_smb->tabla_local = crear_tabla_hash(); //TODO
-  if(!tb_smb->tabla_local){
-    printf("Error reservando memoria para la tabla local de la tabla de simbolos\n");
-    return NULL;
-  }
+int symb_tb_insert(symbol_tb *symb_tb, char *key, int value);
 
-  return tb_smb;
-}
+int symb_tb_isKey(symbol_tb *symb_tb, char *key);
 
-void liberar_tabla_smb(tabla_smb* tb_smb){
-  liberar_tabla_hash(tb_smb->tabla_global);
-  liberar_tabla_hash(tb_smb->tabla_local);
-  free(tb_smb);
-}
+int symb_tb_search(symbol_tb *symb_tb, char *key, int *value);
+
+
+#endif
