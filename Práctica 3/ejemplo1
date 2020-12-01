@@ -1,0 +1,12 @@
+main
+{
+int a,b,c;
+
+scanf a;
+scanf b;
+scanf c;
+
+int total = a+b+c;
+
+print total;
+}
