@@ -1,0 +1,16 @@
+main
+{
+int _a;
+int b;
+int c;
+
+// el identificador no puede empezar por _
+
+scanf a;
+scanf b;
+scanf c;
+
+int total = a+b+c;
+
+print total;
+}
