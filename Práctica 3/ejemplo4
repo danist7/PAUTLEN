@@ -1,0 +1,9 @@
+main
+{
+boolean a = true;
+boolean b = false;
+
+print !a;
+print !b;
+return !a == b;
+}
