@@ -1,0 +1,4 @@
+ int a = 0;
+ print a;
+ 
+ // deberia dar error por no haber main
