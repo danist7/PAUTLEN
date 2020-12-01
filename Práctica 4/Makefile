@@ -6,7 +6,7 @@ CFLAGS := -Wall -g -std=c99
 
 #Ficheros a ejecutar
 EXES = pruebaTabla
-AUX_OBJ = #aqui van la tabla hash y la de simbolos
+AUX_OBJ = tabla_simbolos
 
 #Targets
 all : $(EXES)

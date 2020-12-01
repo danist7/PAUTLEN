@@ -1,9 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "tabla_simbolos.h"
 
+#define BUFFER_SIZE 256
 
 
 int main(int argc, char const *argv[]) {
+  FILE *filein, *fileout;
+  tablas_smb* tablas;
+  char buffer[BUFFER_SIZE];
+  char *keytoken, *valtoken;
+  int val, result;
+
 
 
   if (argc != 3){
@@ -12,20 +21,66 @@ int main(int argc, char const *argv[]) {
     return 1;
   }
 
-  if ((yyin = fopen(argv[1], "r")) == NULL) {
+  if ((filein = fopen(argv[1], "r")) == NULL) {
     printf("Error al abrir fichero de entrada\n");
     return 1;
   }
 
-  if ((yyout = fopen(argv[2], "w")) == NULL) {
+  if ((fileout = fopen(argv[2], "w")) == NULL) {
+    fclose(filein);
     printf("Error al abrir fichero de salida\n");
     return 1;
   }
 
-  // AQUI AÑADIMOS LAS FUNCIONES DE LA TABLA
+  if ((tablas = CrearTablas()) == NULL){
+    fclose(filein);
+    fclose(fileout);
+    printf("Error al crear las tablas\n");
+    return 1;
+  }
 
-  fclose(yyin);
-  fclose(yyout);
+  while (fgets(buffer, BUFFER_SIZE, filein)) {
+    keytoken = strtok(buffer, " \n");
+    printf("%s\n", keytoken);
+    if(keytoken == NULL) {
+      fprintf(fileout, "ERROR: Linea vacia\n");
+    }
+    valtoken = strtok(NULL, " \n");
+    if(valtoken == NULL) {
+      result = BusquedaElemento(tablas, keytoken);
+      fprintf(fileout, "%s %d\n", keytoken, result);
+    } else {
+      val = atoi(valtoken);
+      printf("val: %d\n", val);
+      if((strcmp(keytoken, "cierre") == 0) && (val == -999)) {
+        result = CierreAmbito(tablas);
+        if (result == OK) {
+          fprintf(fileout, "cierre\n");
+        } else {
+          fprintf(fileout, "ERROR: Cierre sin haber tabla local\n");
+        }
+      } else if (val < -1) {
+        result = AperturaAmbito(tablas, keytoken, val);
+        if (result == OK) {
+          fprintf(fileout, "%s\n", keytoken);
+        } else {
+          fprintf(fileout, "ERROR: Apertura fallida\n");
+        }
+      } else if (val >= 0) {
+        result = InserccionElemento(tablas, keytoken, val);
+        if (result == OK) {
+          fprintf(fileout, "%s\n", keytoken);
+        } else {
+          fprintf(fileout, "-1 %s\n", keytoken);
+        }
+      }
+    }
+  }
+
+  LiberarTablas(tablas);
+
+  fclose(filein);
+  fclose(fileout);
 
   return 0;
 }

@@ -1,20 +1,33 @@
 #ifndef TABLA_SIMBOLOS_H
 #define TABLA_SIMBOLOS_H
 
+#include "uthash.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+
+#define ERROR -1
+#define OK 0
+#define FATAL_ERROR -2
 #define MAX_LOCAL_TB 1024
 
-typedef struct tabla_smb tabla_smb;
+typedef struct _simbolo simbolo;
+typedef struct _tablas_smb tablas_smb;
 
-tabla_smb *crear_tabla_smb(void);
+tablas_smb * CrearTablas(void);
 
-void liberar_tabla_smb(tabla_smb* tb_smb);
+void LiberarTablas(tablas_smb* tablas);
 
-int symb_tb_insert(symbol_tb *symb_tb, char *key, int value);
+int InserccionElemento(tablas_smb* tablas, char * identificador, int valor);
 
-int symb_tb_isKey(symbol_tb *symb_tb, char *key);
+int BusquedaElemento(tablas_smb* tablas, char* identificador);
 
-int symb_tb_search(symbol_tb *symb_tb, char *key, int *value);
+int AperturaAmbito(tablas_smb* tablas, char* identificador, int valor);
+
+int CierreAmbito(tablas_smb* tablas);
+
+
 
 
 #endif
