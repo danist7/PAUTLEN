@@ -1,0 +1,12 @@
+function int printNumero(int num){
+print num;
+return 0;
+}
+
+main{
+int a;
+scanf a;
+int return;
+return = printNumero(a);
+print(return);
+}
