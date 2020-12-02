@@ -41,7 +41,6 @@ int main(int argc, char const *argv[]) {
 
   while (fgets(buffer, BUFFER_SIZE, filein)) {
     keytoken = strtok(buffer, " \n");
-    printf("%s\n", keytoken);
     if(keytoken == NULL) {
       fprintf(fileout, "ERROR: Linea vacia\n");
     }
@@ -51,20 +50,19 @@ int main(int argc, char const *argv[]) {
       fprintf(fileout, "%s %d\n", keytoken, result);
     } else {
       val = atoi(valtoken);
-      printf("val: %d\n", val);
       if((strcmp(keytoken, "cierre") == 0) && (val == -999)) {
         result = CierreAmbito(tablas);
         if (result == OK) {
           fprintf(fileout, "cierre\n");
         } else {
-          fprintf(fileout, "ERROR: Cierre sin haber tabla local\n");
+          fprintf(fileout, "-1 cierre\n"); //ERROR: Cierre sin haber tabla local
         }
       } else if (val < -1) {
         result = AperturaAmbito(tablas, keytoken, val);
         if (result == OK) {
           fprintf(fileout, "%s\n", keytoken);
         } else {
-          fprintf(fileout, "ERROR: Apertura fallida\n");
+          fprintf(fileout, "-1 %s\n", keytoken); //ERROR: Apertura fallida
         }
       } else if (val >= 0) {
         result = InserccionElemento(tablas, keytoken, val);

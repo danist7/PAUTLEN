@@ -1,0 +1,9 @@
+uno 1
+dos 2
+uno
+dos
+funcion1
+cierre -999
+funcion1 -10
+funcion1
+cierre -999

@@ -1,0 +1,9 @@
+uno
+dos
+uno 1
+dos 2
+funcion1 -1
+-1 cierre
+funcion1
+funcion1 -10
+cierre

@@ -5,7 +5,7 @@ CC := gcc
 CFLAGS := -Wall -g -std=c99
 
 #Ficheros a ejecutar
-EXES = pruebaTabla
+EXES = prueba_tabla
 AUX_OBJ = tabla_simbolos
 
 #Targets
