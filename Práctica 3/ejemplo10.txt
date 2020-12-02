@@ -1,0 +1,17 @@
+
+main {
+  int x, resultado;
+
+  scanf x; // Esta linea lee el valor de x
+  resultado = cuadrado(x); // Esta linea llama a la funcion definida
+  printf resultado; // Esta linea imprime el resultado
+
+
+  function int cuadrado(int num){
+    return num*num;
+  }
+}
+
+// Este programa tiene un error sintactico, las declaraciones de funciones deben ir antes de las sentencias,
+// que genera el siguiente mensaje
+//    ****Error sintactico en [lin 10, col 3]

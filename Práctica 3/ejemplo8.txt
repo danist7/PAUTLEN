@@ -1,0 +1,12 @@
+
+main {
+  int x, resultado;
+
+  function int cuadrado(int num){
+    return num*num;
+  }
+
+  scanf x; // Esta linea lee el valor de x
+  resultado = cuadrado(x); // Esta linea llama a la funcion definida
+  printf resultado; // Esta linea imprime el resultado
+}

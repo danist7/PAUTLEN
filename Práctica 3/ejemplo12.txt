@@ -1,0 +1,14 @@
+
+main {
+  int x, resultado;
+
+  scanf x; // Esta linea lee el valor de x
+  if((x < 100)) {
+    resultado = 0;
+  } else {
+    resultado = 1;
+  }
+  printf resultado; // Esta linea imprime el resultado
+}
+
+// Prueba de un condicional

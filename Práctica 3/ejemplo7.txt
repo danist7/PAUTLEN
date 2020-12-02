@@ -1,0 +1,17 @@
+
+main {
+  int x, resultado;
+
+  function int cadenadecaractereslargacadenadecaractereslargacadenadecaractereslargacadenadecaractereslargacadenadecaractereslargacadenadecaractereslargacadenadecaractereslargacadenadecaractereslargacadenadecaractereslargacadenadecaractereslarga(int num){
+    printf num;
+    return 0;
+  }
+
+  scanf x; // Esta linea lee el valor de x
+  resultado = x*x; // Esta linea calcula el cuadrado de x
+  printf resultado; // Esta linea imprime el resultado
+}
+
+// Este programa tiene un error morfologico que genera
+// el siguiente mensaje
+//    ****Error morfologico en [lin 5, col 16]. Cadena demasiado larga

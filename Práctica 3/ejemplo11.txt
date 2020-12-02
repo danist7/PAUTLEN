@@ -1,0 +1,13 @@
+
+main {
+  int x, resultado;
+
+  scanf x; // Esta linea lee el valor de x
+  resultado = x;
+  while((resultado < 100)) {
+    resultado = resultado + x;
+  }
+  printf resultado; // Esta linea imprime el resultado
+}
+
+// Prueba de un bucle
