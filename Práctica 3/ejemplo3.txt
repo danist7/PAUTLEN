@@ -1,0 +1,21 @@
+main
+{
+int _a;
+int b;
+int c;
+int total
+
+// el identificador no puede empezar por _
+
+scanf a;
+scanf b;
+scanf c;
+
+total = a+b+c;
+
+print total;
+}
+
+// Este programa tiene un error morfológico que genera
+// el siguiente mensaje
+// ****Error morfologico en [lin 3 col 5]: simbolo no permitido (_)
