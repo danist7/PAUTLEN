@@ -1,4 +1,8 @@
 PRÁCTICA TABLA DE ŚIMBOLOS
+Realizada por:
+Daniel SantoTomás López
+Lucía Rivas Molina
+Luis Pérez Miguel
 
 Para ejecutar:
  - make all
