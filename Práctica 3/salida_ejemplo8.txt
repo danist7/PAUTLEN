@@ -13,9 +13,42 @@
 ;R18:	<identificadores> ::= <identificador>
 ;R19:	<identificadores> ::= <identificador> , <identificadores>
 ;R4:	<declaracion> ::= <clase> <identificadores> ;
-;D:	scanf
+;D:	function
 ;R2:	<declaraciones> ::= <declaracion>
+;D:	int
+;R10:	<tipo> ::= int
+;D:	cuadrado
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+;D:	(
+;D:	int
+;R10:	<tipo> ::= int
+;D:	num
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+;R27:	<parametro_funcion> ::= <tipo> <identificador>
+;D:	)
+;R26:	<resto_parametros_funcion> ::= 
+;R23:	<parametros_funcion> ::= <parametro_funcion> <resto_parametros_funcion>
+;D:	{
+;D:	return
+;R29:	<declaraciones_funcion> ::= 
+;D:	num
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+;D:	*
+;R80:	<exp> ::= <identificador>
+;D:	num
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+;D:	;
+;R80:	<exp> ::= <identificador>
+;R75:	<exp> ::= <exp> * <exp>
+;R61:	<retorno_funcion> ::= return <exp>
+;R38:	<sentencia_simple> ::= <retorno_funcion>
+;R32:	<sentencia> ::= <sentencia_simple> ;
+;D:	}
+;R30:	<sentencias> ::= <sentencia>
+;R22:	<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }
+;D:	scanf
 ;R21:	<funciones> ::= 
+;R20:	<funciones> ::= <funcion> <funciones>
 ;D:	x
 ;R108:	<identificador> ::= TOK_IDENTIFICADOR
 ;R54:	<lectura> ::= scanf <identificador>
@@ -25,15 +58,17 @@
 ;D:	resultado
 ;R108:	<identificador> ::= TOK_IDENTIFICADOR
 ;D:	=
+;D:	cuadrado
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+;D:	(
 ;D:	x
 ;R108:	<identificador> ::= TOK_IDENTIFICADOR
-;D:	*
+;D:	)
 ;R80:	<exp> ::= <identificador>
-;D:	x
-;R108:	<identificador> ::= TOK_IDENTIFICADOR
+;R92:	<resto_lista_expresiones> ::= 
+;R89:	<lista_expresiones> ::= <exp> <resto_lista_expresiones>
+;R88:	<exp> ::= <identificador> ( <lista_expresiones> )
 ;D:	;
-;R80:	<exp> ::= <identificador>
-;R75:	<exp> ::= <exp> * <exp>
 ;R43:	<asignacion> ::= <identificador> = <exp>
 ;R34:	<sentencia_simple> ::= <asignacion>
 ;R32:	<sentencia> ::= <sentencia_simple> ;

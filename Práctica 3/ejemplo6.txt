@@ -1,0 +1,15 @@
+main{
+int a;
+int r;
+
+
+function int printNumero(int num){
+printf num;
+return 0;
+}
+
+scanf a;
+
+r = printNumero(a);
+printf r;
+}

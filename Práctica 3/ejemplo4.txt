@@ -1,0 +1,13 @@
+main
+{
+boolean a;
+boolean b;
+
+a = true;
+b = false;
+
+printf !a;
+printf !b;
+
+return (!a == b);
+}

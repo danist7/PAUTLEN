@@ -1,0 +1,9 @@
+main{
+int a;
+
+while((a < 5)){
+  printf a;
+  a = a+1;
+}
+
+}

@@ -1,0 +1,17 @@
+main
+{
+int a,b,c;
+
+
+scanf a;
+scanf b;
+scanf c;
+
+int total = a+b+c;
+
+printf total;
+}
+
+// Este programa tiene un error sintáctico que genera
+// el siguiente mensaje
+// ****Error sintáctico en [lin 10 col 1]

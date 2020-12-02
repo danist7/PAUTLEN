@@ -1,0 +1,6 @@
+main{
+int a,b;
+boolean t;
+
+t = (a==b);
+}

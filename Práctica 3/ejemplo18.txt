@@ -1,0 +1,11 @@
+main{
+int i;
+i = 0;
+
+while(i < 5) // Error porque faltan los paréntesis de la comparación
+printf i;
+i = i+1;
+}
+// Este programa tiene un error sintáctico que genera
+// el siguiente mensaje
+// ****Error sintáctico en [lin 5 col 9]

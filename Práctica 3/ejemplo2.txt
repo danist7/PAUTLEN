@@ -1,0 +1,6 @@
+int a = 0;
+print a;
+
+ // Este programa tiene un error sintáctico que genera
+ // el siguiente mensaje
+ // ****Error sintáctico en [lin 1 col 1]
