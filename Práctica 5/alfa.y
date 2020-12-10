@@ -1,6 +1,7 @@
 
 %{
 #include <stdio.h>
+#include "alfa.h"
 
 extern FILE* yyout;
 extern int yylex();
@@ -8,9 +9,11 @@ void yyerror(const char *s);
 %}
 
 %union {
-   char* cadena;
-   int numero;
+   tipo_atributos atributos;
 }
+
+%token <atributos> TOK_IDENTIFICADOR
+%token <atributos> TOK_CONSTANTE_ENTERA
 
 %token TOK_MAIN
 %token TOK_INT
@@ -47,13 +50,24 @@ void yyerror(const char *s);
 %token TOK_MENOR
 %token TOK_MAYOR
 
-%token <cadena> TOK_IDENTIFICADOR
-
-%token <entero> TOK_CONSTANTE_ENTERA
 %token TOK_TRUE
 %token TOK_FALSE
 
 %token TOK_ERROR
+
+%type <atributos> constante
+%type <atributos> constante_logica
+%type <atributos> constante_entera
+%type <atributos> identificador
+%type <atributos> comparacion
+%type <atributos> exp
+%type <atributos> condicional
+%type <atributos> bucle
+%type <atributos> elemento_vector
+%type <atributos> funcion
+
+
+
 
 %left TOK_IGUAL TOK_MENORIGUAL  TOK_MENOR TOK_MAYORIGUAL TOK_MAYOR TOK_DISTINTO
 %left TOK_AND TOK_OR
