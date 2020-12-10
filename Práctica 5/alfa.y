@@ -2,14 +2,17 @@
 %{
 #include <stdio.h>
 #include "alfa.h"
+#include "generacion.h"
+#include "tabla_simbolos.h"
 
 extern FILE* yyout;
 extern int yylex();
 void yyerror(const char *s);
+tablas_smb *tabla;
 %}
 
 %union {
-   tipo_atributos atributos;
+  tipo_atributos atributos;
 }
 
 %token <atributos> TOK_IDENTIFICADOR
@@ -76,9 +79,13 @@ void yyerror(const char *s);
 %right TOK_NOT
 %%
 
-programa                  :   TOK_MAIN TOK_LLAVEIZQUIERDA declaraciones funciones sentencias TOK_LLAVEDERECHA
+programa                  :   TOK_MAIN inicio TOK_LLAVEIZQUIERDA declaraciones funciones sentencias TOK_LLAVEDERECHA
                               {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }\n");}
                           ;
+inicio:                   :  {  tabla = CrearTablas();
+                                escribir_subseccion_data(yyout);
+                                escribir_cabecera_bss(yyout);}
+
 declaraciones             :   declaracion
                               {fprintf(yyout,";R2:\t<declaraciones> ::= <declaracion>\n");}
                           |   declaracion declaraciones

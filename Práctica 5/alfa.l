@@ -1,6 +1,7 @@
 %{
-#include "alfa.tab.h"
 #include "alfa.h"
+#include "alfa.tab.h"
+
 
 size_t ncols = 1;
 size_t nlines = 1;

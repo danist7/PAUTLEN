@@ -154,7 +154,7 @@ union YYSTYPE
 {
 #line 11 "alfa.y" /* yacc.c:355  */
 
-   tipo_atributos atributos;
+  tipo_atributos atributos;
 
 #line 160 "alfa.tab.c" /* yacc.c:355  */
 };

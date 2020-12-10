@@ -93,7 +93,7 @@ union YYSTYPE
 {
 #line 11 "alfa.y" /* yacc.c:1909  */
 
-   tipo_atributos atributos;
+  tipo_atributos atributos;
 
 #line 99 "alfa.tab.h" /* yacc.c:1909  */
 };
