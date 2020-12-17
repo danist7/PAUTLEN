@@ -1,21 +1,6 @@
 #include "tabla_simbolos.h"
 
 
-// En un futuro se usaran el resto de parámetros tambien, pero para el
-// prueba_tabla y para esta práctica solo se necesita valor
-typedef struct _simbolo {
-  char * identificador;      /* key */
-  int categoria;
-  int tipo;
-  int categoria_estructura;
-  int tamanio;
-  int n_parametros;
-  int posicion;
-  int n_varloc;
-  int posicion_varloc;
-  UT_hash_handle hh;         /* makes this structure hashable */
-} simbolo;
-
 typedef struct _tablas_smb {
   simbolo **tabla_global;
   simbolo **tabla_local;
@@ -77,13 +62,13 @@ void LiberarTablas(tablas_smb* tablas){
 }
 
 
-int buscar_simbolo(simbolo ** tabla, char* identificador) {
+simbolo *buscar_simbolo(simbolo ** tabla, char* identificador) {
   simbolo *item_ptr;
   HASH_FIND_STR(*tabla, identificador, item_ptr);
   if(item_ptr == NULL) {
-    return ERROR;
+    return NULL;
   }
-  return item_ptr->tipo;
+  return item_ptr;
 }
 
 // En un futuro introducira el resto de parámetros tambien, pero para el
@@ -123,14 +108,14 @@ int InserccionElemento(tablas_smb* tablas, char * identificador, int valor) {
   }
 }
 
-int BusquedaElemento(tablas_smb* tablas, char* identificador) {
-  int encontrado;
+simbolo *BusquedaElemento(tablas_smb* tablas, char* identificador) {
+  simbolo *simbolo = NULL;
   if (tablas->hay_local == 1) {
-    encontrado = buscar_simbolo(tablas->tabla_local, identificador);
-    if (encontrado == -1) {
-      encontrado = buscar_simbolo(tablas->tabla_global, identificador);
+    simbolo = buscar_simbolo(tablas->tabla_local, identificador);
+    if (simbolo == NULL) {
+      simbolo = buscar_simbolo(tablas->tabla_global, identificador);
     }
-    return encontrado;
+    return simbolo;
   } else {
     return buscar_simbolo(tablas->tabla_global, identificador);
   }

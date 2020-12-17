@@ -12,6 +12,10 @@ extern size_t nlines;
 void yyerror(const char *s);
 tablas_smb *tabla;
 
+int num_total_parametros = 0;
+int tamanio = 1; /* Para controlar el tamaño del identificador */
+int tipo;        /* Para darle un tipo entero o booleano a un identificador */
+int funcion_retorno = 0; /* Comprueba que hay un return en la funcion */
 int etiqueta = 0;
 %}
 
@@ -84,12 +88,18 @@ int etiqueta = 0;
 %%
 
 programa                  :   TOK_MAIN inicio TOK_LLAVEIZQUIERDA declaraciones funciones sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }\n");}
+                              {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }\n");
+                               escribir_fin(out);
+                               LiberarTablas(tabla);}
                           ;
 inicio:                   :  {  tabla = CrearTablas();
+                                if(tabla == NULL){
+                                  print("No existe la tabla de símbolos\n");
+                                  return -1;
+                                }
                                 escribir_subseccion_data(yyout);
                                 escribir_cabecera_bss(yyout);}
-
+                          ;
 declaraciones             :   declaracion
                               {fprintf(yyout,";R2:\t<declaraciones> ::= <declaracion>\n");}
                           |   declaracion declaraciones
@@ -99,20 +109,31 @@ declaracion               :   clase identificadores TOK_PUNTOYCOMA
                               {fprintf(yyout,";R4:\t<declaracion> ::= <clase> <identificadores> ;\n");}
                           ;
 clase                     :   clase_escalar
-                              {fprintf(yyout,";R5:\t<clase> ::= <clase_escalar>\n");}
+                              {fprintf(yyout,";R5:\t<clase> ::= <clase_escalar>\n");
+                               categoria = ESCALAR;}
                           |   clase_vector
-                              {fprintf(yyout,";R7:\t<clase> ::= <clase_vector>\n");}
+                              {fprintf(yyout,";R7:\t<clase> ::= <clase_vector>\n");
+                               categoria = VECTOR;}
                           ;
 clase_escalar             :   tipo
-                              {fprintf(yyout,";R9:\t<clase_escalar> ::= <tipo>\n");}
+                              {fprintf(yyout,";R9:\t<clase_escalar> ::= <tipo>\n");
+                               tamanio = 1;}
                           ;
 tipo                      :   TOK_INT
-                              {fprintf(yyout,";R10:\t<tipo> ::= int\n");}
+                              {fprintf(yyout,";R10:\t<tipo> ::= int\n");
+                               tipo = ENTERO;}
                           |   TOK_BOOLEAN
-                              {fprintf(yyout,";R11:\t<tipo> ::= boolean\n");}
+                              {fprintf(yyout,";R11:\t<tipo> ::= boolean\n");
+                               tipo = BOOLEANO;}
                           ;
 clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO constante_entera TOK_CORCHETEDERECHO
-                              {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");}
+                              {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");
+                              longitud = $4.valor_entero;
+                              if(longitud <= 0 || longitud > MAX_TAMANIO_VECTOR){
+                                printf("****Error semántico en lin %lu: El tamanyo del vector %s excede los limites permitidos (1,64).\n", nlines, $1.lexema);
+                                LiberarTablas(tabla);
+                                return;
+                              }}
                           ;
 identificadores           :   identificador
                               {fprintf(yyout,";R18:\t<identificadores> ::= <identificador>\n");}
@@ -124,8 +145,18 @@ funciones                 :   funcion funciones
                           |   %empty
                               {fprintf(yyout,";R21:\t<funciones> ::= \n");}
                           ;
-funcion                   :   TOK_FUNCTION tipo identificador TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA declaraciones_funcion sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");}
+funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
+                              {fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
+                              if (funcion_retorno < 1){
+                                print("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, $1.lexema);
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              }
+                          ;
+fn_declaration            : fn_name TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISIZQUIERDO TOK_CORCHETEIZQUIERDO declaraciones_funcion
+                          ;
+fn_name                   : TOK_FUNCTION tipo TOK_IDENTIFICADOR
                           ;
 parametros_funcion        :   parametro_funcion resto_parametros_funcion
                               {fprintf(yyout,";R23:\t<parametros_funcion> ::= <parametro_funcion> <resto_parametros_funcion>\n");}
@@ -175,7 +206,28 @@ asignacion                :   identificador TOK_ASIGNACION exp
                               {fprintf(yyout,";R44:\t<asignacion> ::= <elemento_vector> = <exp>\n");}
                           ;
 elemento_vector           :   identificador TOK_CORCHETEIZQUIERDO exp TOK_CORCHETEDERECHO
-                              {fprintf(yyout,";R48:\t<elemento_vector> ::= <identificador> [ <exp> ]\n");}
+                              {fprintf(yyout,";R48:\t<elemento_vector> ::= <identificador> [ <exp> ]\n");
+                              simbolo *simbolo;
+                              if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
+                                printf("****Error semántico en lin %lu: Acceso a variable no declarada (%s)\n", nlines, $1.lexema);
+                                LiberarTablas(tabla);
+                                return;
+                              }
+                              if (simbolo->categoria_estructura != VECTOR) {
+                                printf("****Error semántico en lin %lu: Intento de indexacion que no es de tipo vector \n", nlines);
+                                LiberarTablas(tabla);
+                                return;
+                              }
+                              if ($3.tipo != ENTERO) {
+                                printf("****Error semántico en lin %lu: El indice en una operacion de indexacion tiene que ser de tipo entero.\n", nlines);
+                                LiberarTablas(tabla);
+                                return;
+                              }
+                              $$.tipo = simbolo->tipo;
+                              $$.es_direccion = 1;
+                              $$.valor_entero = $3.valor_entero;
+                              //TODO USAR AQUI EL Escribir elemento vector
+                              }
                           ;
 condicional               :   TOK_IF TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
                               {fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }\n");}
@@ -186,7 +238,17 @@ bucle                     :   TOK_WHILE TOK_PARENTESISIZQUIERDO exp TOK_PARENTES
                               {fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");}
                           ;
 lectura                   :   TOK_SCANF identificador
-                              {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");}
+                              {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");
+                               simbolo *simbolo;
+                               simbolo = BusquedaElemento(tabla, $2.lexema);
+
+                               if (simbolo == NULL){
+                                printf("***Error semantico en lin %li: Acceso a variable no declarada (%s)", nlines, $2.lexema);
+                                LiberarTablas(tabla);
+                                return -1;
+                               }
+
+                               }
                           ;
 escritura                 :   TOK_PRINTF exp
                               {fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");}
@@ -242,7 +304,25 @@ exp                       :   exp TOK_MAS exp
                                 $$.es_direccion = 0;
                               }
                           |   identificador
-                              {fprintf(yyout,";R80:\t<exp> ::= <identificador>\n");}
+                              {fprintf(yyout,";R80:\t<exp> ::= <identificador>\n");
+                              simbolo *simbolo;
+                              if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
+                                printf("****Error semántico en lin %lu: Acceso a variable no declarada (%s)\n", nlines, $1.lexema);
+                                LiberarTablas(tabla);
+                                return;
+                              }
+                              if (simbolo->categoria == FUNCION || simbolo->categoria_estructura == VECTOR) {
+                                printf("****Error semántico en lin %lu: Intento de indexacion que no es de tipo vector \n", nlines);
+                                LiberarTablas(tabla);
+                                return;
+                              }
+                              $$.tipo = simbolo->tipo;
+                              $$.es_direccion = 1;
+                              if (simbolo->categoria == PARAMETRO) {
+                                escribirParametro(yyout, simbolo->posicion, num_total_parametros);
+                              } else if (simbolo->categoria == VARIABLE) {
+                                escribirVariableLocal(yyout, simbolo->posicion_varloc);
+                              }
                           |   constante
                               {fprintf(yyout,";R81:\t<exp> ::= <constante>\n");}
                           |   TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO
