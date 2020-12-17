@@ -20,11 +20,11 @@
 
 typedef struct
 {
- char lexema[MAX_LONG_ID+1];
- int tipo;
- int valor_entero;
- int es_direccion;
- int etiqueta;
+ char lexema[MAX_LONG_ID+1]; /* Nombre del identificador */
+ int tipo;                   /* Tipo del identificador ENTERO o BOOLEANO*/
+ int valor_entero;           /* El valor de un identificador entero */
+ int es_direccion;           /* Para decir que es una direccion de memoria */
+ int etiqueta;               /* Etiqueta para hacer en ensamblador una sentencia condicional o iterativa */
 } tipo_atributos;
 
 
