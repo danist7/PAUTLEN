@@ -12,10 +12,11 @@ extern size_t nlines;
 void yyerror(const char *s);
 tablas_smb *tabla;
 
-int num_total_parametros = 0;
-int tamanio = 1; /* Para controlar el tamaño del identificador */
-int tipo;        /* Para darle un tipo entero o booleano a un identificador */
-int funcion_retorno = 0; /* Comprueba que hay un return en la funcion */
+int num_total_parametros = 0;   /* Numero de parametros para declarar una funcion */
+int num_total_varlocs = 0;      /* Numero de variables locales, por ej, dentro de una funcion */
+int tamanio = 1;                /* Para controlar el tamaño del identificador */
+int tipo;                       /* Para darle un tipo entero o booleano a un identificador */
+int funcion_retorno = 0;        /* Comprueba que hay un return en la funcion */
 int etiqueta = 0;
 %}
 
@@ -152,11 +153,47 @@ funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
                                 LiberarTablas(tabla);
                                 return -1;
                               }
+                              simbolo *simbolo;
+                              simbolo = BusquedaElemento(tabla, $1.lexema);
+                              if (simbolo == NULL){
+                                printf("***Error en la tabla de simbolos\n");
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              simbolo->n_parametros = num_total_parametros;
+                              num_total_parametros = 0;
                               }
                           ;
-fn_declaration            : fn_name TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISIZQUIERDO TOK_CORCHETEIZQUIERDO declaraciones_funcion
+fn_declaration            :   fn_name TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISIZQUIERDO TOK_CORCHETEIZQUIERDO declaraciones_funcion
+                              {
+                               simbolo *simbolo;
+                               simbolo = BusquedaElemento(tabla, $1.lexema);
+                               if (simbolo == NULL){
+                                 printf("***Error en la tabla de simbolos\n");
+                                 LiberarTablas(tabla);
+                                 return -1;
+                               }
+                               simbolo->n_parametros = num_total_parametros;
+                               simbolo->n_varloc = num_total_varlocs;
+                               strcpy($$.lexema, $1.lexema);
+                               declararFuncion(yyout, $1.lexema, num_total_varlocs);
+                              }
                           ;
-fn_name                   : TOK_FUNCTION tipo TOK_IDENTIFICADOR
+fn_name                   :   TOK_FUNCTION tipo TOK_IDENTIFICADOR
+                              {
+                                /* La funcion no existia y la metemos en tabla simbolos */
+                                if (BusquedaElemento(tabla, $3.lexema) == NULL){
+                                  simbolo *simbolo;
+                                  //TODO
+
+                                }
+                                /* La funcion ya existe */
+                                else{
+                                  printf("***Error semantico en lin %lu: Declaracion duplicada\n");
+                                  LiberarTablas(tablas);
+                                  return -1;
+                                }
+                              }
                           ;
 parametros_funcion        :   parametro_funcion resto_parametros_funcion
                               {fprintf(yyout,";R23:\t<parametros_funcion> ::= <parametro_funcion> <resto_parametros_funcion>\n");}
@@ -168,9 +205,15 @@ resto_parametros_funcion  :   TOK_PUNTOYCOMA parametro_funcion resto_parametros_
                           |   %empty
                               {fprintf(yyout,";R26:\t<resto_parametros_funcion> ::= \n");}
                           ;
-parametro_funcion         :   tipo identificador
-                              {fprintf(yyout,";R27:\t<parametro_funcion> ::= <tipo> <identificador>\n");}
+parametro_funcion         :   tipo idpf
+                              {fprintf(yyout,";R27:\t<parametro_funcion> ::= <tipo> <identificador>\n");
+                               num_total_parametros++;
+                               posicion_parametro++;}
                           ;
+idpf                      :   TOK_IDENTIFICADOR
+                              {
+                               //TODO
+                              }
 declaraciones_funcion     :   declaraciones
                               {fprintf(yyout,";R28:\t<declaraciones_funcion> ::= <declaraciones>\n");}
                           |   %empty
@@ -473,7 +516,17 @@ constante_entera          :   TOK_CONSTANTE_ENTERA
                               }
                           ;
 identificador             :   TOK_IDENTIFICADOR
-                              {fprintf(yyout,";R108:\t<identificador> ::= TOK_IDENTIFICADOR\n");}
+                              {fprintf(yyout,";R108:\t<identificador> ::= TOK_IDENTIFICADOR\n");
+                               /* Si la variable no estaba declarada antes, la declaramos */
+                               if (BusquedaElemento(tabla, $1.lexema) == NULL){
+                                //TODO
+                               }
+                               /* Ya existia la variable luego error por duplicado*/
+                               else{
+                                printf("***Error semantico en lin %lu: Declaracion duplicada.\n", nlines);
+                                LiberarTablas(tabla);
+                                return -1;
+                               }}
 %%
 
 void yyerror(const char *s){
