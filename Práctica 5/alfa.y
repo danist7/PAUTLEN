@@ -243,13 +243,19 @@ lectura                   :   TOK_SCANF identificador
                                simbolo *simbolo;
                                simbolo = BusquedaElemento(tabla, $2.lexema);
 
+                               /* Si el simbolo no estaba declarado */
                                if (simbolo == NULL){
                                 printf("***Error semantico en lin %li: Acceso a variable no declarada (%s)", nlines, $2.lexema);
                                 LiberarTablas(tabla);
                                 return -1;
                                }
-
+                               /* Solo leemos ESCALAR y VARIABLE o PARAMETRO */
+                               if (simbolo->categoria_estructura == VECTOR || simbolo->categoria == FUNCION){
+                                printf("***Error semantico en lin %li: Variable local de tipo no escalar", nlines);
+                                LiberarTablas(tabla);
+                                return -1;
                                }
+                              leer(yyout, $2.lexema, $2.tipo);}
                           ;
 escritura                 :   TOK_PRINTF exp
                               {fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");}
