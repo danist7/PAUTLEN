@@ -13,15 +13,15 @@
 #define MAX_LOCAL_TB 1024
 
 typedef struct _simbolo {
-  char * identificador;      /* key */
-  int categoria;
-  int tipo;
-  int categoria_estructura;
-  int tamanio;
-  int n_parametros;
-  int posicion;
-  int n_varloc;
-  int posicion_varloc;
+  char * identificador;      /* String que guarda el nombre del identificador */
+  int categoria;             /* Puede ser VARIABLE, PARAMETRO o FUNCION */
+  int tipo;                  /* Puede ser ENTERO o BOOLEANO */
+  int categoria_estructura;  /* Puede ser ESCALAR o VECTOR */
+  int tamanio;               /* Tamaño de la variable (1 para escalar, más para vectores)*/
+  int n_parametros;          /* Número de parámetros que tiene una funcion */
+  int posicion;              /* Solo para elementos de tipo parametro, posicion en orden, empieza por 0 */
+  int n_varloc;              /* Numero de variables locales, solo para elementos FUNCION */
+  int posicion_varloc;       /* Posicion de la variable local, solo para elementos FUNCION */
   UT_hash_handle hh;         /* makes this structure hashable */
 } simbolo;
 
