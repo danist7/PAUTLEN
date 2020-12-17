@@ -31,7 +31,7 @@ tablas_smb * CrearTablas(void);
 
 void LiberarTablas(tablas_smb* tablas);
 
-int InserccionElemento(tablas_smb* tablas, char * identificador,
+int InsercionElemento(tablas_smb* tablas, char * identificador,
                        int categoria,
                        int tipo,
                        int categoria_estructura,

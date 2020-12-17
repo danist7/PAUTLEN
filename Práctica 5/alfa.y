@@ -90,7 +90,7 @@ int etiqueta = 0;
 
 programa                  :   TOK_MAIN inicio TOK_LLAVEIZQUIERDA declaraciones funciones sentencias TOK_LLAVEDERECHA
                               {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }\n");
-                               escribir_fin(out);
+                               escribir_fin(yyout);
                                LiberarTablas(tabla);}
                           ;
 inicio:                   :  {  tabla = CrearTablas();
@@ -230,8 +230,8 @@ asignacion                :   TOK_IDENTIFICADOR TOK_ASIGNACION exp
                                 if(Ambito(tabla) == GLOBAL){
                                   asignar(yyout, $1.lexema, $3.es_direccion);
                                 }else{
-                                  escribirVariableLocal(out,simbolo->posicion);
-                                  asignarDestinoEnPila(out,$3.es_direccion);
+                                  escribirVariableLocal(yyout,simbolo->posicion);
+                                  asignarDestinoEnPila(yyout,$3.es_direccion);
                                 }
                               }
                           |   elemento_vector TOK_ASIGNACION exp
@@ -281,11 +281,11 @@ elemento_vector           :   identificador TOK_CORCHETEIZQUIERDO exp TOK_CORCHE
                           ;
 condicional               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
                               {fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }\n");
-                              ifthen_fin(out, $1.etiqueta);
+                              ifthen_fin(yyout, $1.etiqueta);
                               }
                           |   if_else_exp TOK_ELSE TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
                               {fprintf(yyout,";R51:\t<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }\n");
-                              ifthenelse_fin(out, $1.etiqueta);
+                              ifthenelse_fin(yyout, $1.etiqueta);
                               }
                           ;
 if_exp                    :   TOK_IF TOK_PARENTESISIZQUIERDO exp
@@ -302,12 +302,12 @@ if_exp                    :   TOK_IF TOK_PARENTESISIZQUIERDO exp
 if_else_exp               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
                               {
                               $$.etiqueta = $1.etiqueta;
-                              ifthenelse_fin_then(out, $$etiqueta);
+                              ifthenelse_fin_then(yyout, $$etiqueta);
                               }
                           ;
 bucle                     :   while_exp TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
                               {fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");
-                              while_fin(out, $1.etiqueta);
+                              while_fin(yyout, $1.etiqueta);
                               }
                           ;
 while_exp                 :   while TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO
@@ -319,13 +319,13 @@ while_exp                 :   while TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDE
                               }
 
                               $$.etiqueta =$1.etiqueta;
-                              while_exp_pila(out, $2.es_direccion, $$.etiqueta)
+                              while_exp_pila(yyout, $2.es_direccion, $$.etiqueta)
                               }
                           ;
 while_exp                 :   TOK_WHILE
                               {
                               $$.etiqueta = etiqueta++;
-                              while_inicio(out, $$.etiqueta);
+                              while_inicio(yyout, $$.etiqueta);
                               }
                           ;
 lectura                   :   TOK_SCANF identificador
@@ -416,15 +416,65 @@ exp                       :   exp TOK_MAS exp
                                 escribirVariableLocal(yyout, simbolo->posicion_varloc);
                               }
                           |   constante
-                              {fprintf(yyout,";R81:\t<exp> ::= <constante>\n");}
+                              {fprintf(yyout,";R81:\t<exp> ::= <constante>\n");
+                                $$.tipo = $1.tipo;
+                                $$.es_direccion = $1.es_direccion;
+                              }
                           |   TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO
-                              {fprintf(yyout,";R82:\t<exp> ::= ( <exp> )\n");}
+                              {fprintf(yyout,";R82:\t<exp> ::= ( <exp> )\n");
+                                $$.tipo = $2.tipo;
+                                $$.es_direccion = $2.es_direccion;
+                              }
                           |   TOK_PARENTESISIZQUIERDO comparacion TOK_PARENTESISDERECHO
-                              {fprintf(yyout,";R83:\t<exp> ::= ( <comparacion> )\n");}
+                              {fprintf(yyout,";R83:\t<exp> ::= ( <comparacion> )\n");
+                                $$.tipo = $2.tipo;
+                                $$.es_direccion = $2.es_direccion;
+                              }
                           |   elemento_vector
-                              {fprintf(yyout,";R85:\t<exp> ::= <elemento_vector>\n");}
-                          |   identificador TOK_PARENTESISIZQUIERDO lista_expresiones TOK_PARENTESISDERECHO
-                              {fprintf(yyout,";R88:\t<exp> ::= <identificador> ( <lista_expresiones> )\n");}
+                              {fprintf(yyout,";R85:\t<exp> ::= <elemento_vector>\n");
+                                $$.tipo = $1.tipo;
+                                $$.es_direccion = $1.es_direccion;
+                              }
+                          |   idf_llamada_funcion TOK_PARENTESISIZQUIERDO lista_expresiones TOK_PARENTESISDERECHO
+                              {fprintf(yyout,";R88:\t<exp> ::= <identificador> ( <lista_expresiones> )\n");
+                              if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
+                                printf("****Error semántico en lin %lu: Acceso a variable no declarada (%s)\n", nlines, $1.lexema);
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              if (num_arg_funcion == simbolo->n_parametros) {
+                                printf("****Error semántico en lin %lu: Numero incorrecto de parametros en llamada a función.\n", nlines);
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              $$.tipo = simbolo->tipo;
+                              llamarFuncion(yyout, $1.lexema, simbolo->n_parametros);
+                              limpiarPila(yyout, simbolo->n_parametros);
+                              dentro_par_funcion = 0;
+                              }
+                          ;
+idf_llamada_funcion       :   TOK_IDENTIFICADOR
+                              {
+                                simbolo *simbolo;
+                                if (dentro_par_funcion = 1){
+                                  printf("****Error semántico en lin %lu: No esta permitido el uso de llamadas a funciones como parametros de otras funciones.\n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
+                                  printf("****Error semántico en lin %lu: Acceso a variable no declarada (%s)\n", nlines, $1.lexema);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                if (simbolo->categoria != FUNCION) {
+                                  printf("****Error semántico en lin %lu: TODO ????\n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                num_arg_funcion = 0;
+                                dentro_par_funcion = 1;
+                                $$.lexema = $1.lexema;
+                              }
                           ;
 lista_expresiones         :   exp resto_lista_expresiones
                               {fprintf(yyout,";R89:\t<lista_expresiones> ::= <exp> <resto_lista_expresiones>\n");}
