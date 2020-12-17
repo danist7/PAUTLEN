@@ -15,6 +15,9 @@
 #define ESCALAR = 1
 #define VECTOR = 2
 
+//DEFINICIONES AMBITO
+#define GLOBAL = 0
+#define LOCAL = 1
 
 #define MAX_TAM_ENTERO 50
 

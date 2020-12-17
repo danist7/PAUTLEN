@@ -31,13 +31,23 @@ tablas_smb * CrearTablas(void);
 
 void LiberarTablas(tablas_smb* tablas);
 
-int InserccionElemento(tablas_smb* tablas, char * identificador, int valor);
+int InsercionElemento(tablas_smb* tablas, char * identificador,
+                       int categoria,
+                       int tipo,
+                       int categoria_estructura,
+                       int tamanio,
+                       int n_parametros,
+                       int posicion,
+                       int n_varloc,
+                       int posicion_varloc);
 
 simbolo *BusquedaElemento(tablas_smb* tablas, char* identificador);
 
 int AperturaAmbito(tablas_smb* tablas, char* identificador, int valor);
 
 int CierreAmbito(tablas_smb* tablas);
+
+int Ambito(tablas_smb* tablas);
 
 
 
