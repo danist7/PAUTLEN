@@ -17,6 +17,7 @@ int tamanio = 1; /* Para controlar el tamaño del identificador */
 int tipo;        /* Para darle un tipo entero o booleano a un identificador */
 int funcion_retorno = 0; /* Comprueba que hay un return en la funcion */
 int etiqueta = 0;
+int num_arg_funcion = 0;
 %}
 
 %union {
@@ -229,8 +230,8 @@ asignacion                :   TOK_IDENTIFICADOR TOK_ASIGNACION exp
                                 if(Ambito(tabla) == GLOBAL){
                                   asignar(yyout, $1.lexema, $3.es_direccion);
                                 }else{
-                                  escribirVariableLocal(out,simbolo->posicion);
-                                  asignarDestinoEnPila(out,$3.es_direccion);
+                                  escribirVariableLocal(yyout,simbolo->posicion);
+                                  asignarDestinoEnPila(yyout,$3.es_direccion);
                                 }
                               }
                           |   elemento_vector TOK_ASIGNACION exp
@@ -306,19 +307,69 @@ retorno_funcion           :   TOK_RETURN exp
                               {fprintf(yyout,";R61:\t<retorno_funcion> ::= return <exp>\n");}
                           ;
 exp                       :   exp TOK_MAS exp
-                              {fprintf(yyout,";R72:\t<exp> ::= <exp> + <exp>\n");}
+                              {
+                                fprintf(yyout,";R72:\t<exp> ::= <exp> + <exp>\n");
+                                if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
+                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                sumar(yyout, $1.es_direccion, $3.es_direccion);
+                                $$.tipo = ENTERO;
+                                $$.es_direccion = 0;
+                              }
                           |   exp TOK_MENOS exp
-                              {fprintf(yyout,";R73:\t<exp> ::= <exp> - <exp>\n");}
+                              {
+                                fprintf(yyout,";R73:\t<exp> ::= <exp> - <exp>\n");
+                                if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
+                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                restar(yyout, $1.es_direccion, $3.es_direccion);
+                                $$.tipo = ENTERO;
+                                $$.es_direccion = 0;
+                              }
                           |   exp TOK_DIVISION exp
-                              {fprintf(yyout,";R74:\t<exp> ::= <exp> / <exp>\n");}
+                              {
+                                fprintf(yyout,";R74:\t<exp> ::= <exp> / <exp>\n");
+                                if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
+                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                dividir(yyout, $1.es_direccion, $3.es_direccion);
+                                $$.tipo = ENTERO;
+                                $$.es_direccion = 0;
+                              }
                           |   exp TOK_ASTERISCO exp
-                              {fprintf(yyout,";R75:\t<exp> ::= <exp> * <exp>\n");}
+                              {
+                                fprintf(yyout,";R75:\t<exp> ::= <exp> * <exp>\n");
+                                if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
+                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                multiplicar(yyout, $1.es_direccion, $3.es_direccion);
+                                $$.tipo = ENTERO;
+                                $$.es_direccion = 0;
+                              }
                           |   TOK_MENOS exp
-                              {fprintf(yyout,";R76:\t<exp> ::= - <exp>\n");}
+                              {
+                                fprintf(yyout,";R76:\t<exp> ::= - <exp>\n");
+                                if($2.tipo == BOOLEANO){
+                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                cambiar_signo(yyout, $2.es_direccion);
+                                $$.tipo = ENTERO;
+                                $$.es_direccion = 0;
+                              }
                           |   exp TOK_AND exp
                               {
                                 fprintf(yyout,";R77:\t<exp> ::= exp> && <exp>\n");
-                                if(($1.tipo != BOOLEANO) || ($3.tipo != BOOLEANO)){
+                                if(($1.tipo == ENTERO) || ($3.tipo == ENTERO)){
                                   printf("****Error semantico en lin %lu: Operacion logica con operandos int.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
@@ -384,12 +435,22 @@ exp                       :   exp TOK_MAS exp
                               {fprintf(yyout,";R88:\t<exp> ::= <identificador> ( <lista_expresiones> )\n");}
                           ;
 lista_expresiones         :   exp resto_lista_expresiones
-                              {fprintf(yyout,";R89:\t<lista_expresiones> ::= <exp> <resto_lista_expresiones>\n");}
+                              {
+                                fprintf(yyout,";R89:\t<lista_expresiones> ::= <exp> <resto_lista_expresiones>\n");
+                                if(dentro_par_fun == 1){
+                                  num_arg_funcion++;
+                                }
+                              }
                           |   %empty
                               {fprintf(yyout,";R90:\t<lista_expresiones> ::= \n");}
                           ;
 resto_lista_expresiones   :   TOK_COMA exp resto_lista_expresiones
-                              {fprintf(yyout,";R91:\t<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>\n");}
+                              {
+                                fprintf(yyout,";R91:\t<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>\n");
+                                if(dentro_par_fun == 1){
+                                  num_arg_funcion++;
+                                }
+                              }
                           |   %empty
                               {fprintf(yyout,";R92:\t<resto_lista_expresiones> ::= \n");}
                           ;
@@ -397,7 +458,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R93:\t<comparacion> ::= <exp> == <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -410,7 +471,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R94:\t<comparacion> ::= <exp> != <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -423,7 +484,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R95:\t<comparacion> ::= <exp> <= <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -436,7 +497,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R96:\t<comparacion> ::= <exp> >= <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -449,7 +510,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R97:\t<comparacion> ::= <exp> < <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -462,7 +523,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R98:\t<comparacion> ::= <exp> > <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
