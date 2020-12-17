@@ -133,7 +133,7 @@ clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO constante_ent
                               if(longitud <= 0 || longitud > MAX_TAMANIO_VECTOR){
                                 printf("****Error semántico en lin %lu: El tamanyo del vector %s excede los limites permitidos (1,64).\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }}
                           ;
 identificadores           :   identificador
@@ -212,17 +212,17 @@ elemento_vector           :   identificador TOK_CORCHETEIZQUIERDO exp TOK_CORCHE
                               if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
                                 printf("****Error semántico en lin %lu: Acceso a variable no declarada (%s)\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }
                               if (simbolo->categoria_estructura != VECTOR) {
                                 printf("****Error semántico en lin %lu: Intento de indexacion que no es de tipo vector \n", nlines);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }
                               if ($3.tipo != ENTERO) {
                                 printf("****Error semántico en lin %lu: El indice en una operacion de indexacion tiene que ser de tipo entero.\n", nlines);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }
                               $$.tipo = simbolo->tipo;
                               $$.es_direccion = 1;
@@ -230,13 +230,54 @@ elemento_vector           :   identificador TOK_CORCHETEIZQUIERDO exp TOK_CORCHE
                               //TODO USAR AQUI EL Escribir elemento vector
                               }
                           ;
-condicional               :   TOK_IF TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }\n");}
-                          |   TOK_IF TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA TOK_ELSE TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R51:\t<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }\n");}
+condicional               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              {fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }\n");
+                              ifthen_fin(out, $1.etiqueta);
+                              }
+                          |   if_else_exp TOK_ELSE TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              {fprintf(yyout,";R51:\t<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }\n");
+                              ifthenelse_fin(out, $1.etiqueta);
+                              }
                           ;
-bucle                     :   TOK_WHILE TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");}
+if_exp                    :   TOK_IF TOK_PARENTESISIZQUIERDO exp
+                              {
+                              if ($3.tipo != BOOLEANO) {
+                                printf("****Error semántico en lin %lu: Condicional con condicion tipo int.\n", nlines);
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              $$.etiqueta = etiqueta++;
+                              ifthen_inicio(yyout, $3.es_direccion, $$.etiqueta);
+                              }
+                          ;
+if_else_exp               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              {
+                              $$.etiqueta = $1.etiqueta;
+                              ifthenelse_fin_then(out, $$etiqueta);
+                              }
+                          ;
+bucle                     :   while_exp TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              {fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");
+                              while_fin(out, $1.etiqueta);
+                              }
+                          ;
+while_exp                 :   while TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO
+                              {
+                              if ($3.tipo != BOOLEANO) {
+                                printf("****Error semántico en lin %lu: Condicional con condicion tipo int.\n", nlines);
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+
+                              $$.etiqueta =$1.etiqueta;
+                              while_exp_pila(out, $2.es_direccion, $$.etiqueta)
+                              }
+                          ;
+while_exp                 :   TOK_WHILE
+                              {
+                              $$.etiqueta = etiqueta++;
+                              while_inicio(out, $$.etiqueta);
+                              }
                           ;
 lectura                   :   TOK_SCANF identificador
                               {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");
@@ -310,18 +351,18 @@ exp                       :   exp TOK_MAS exp
                                 $$.tipo = BOOLEANO;
                                 $$.es_direccion = 0;
                               }
-                          |   identificador
+                          |   TOK_IDENTIFICADOR
                               {fprintf(yyout,";R80:\t<exp> ::= <identificador>\n");
                               simbolo *simbolo;
                               if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
                                 printf("****Error semántico en lin %lu: Acceso a variable no declarada (%s)\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }
                               if (simbolo->categoria == FUNCION || simbolo->categoria_estructura == VECTOR) {
                                 printf("****Error semántico en lin %lu: Intento de indexacion que no es de tipo vector \n", nlines);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }
                               $$.tipo = simbolo->tipo;
                               $$.es_direccion = 1;
