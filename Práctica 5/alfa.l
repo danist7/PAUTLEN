@@ -6,6 +6,8 @@
 size_t ncols = 1;
 size_t nlines = 1;
 int err_morf;
+
+extern YYSTYPE yylval;
 %}
 
 %option noyywrap
@@ -96,6 +98,7 @@ false {  ncols += yyleng; fprintf(yyout, ";D:\t%s\n", yytext);
 [a-zA-Z]([a-zA-Z0-9]){0,99} {  ncols += yyleng; fprintf(yyout, ";D:\t%s\n", yytext);
                                return TOK_IDENTIFICADOR;}
 [0-9]+                      {  ncols += yyleng; fprintf(yyout, ";D:\t%s\n", yytext);
+                                yylval.atributos.valor_entero = atoi(yytext);
                                return TOK_CONSTANTE_ENTERA;}
 
 [a-zA-Z]([a-zA-Z0-9]){100,} {printf("****Error morfologico en [lin %lu col %lu]. Cadena demasiado larga\n",nlines, ncols); err_morf = 1; return TOK_ERROR;}

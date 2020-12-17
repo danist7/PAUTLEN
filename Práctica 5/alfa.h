@@ -3,6 +3,8 @@
 #define MAX_LONG_ID 100
 #define MAX_TAMANIO_VECTOR 64
 
+#define MAX_TAM_ENTERO 50
+
 
 
 typedef struct
