@@ -12,16 +12,18 @@ extern size_t nlines;
 void yyerror(const char *s);
 tablas_smb *tabla;
 
-int num_total_parametros = 0;   /* Numero de parametros para declarar una funcion */
+int num_total_parametros = 0;   /* Numero de parametros para DECLARAR una funcion */
 int num_total_varlocs = 0;      /* Numero de variables locales, por ej, dentro de una funcion */
 int tamanio = 1;                /* Para controlar el tamaño del identificador */
 int tipo;                       /* Para darle un tipo entero o booleano a un identificador */
 int funcion_retorno = 0;        /* Comprueba que hay un return en la funcion */
 int funcion_tipo;               /* Tipo de una funcion (entero o booleano) */
 int etiqueta = 0;
+
 int dentro_par_fun = 0;         /* Esta a 1 si estamos si estamos dentro de los parentesis de una funcion y a 0 si estamos fuera */
 int categoria_estructura;       /* Es ESCALAR o VECTOR */
 int posicion = 0;               /* Solo para elementos de tipo parametro, posicion en orden, empieza por 0 */
+int num_arg_funcion = 0;        /* Numero de parametros al LLAMAR a una funcion */
 %}
 
 %union {
@@ -94,7 +96,7 @@ int posicion = 0;               /* Solo para elementos de tipo parametro, posici
 
 programa                  :   TOK_MAIN inicio TOK_LLAVEIZQUIERDA declaraciones funciones sentencias TOK_LLAVEDERECHA
                               {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }\n");
-                               escribir_fin(out);
+                               escribir_fin(yyout);
                                LiberarTablas(tabla);}
                           ;
 inicio:                   :  {  tabla = CrearTablas();
@@ -247,8 +249,39 @@ bloque                    :   condicional
                           |   bucle
                               {fprintf(yyout,";R41:\t<bloque> ::= <bucle>\n");}
                           ;
-asignacion                :   identificador TOK_ASIGNACION exp
-                              {fprintf(yyout,";R43:\t<asignacion> ::= <identificador> = <exp>\n");}
+asignacion                :   TOK_IDENTIFICADOR TOK_ASIGNACION exp
+                              {
+                                fprintf(yyout,";R43:\t<asignacion> ::= <identificador> = <exp>\n");
+                                simbolo *simbolo;
+                                if((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
+                                  printf("****Error semántico en lin %lu: Acceso a variable no declarada (%s)\n", nlines, $1.lexema);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                if (simbolo->categoria_estructura == VECTOR) {
+                                  printf("****Error semantico en lin %lu: Asignacion incompatible. \n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                if (simbolo->categoria == FUNCION) {
+                                  printf("****Error semantico en lin %lu: Asignacion incompatible. \n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+
+                                if (simbolo->tipo != $3.tipo) {
+                                  printf("****Error semantico en lin %lu: Asignacion incompatible. \n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                // TODO funcion ambito
+                                if(Ambito(tabla) == GLOBAL){
+                                  asignar(yyout, $1.lexema, $3.es_direccion);
+                                }else{
+                                  escribirVariableLocal(yyout,simbolo->posicion);
+                                  asignarDestinoEnPila(yyout,$3.es_direccion);
+                                }
+                              }
                           |   elemento_vector TOK_ASIGNACION exp
                               {fprintf(yyout,";R44:\t<asignacion> ::= <elemento_vector> = <exp>\n");}
                           ;
@@ -276,13 +309,54 @@ elemento_vector           :   identificador TOK_CORCHETEIZQUIERDO exp TOK_CORCHE
                               //TODO USAR AQUI EL Escribir elemento vector
                               }
                           ;
-condicional               :   TOK_IF TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }\n");}
-                          |   TOK_IF TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA TOK_ELSE TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R51:\t<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }\n");}
+condicional               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              {fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }\n");
+                              ifthen_fin(yyout, $1.etiqueta);
+                              }
+                          |   if_else_exp TOK_ELSE TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              {fprintf(yyout,";R51:\t<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }\n");
+                              ifthenelse_fin(yyout, $1.etiqueta);
+                              }
                           ;
-bucle                     :   TOK_WHILE TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");}
+if_exp                    :   TOK_IF TOK_PARENTESISIZQUIERDO exp
+                              {
+                              if ($3.tipo != BOOLEANO) {
+                                printf("****Error semántico en lin %lu: Condicional con condicion tipo int.\n", nlines);
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              $$.etiqueta = etiqueta++;
+                              ifthen_inicio(yyout, $3.es_direccion, $$.etiqueta);
+                              }
+                          ;
+if_else_exp               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              {
+                              $$.etiqueta = $1.etiqueta;
+                              ifthenelse_fin_then(yyout, $$etiqueta);
+                              }
+                          ;
+bucle                     :   while_exp TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
+                              {fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");
+                              while_fin(yyout, $1.etiqueta);
+                              }
+                          ;
+while_exp                 :   while TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO
+                              {
+                              if ($3.tipo != BOOLEANO) {
+                                printf("****Error semántico en lin %lu: Condicional con condicion tipo int.\n", nlines);
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+
+                              $$.etiqueta =$1.etiqueta;
+                              while_exp_pila(yyout, $2.es_direccion, $$.etiqueta)
+                              }
+                          ;
+while_exp                 :   TOK_WHILE
+                              {
+                              $$.etiqueta = etiqueta++;
+                              while_inicio(yyout, $$.etiqueta);
+                              }
                           ;
 lectura                   :   TOK_SCANF identificador
                               {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");
@@ -324,20 +398,70 @@ retorno_funcion           :   TOK_RETURN exp
                               retornarFuncion(yyout, $2.es_direccion);}
                           ;
 exp                       :   exp TOK_MAS exp
-                              {fprintf(yyout,";R72:\t<exp> ::= <exp> + <exp>\n");}
+                              {
+                                fprintf(yyout,";R72:\t<exp> ::= <exp> + <exp>\n");
+                                if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
+                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                sumar(yyout, $1.es_direccion, $3.es_direccion);
+                                $$.tipo = ENTERO;
+                                $$.es_direccion = 0;
+                              }
                           |   exp TOK_MENOS exp
-                              {fprintf(yyout,";R73:\t<exp> ::= <exp> - <exp>\n");}
+                              {
+                                fprintf(yyout,";R73:\t<exp> ::= <exp> - <exp>\n");
+                                if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
+                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                restar(yyout, $1.es_direccion, $3.es_direccion);
+                                $$.tipo = ENTERO;
+                                $$.es_direccion = 0;
+                              }
                           |   exp TOK_DIVISION exp
-                              {fprintf(yyout,";R74:\t<exp> ::= <exp> / <exp>\n");}
+                              {
+                                fprintf(yyout,";R74:\t<exp> ::= <exp> / <exp>\n");
+                                if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
+                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                dividir(yyout, $1.es_direccion, $3.es_direccion);
+                                $$.tipo = ENTERO;
+                                $$.es_direccion = 0;
+                              }
                           |   exp TOK_ASTERISCO exp
-                              {fprintf(yyout,";R75:\t<exp> ::= <exp> * <exp>\n");}
+                              {
+                                fprintf(yyout,";R75:\t<exp> ::= <exp> * <exp>\n");
+                                if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
+                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                multiplicar(yyout, $1.es_direccion, $3.es_direccion);
+                                $$.tipo = ENTERO;
+                                $$.es_direccion = 0;
+                              }
                           |   TOK_MENOS exp
-                              {fprintf(yyout,";R76:\t<exp> ::= - <exp>\n");}
+                              {
+                                fprintf(yyout,";R76:\t<exp> ::= - <exp>\n");
+                                if($2.tipo == BOOLEANO){
+                                  printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.",nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                cambiar_signo(yyout, $2.es_direccion);
+                                $$.tipo = ENTERO;
+                                $$.es_direccion = 0;
+                              }
                           |   exp TOK_AND exp
                               {
                                 fprintf(yyout,";R77:\t<exp> ::= exp> && <exp>\n");
-                                if(($1.tipo != BOOLEANO) || ($3.tipo != BOOLEANO)){
-                                  printf("****Error semantico en lin %li: Operacion logica con operandos int.",nlines);
+                                if(($1.tipo == ENTERO) || ($3.tipo == ENTERO)){
+                                  printf("****Error semantico en lin %lu: Operacion logica con operandos int.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -391,23 +515,83 @@ exp                       :   exp TOK_MAS exp
                                 escribirVariableLocal(yyout, simbolo->posicion_varloc);
                               }
                           |   constante
-                              {fprintf(yyout,";R81:\t<exp> ::= <constante>\n");}
+                              {fprintf(yyout,";R81:\t<exp> ::= <constante>\n");
+                                $$.tipo = $1.tipo;
+                                $$.es_direccion = $1.es_direccion;
+                              }
                           |   TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO
-                              {fprintf(yyout,";R82:\t<exp> ::= ( <exp> )\n");}
+                              {fprintf(yyout,";R82:\t<exp> ::= ( <exp> )\n");
+                                $$.tipo = $2.tipo;
+                                $$.es_direccion = $2.es_direccion;
+                              }
                           |   TOK_PARENTESISIZQUIERDO comparacion TOK_PARENTESISDERECHO
-                              {fprintf(yyout,";R83:\t<exp> ::= ( <comparacion> )\n");}
+                              {fprintf(yyout,";R83:\t<exp> ::= ( <comparacion> )\n");
+                                $$.tipo = $2.tipo;
+                                $$.es_direccion = $2.es_direccion;
+                              }
                           |   elemento_vector
-                              {fprintf(yyout,";R85:\t<exp> ::= <elemento_vector>\n");}
-                          |   identificador TOK_PARENTESISIZQUIERDO lista_expresiones TOK_PARENTESISDERECHO
-                              {fprintf(yyout,";R88:\t<exp> ::= <identificador> ( <lista_expresiones> )\n");}
+                              {fprintf(yyout,";R85:\t<exp> ::= <elemento_vector>\n");
+                                $$.tipo = $1.tipo;
+                                $$.es_direccion = $1.es_direccion;
+                              }
+                          |   idf_llamada_funcion TOK_PARENTESISIZQUIERDO lista_expresiones TOK_PARENTESISDERECHO
+                              {fprintf(yyout,";R88:\t<exp> ::= <identificador> ( <lista_expresiones> )\n");
+                              if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
+                                printf("****Error semántico en lin %lu: Acceso a variable no declarada (%s)\n", nlines, $1.lexema);
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              if (num_arg_funcion == simbolo->n_parametros) {
+                                printf("****Error semántico en lin %lu: Numero incorrecto de parametros en llamada a función.\n", nlines);
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              $$.tipo = simbolo->tipo;
+                              llamarFuncion(yyout, $1.lexema, simbolo->n_parametros);
+                              limpiarPila(yyout, simbolo->n_parametros);
+                              dentro_par_funcion = 0;
+                              }
+                          ;
+idf_llamada_funcion       :   TOK_IDENTIFICADOR
+                              {
+                                simbolo *simbolo;
+                                if (dentro_par_funcion = 1){
+                                  printf("****Error semántico en lin %lu: No esta permitido el uso de llamadas a funciones como parametros de otras funciones.\n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
+                                  printf("****Error semántico en lin %lu: Acceso a variable no declarada (%s)\n", nlines, $1.lexema);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                if (simbolo->categoria != FUNCION) {
+                                  printf("****Error semántico en lin %lu: TODO ????\n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                num_arg_funcion = 0;
+                                dentro_par_funcion = 1;
+                                $$.lexema = $1.lexema;
+                              }
                           ;
 lista_expresiones         :   exp resto_lista_expresiones
-                              {fprintf(yyout,";R89:\t<lista_expresiones> ::= <exp> <resto_lista_expresiones>\n");}
+                              {
+                                fprintf(yyout,";R89:\t<lista_expresiones> ::= <exp> <resto_lista_expresiones>\n");
+                                if(dentro_par_fun == 1){
+                                  num_arg_funcion++;
+                                }
+                              }
                           |   %empty
                               {fprintf(yyout,";R90:\t<lista_expresiones> ::= \n");}
                           ;
 resto_lista_expresiones   :   TOK_COMA exp resto_lista_expresiones
-                              {fprintf(yyout,";R91:\t<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>\n");}
+                              {
+                                fprintf(yyout,";R91:\t<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>\n");
+                                if(dentro_par_fun == 1){
+                                  num_arg_funcion++;
+                                }
+                              }
                           |   %empty
                               {fprintf(yyout,";R92:\t<resto_lista_expresiones> ::= \n");}
                           ;
@@ -415,7 +599,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R93:\t<comparacion> ::= <exp> == <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %li: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -428,7 +612,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R94:\t<comparacion> ::= <exp> != <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %li: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -441,7 +625,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R95:\t<comparacion> ::= <exp> <= <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %li: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -454,7 +638,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R96:\t<comparacion> ::= <exp> >= <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %li: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -467,7 +651,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R97:\t<comparacion> ::= <exp> < <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %li: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
@@ -480,7 +664,7 @@ comparacion               :   exp TOK_IGUAL exp
                               {
                                 fprintf(yyout,";R98:\t<comparacion> ::= <exp> > <exp>\n");
                                 if(($1.tipo == BOOLEANO) || ($3.tipo == BOOLEANO)){
-                                  printf("****Error semantico en lin %li: Operacion aritmetica con operandos boolean.",nlines);
+                                  printf("****Error semantico en lin %lu: Comparacion con operandos boolean.",nlines);
                                   LiberarTablas(tabla);
                                   return -1;
                                 }

@@ -113,7 +113,7 @@ int insertar_simbolo(simbolo ** tabla, char* identificador,
   return OK;
 }
 
-int InserccionElemento(tablas_smb* tablas, char * identificador,
+int InsercionElemento(tablas_smb* tablas, char * identificador,
                        int categoria,
                        int tipo,
                        int categoria_estructura,
@@ -178,4 +178,8 @@ int CierreAmbito(tablas_smb* tablas) {
   eliminar_tabla(tablas->tabla_local);
   tablas->hay_local = 1;
   return OK;
+}
+
+int Ambito(tablas_smb* tablas){
+  return tablas->hay_local;
 }
