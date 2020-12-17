@@ -12,7 +12,19 @@
 #define FATAL_ERROR -2
 #define MAX_LOCAL_TB 1024
 
-typedef struct _simbolo simbolo;
+typedef struct _simbolo {
+  char * identificador;      /* key */
+  int categoria;
+  int tipo;
+  int categoria_estructura;
+  int tamanio;
+  int n_parametros;
+  int posicion;
+  int n_varloc;
+  int posicion_varloc;
+  UT_hash_handle hh;         /* makes this structure hashable */
+} simbolo;
+
 typedef struct _tablas_smb tablas_smb;
 
 tablas_smb * CrearTablas(void);
@@ -21,7 +33,7 @@ void LiberarTablas(tablas_smb* tablas);
 
 int InserccionElemento(tablas_smb* tablas, char * identificador, int valor);
 
-int BusquedaElemento(tablas_smb* tablas, char* identificador);
+simbolo *BusquedaElemento(tablas_smb* tablas, char* identificador);
 
 int AperturaAmbito(tablas_smb* tablas, char* identificador, int valor);
 

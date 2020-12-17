@@ -14,7 +14,6 @@ void escribir_subseccion_data(FILE* fpasm){
   fprintf(fpasm, "mensaje_error_fuera_rango dd \"Indice fuera de rango\",0\n");
 }
 
-
 void declarar_variable(FILE* fpasm, char * nombre, int tipo, int tamano){
   fprintf(fpasm, "_%s resd %d\n", nombre, tamano);
 }
