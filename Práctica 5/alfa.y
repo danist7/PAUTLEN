@@ -13,6 +13,7 @@ void yyerror(const char *s);
 tablas_smb *tabla;
 
 int num_total_parametros = 0;
+int categoria_estructura = 0;
 int tamanio = 1; /* Para controlar el tamaño del identificador */
 int tipo;        /* Para darle un tipo entero o booleano a un identificador */
 int funcion_retorno = 0; /* Comprueba que hay un return en la funcion */
@@ -110,10 +111,10 @@ declaracion               :   clase identificadores TOK_PUNTOYCOMA
                           ;
 clase                     :   clase_escalar
                               {fprintf(yyout,";R5:\t<clase> ::= <clase_escalar>\n");
-                               categoria = ESCALAR;}
+                               categoria_estructura = ESCALAR;}
                           |   clase_vector
                               {fprintf(yyout,";R7:\t<clase> ::= <clase_vector>\n");
-                               categoria = VECTOR;}
+                               categoria_estructura = VECTOR;}
                           ;
 clase_escalar             :   tipo
                               {fprintf(yyout,";R9:\t<clase_escalar> ::= <tipo>\n");
@@ -321,6 +322,7 @@ exp                       :   exp TOK_MAS exp
                               if (simbolo->categoria == PARAMETRO) {
                                 escribirParametro(yyout, simbolo->posicion, num_total_parametros);
                               } else if (simbolo->categoria == VARIABLE) {
+                              //TODO Si no es local?
                                 escribirVariableLocal(yyout, simbolo->posicion_varloc);
                               }
                           |   constante
