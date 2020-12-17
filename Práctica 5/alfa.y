@@ -9,6 +9,10 @@ extern FILE* yyout;
 extern int yylex();
 void yyerror(const char *s);
 tablas_smb *tabla;
+
+int tamanio = 1; /* Para controlar el tamaño del identificador */
+int tipo;        /* Para darle un tipo entero o booleano a un identificador */
+int funcion_retorno = 0; /* Comprueba que hay un return en la funcion */
 %}
 
 %union {
@@ -80,12 +84,18 @@ tablas_smb *tabla;
 %%
 
 programa                  :   TOK_MAIN inicio TOK_LLAVEIZQUIERDA declaraciones funciones sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }\n");}
+                              {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }\n");
+                               escribir_fin(out);
+                               LiberarTablas(tabla);}
                           ;
 inicio:                   :  {  tabla = CrearTablas();
+                                if(tabla == NULL){
+                                  print("No existe la tabla de símbolos\n");
+                                  return -1;
+                                }
                                 escribir_subseccion_data(yyout);
                                 escribir_cabecera_bss(yyout);}
-
+                          ;
 declaraciones             :   declaracion
                               {fprintf(yyout,";R2:\t<declaraciones> ::= <declaracion>\n");}
                           |   declaracion declaraciones
@@ -95,17 +105,22 @@ declaracion               :   clase identificadores TOK_PUNTOYCOMA
                               {fprintf(yyout,";R4:\t<declaracion> ::= <clase> <identificadores> ;\n");}
                           ;
 clase                     :   clase_escalar
-                              {fprintf(yyout,";R5:\t<clase> ::= <clase_escalar>\n");}
+                              {fprintf(yyout,";R5:\t<clase> ::= <clase_escalar>\n");
+                               categoria = ESCALAR;}
                           |   clase_vector
-                              {fprintf(yyout,";R7:\t<clase> ::= <clase_vector>\n");}
+                              {fprintf(yyout,";R7:\t<clase> ::= <clase_vector>\n");
+                               categoria = VECTOR;}
                           ;
 clase_escalar             :   tipo
-                              {fprintf(yyout,";R9:\t<clase_escalar> ::= <tipo>\n");}
+                              {fprintf(yyout,";R9:\t<clase_escalar> ::= <tipo>\n");
+                               tamanio = 1;}
                           ;
 tipo                      :   TOK_INT
-                              {fprintf(yyout,";R10:\t<tipo> ::= int\n");}
+                              {fprintf(yyout,";R10:\t<tipo> ::= int\n");
+                               tipo = ENTERO;}
                           |   TOK_BOOLEAN
-                              {fprintf(yyout,";R11:\t<tipo> ::= boolean\n");}
+                              {fprintf(yyout,";R11:\t<tipo> ::= boolean\n");
+                               tipo = BOOLEANO;}
                           ;
 clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO constante_entera TOK_CORCHETEDERECHO
                               {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");}
@@ -120,8 +135,18 @@ funciones                 :   funcion funciones
                           |   %empty
                               {fprintf(yyout,";R21:\t<funciones> ::= \n");}
                           ;
-funcion                   :   TOK_FUNCTION tipo identificador TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA declaraciones_funcion sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");}
+funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
+                              {fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
+                              if (funcion_retorno < 1){
+                                print("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, $1.lexema);
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              }
+                          ;
+fn_declaration            : fn_name TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISIZQUIERDO TOK_CORCHETEIZQUIERDO declaraciones_funcion
+                          ;
+fn_name                   : TOK_FUNCTION tipo TOK_IDENTIFICADOR
                           ;
 parametros_funcion        :   parametro_funcion resto_parametros_funcion
                               {fprintf(yyout,";R23:\t<parametros_funcion> ::= <parametro_funcion> <resto_parametros_funcion>\n");}
@@ -182,7 +207,17 @@ bucle                     :   TOK_WHILE TOK_PARENTESISIZQUIERDO exp TOK_PARENTES
                               {fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");}
                           ;
 lectura                   :   TOK_SCANF identificador
-                              {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");}
+                              {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");
+                               simbolo *simbolo;
+                               simbolo = BusquedaElemento(tabla, $2.lexema);
+
+                               if (simbolo == NULL){
+                                printf("***Error semantico en lin %li: Acceso a variable no declarada (%s)", nlines, $2.lexema);
+                                LiberarTablas(tabla);
+                                return -1;
+                               }
+                               
+                               }
                           ;
 escritura                 :   TOK_PRINTF exp
                               {fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");}
