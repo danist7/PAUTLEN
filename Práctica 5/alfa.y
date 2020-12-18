@@ -22,7 +22,8 @@ int etiqueta = 0;
 
 int dentro_par_fun = 0;         /* Esta a 1 si estamos si estamos dentro de los parentesis de una funcion y a 0 si estamos fuera */
 int categoria_estructura;       /* Es ESCALAR o VECTOR */
-int posicion = 0;               /* Solo para elementos de tipo parametro, posicion en orden, empieza por 0 */
+int posicion_parametro = 0;     /* Solo para elementos de tipo parametro, posicion en orden, empieza por 0 */
+int posicion = 0;               /* Solo para variables locales, su posición*/
 int num_arg_funcion = 0;        /* Numero de parametros al LLAMAR a una funcion */
 %}
 
@@ -117,10 +118,10 @@ declaracion               :   clase identificadores TOK_PUNTOYCOMA
                           ;
 clase                     :   clase_escalar
                               {fprintf(yyout,";R5:\t<clase> ::= <clase_escalar>\n");
-                               categoria = ESCALAR;}
+                               categoria_estructura = ESCALAR;}
                           |   clase_vector
                               {fprintf(yyout,";R7:\t<clase> ::= <clase_vector>\n");
-                               categoria = VECTOR;}
+                               categoria_estructura = VECTOR;}
                           ;
 clase_escalar             :   tipo
                               {fprintf(yyout,";R9:\t<clase_escalar> ::= <tipo>\n");
@@ -153,7 +154,8 @@ funciones                 :   funcion funciones
                               {fprintf(yyout,";R21:\t<funciones> ::= \n");}
                           ;
 funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
+                              {
+                              fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
                               if (funcion_retorno < 1){
                                 print("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
@@ -195,7 +197,7 @@ fn_name                   :   TOK_FUNCTION tipo TOK_IDENTIFICADOR
                                 }
                                 /* La funcion ya existe */
                                 else{
-                                  printf("***Error semantico en lin %lu: Declaracion duplicada\n");
+                                  printf("***Error semantico en lin %lu: Declaracion duplicada\n",nlines);
                                   LiberarTablas(tablas);
                                   return -1;
                                 }
@@ -218,7 +220,17 @@ parametro_funcion         :   tipo idpf
                           ;
 idpf                      :   TOK_IDENTIFICADOR
                               {
-                               //TODO
+                               if(BusquedaEnAmbitoActual(tabla, $1.lexema) == NULL){
+                                if(InsercionElemento(tabla, $1.lexema, PARAMETRO, tipo, ESCALAR, tamanio, num_total_parametros, posicion_parametro, num_total_varlocs, posicion) == FATAL_ERROR){
+                                  printf("***Error en la tabla de simbolos\n");
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                               }else{
+                                 printf("****Error semantico en lin %li: Declaracion duplicada.\n",nlines);
+                                 LiberarTablas(tabla);
+                                 return -1;
+                               }
                               }
 declaraciones_funcion     :   declaraciones
                               {fprintf(yyout,";R28:\t<declaraciones_funcion> ::= <declaraciones>\n");}
