@@ -41,7 +41,16 @@ int InsercionElemento(tablas_smb* tablas, char * identificador,
                        int n_varloc,
                        int posicion_varloc);
 
+/* Si hay abierto ámbito local, busca un elemento primero en el ámbito local.
+Y luego en el ámbito global.
+En caso contrario, busca solo en el ambito global.
+Devuelve NULL en caso de no encontrarlo */
 simbolo *BusquedaElemento(tablas_smb* tablas, char* identificador);
+
+/* Si hay abierto ámbito local, busca un elemento solo en el ámbito local.
+En caso contrario, busca solo en el ambito global
+Devuelve NULL en caso de no encontrarlo */
+simbolo *BusquedaEnAmbitoActual(tablas_smb* tablas, char* identificador);
 
 int AperturaAmbito(tablas_smb* tablas, char* identificador, int valor);
 

@@ -158,6 +158,16 @@ simbolo *BusquedaElemento(tablas_smb* tablas, char* identificador) {
   }
 }
 
+simbolo *BusquedaEnAmbitoActual(tablas_smb* tablas, char* identificador) {
+  simbolo *simbolo = NULL;
+  if (tablas->hay_local == 1) {
+    simbolo = buscar_simbolo(tablas->tabla_local, identificador);
+    return simbolo;
+  } else {
+    return buscar_simbolo(tablas->tabla_global, identificador);
+  }
+}
+
 int AperturaAmbito(tablas_smb* tablas, char* identificador, int valor) {
   if (tablas->hay_local == 1) {
     return ERROR;
