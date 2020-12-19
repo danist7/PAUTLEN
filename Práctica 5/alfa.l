@@ -96,6 +96,7 @@ false {  ncols += yyleng; fprintf(yyout, ";D:\t%s\n", yytext);
          return TOK_FALSE;}
 
 [a-zA-Z]([a-zA-Z0-9]){0,99} {  ncols += yyleng; fprintf(yyout, ";D:\t%s\n", yytext);
+                               strcpy(yylval.atributos.lexema, yytext);
                                return TOK_IDENTIFICADOR;}
 [0-9]+                      {  ncols += yyleng; fprintf(yyout, ";D:\t%s\n", yytext);
                                 yylval.atributos.valor_entero = atoi(yytext);

@@ -79,7 +79,7 @@ int insertar_simbolo(simbolo ** tabla, char* identificador,
                                        int n_varloc,
                                        int posicion_varloc){
   simbolo * nuevo_smb;
-  if (buscar_simbolo(tabla, identificador) != ERROR) {
+  if (buscar_simbolo(tabla, identificador) != NULL) {
     return ERROR;
   }
 
@@ -165,38 +165,32 @@ simbolo *BusquedaEnAmbitoActual(tablas_smb* tablas, char* identificador) {
 }
 
 int AperturaAmbito(tablas_smb* tablas, char* identificador,
-                    int categoria,
-                    int tipo,
-                    int categoria_estructura,
-                    int tamanio,
                     int n_parametros,
-                    int posicion,
-                    int n_varloc,
-                    int posicion_varloc)
+                    int n_varloc)
 {
   if (tablas->hay_local == 1) {
     return ERROR;
   }
-  if (buscar_simbolo(tablas->tabla_global, identificador) != ERROR) {
+  if (buscar_simbolo(tablas->tabla_global, identificador) != NULL) {
     return ERROR;
   }
-  insertar_simbolo(tablas->tabla_global, identificador,categoria,
-                                          tipo,
-                                          categoria_estructura,
-                                          tamanio,
+  insertar_simbolo(tablas->tabla_global, identificador,FUNCION,
+                                          0,
+                                          0,
+                                          0,
                                           n_parametros,
-                                          posicion,
+                                          0,
                                           n_varloc,
-                                          posicion_varloc);
+                                          0);
   insertar_simbolo(tablas->tabla_local, identificador,
-                                          categoria,
-                                          tipo,
-                                          categoria_estructura,
-                                          tamanio,
+                                          FUNCION,
+                                          0,
+                                          0,
+                                          0,
                                           n_parametros,
-                                          posicion,
+                                          0,
                                           n_varloc,
-                                          posicion_varloc);
+                                          0);
   tablas->hay_local = 1;
   return OK;
 }

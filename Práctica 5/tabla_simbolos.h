@@ -7,6 +7,20 @@
 #include <string.h>
 
 
+//DEFINICIONES DE CATEGORIAS
+#define VARIABLE 1
+#define PARAMETRO 2
+#define FUNCION 3
+
+
+//DEFINICIONES DE CATEGORIAS DE ESTRUCTURA
+#define ESCALAR 1
+#define VECTOR 2
+
+//DEFINICIONES AMBITO
+#define GLOBAL 0
+#define LOCAL 1
+
 #define ERROR -1
 #define OK 0
 #define FATAL_ERROR -2
@@ -103,14 +117,8 @@ simbolo *BusquedaEnAmbitoActual(tablas_smb* tablas, char* identificador);
  * Inicializa un ambito local
  */
 int AperturaAmbito(tablas_smb* tablas, char* identificador,
-                      int categoria,
-                      int tipo,
-                      int categoria_estructura,
-                      int tamanio,
                       int n_parametros,
-                      int posicion,
-                      int n_varloc,
-                      int posicion_varloc);
+                      int n_varloc);
 
 /**
  * Funcion: CierreAmbito

@@ -176,7 +176,7 @@ funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
                               {
                               fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
                               if (funcion_retorno < 1){
-                                printf("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, $1.lexema);
+                                printf("****Error semántico en lin %lu : Funcion %s sin sentencia return\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -215,7 +215,7 @@ fn_name                   :   TOK_FUNCTION tipo TOK_IDENTIFICADOR
                                   simbolo *simbolo;
                                   strcpy($$.lexema, $3.lexema);
                                   /* Abrimos ambito local de tipo funcion en la tabla */
-                                  AperturaAmbito(tabla, $3.lexema, FUNCION, tipo, categoria_estructura, tamanio, 0, posicion, 0, 0);
+                                  AperturaAmbito(tabla, $3.lexema, 0, 0);
                                   /* Reseteamos los valores */
                                   tamanio = 1;
                                   num_total_varlocs = 0;
@@ -772,7 +772,6 @@ identificador             :   TOK_IDENTIFICADOR
                                   InsercionElemento(tabla, $1.lexema, VARIABLE, tipo, categoria_estructura, tamanio, num_total_parametros, posicion, 0, num_total_varlocs);
                                   declarar_variable(yyout, $1.lexema, tipo, tamanio);
                                 }
-                                declarar_variable(yyout, $1.lexema, tipo, tamanio);
                                }
                                /* Ya existia la variable luego error por duplicado*/
                                else{

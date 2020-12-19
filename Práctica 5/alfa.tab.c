@@ -1613,7 +1613,7 @@ yyreduce:
                               {
                               fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
                               if (funcion_retorno < 1){
-                                printf("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, (yyvsp[-2].atributos).lexema);
+                                printf("****Error semántico en lin %lu : Funcion %s sin sentencia return\n", nlines, (yyvsp[-2].atributos).lexema);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -1658,7 +1658,7 @@ yyreduce:
                                   simbolo *simbolo;
                                   strcpy((yyval.atributos).lexema, (yyvsp[0].atributos).lexema);
                                   /* Abrimos ambito local de tipo funcion en la tabla */
-                                  AperturaAmbito(tabla, (yyvsp[0].atributos).lexema, FUNCION, tipo, categoria_estructura, tamanio, 0, posicion, 0, 0);
+                                  AperturaAmbito(tabla, (yyvsp[0].atributos).lexema, 0, 0);
                                   /* Reseteamos los valores */
                                   tamanio = 1;
                                   num_total_varlocs = 0;
@@ -2435,7 +2435,6 @@ yyreduce:
                                   InsercionElemento(tabla, (yyvsp[0].atributos).lexema, VARIABLE, tipo, categoria_estructura, tamanio, num_total_parametros, posicion, 0, num_total_varlocs);
                                   declarar_variable(yyout, (yyvsp[0].atributos).lexema, tipo, tamanio);
                                 }
-                                declarar_variable(yyout, (yyvsp[0].atributos).lexema, tipo, tamanio);
                                }
                                /* Ya existia la variable luego error por duplicado*/
                                else{
@@ -2443,11 +2442,11 @@ yyreduce:
                                 LiberarTablas(tabla);
                                 return -1;
                                }}
-#line 2447 "alfa.tab.c"
+#line 2446 "alfa.tab.c"
     break;
 
 
-#line 2451 "alfa.tab.c"
+#line 2450 "alfa.tab.c"
 
       default: break;
     }
@@ -2679,7 +2678,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 783 "alfa.y"
+#line 782 "alfa.y"
 
 
 void yyerror(const char *s){
