@@ -10,8 +10,8 @@ void escribir_cabecera_bss(FILE* fpasm){
 void escribir_subseccion_data(FILE* fpasm){
   fprintf(fpasm, "segment .data\n");
   //TODO: escribir cada mensaje de error segun vayamos creandolos
-  fprintf(fpasm, "mensaje_error_div_0 dd \"División por cero\",0\n");
-  fprintf(fpasm, "mensaje_error_fuera_rango dd \"Indice fuera de rango\",0\n");
+  fprintf(fpasm, "mensaje_error_div_0 dd \"****Error de ejecucion: División por cero\",0\n");
+  fprintf(fpasm, "mensaje_error_fuera_rango dd \"****Error de ejecucion: Indice fuera de rango\",0\n");
 }
 
 void declarar_variable(FILE* fpasm, char * nombre, int tipo, int tamano){
