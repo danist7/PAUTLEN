@@ -25,7 +25,11 @@ typedef struct _simbolo {
   UT_hash_handle hh;         /* makes this structure hashable */
 } simbolo;
 
-typedef struct _tablas_smb tablas_smb;
+typedef struct _tablas_smb {
+  simbolo **tabla_global;    /* Simbolo de la tabla global */
+  simbolo **tabla_local;     /* Simbolo de la tabla local */
+  int hay_local;             /* Es 1 si hay ambito local y 0 si es el global */
+} tablas_smb;
 
 /**
  * Funcion: CrearTablas
@@ -92,13 +96,21 @@ simbolo *BusquedaEnAmbitoActual(tablas_smb* tablas, char* identificador);
 
 /**
  * Funcion: AperturaAmbito
- * Parametros: la estructura con ambas tablas, el identificador a buscar
+ * Parametros: la estructura con ambas tablas y los atributos del ambito local a crear
  * Return: ERROR si intentamos abrir un ambito local cuando ya hay uno
  *         OK si se abre el ambito local con exito
  *
- * Inicializa un ambito local 
+ * Inicializa un ambito local
  */
-int AperturaAmbito(tablas_smb* tablas, char* identificador, int valor);
+int AperturaAmbito(tablas_smb* tablas, char* identificador,
+                      int categoria,
+                      int tipo,
+                      int categoria_estructura,
+                      int tamanio,
+                      int n_parametros,
+                      int posicion,
+                      int n_varloc,
+                      int posicion_varloc);
 
 /**
  * Funcion: CierreAmbito

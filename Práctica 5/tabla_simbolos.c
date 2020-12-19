@@ -1,11 +1,7 @@
 #include "tabla_simbolos.h"
 
 
-typedef struct _tablas_smb {
-  simbolo **tabla_global;
-  simbolo **tabla_local;
-  int hay_local;
-} tablas_smb;
+
 
 tablas_smb * CrearTablas(void){
   tablas_smb *tb_smb;
@@ -168,15 +164,39 @@ simbolo *BusquedaEnAmbitoActual(tablas_smb* tablas, char* identificador) {
   }
 }
 
-int AperturaAmbito(tablas_smb* tablas, char* identificador, int valor) {
+int AperturaAmbito(tablas_smb* tablas, char* identificador,
+                    int categoria,
+                    int tipo,
+                    int categoria_estructura,
+                    int tamanio,
+                    int n_parametros,
+                    int posicion,
+                    int n_varloc,
+                    int posicion_varloc)
+{
   if (tablas->hay_local == 1) {
     return ERROR;
   }
   if (buscar_simbolo(tablas->tabla_global, identificador) != ERROR) {
     return ERROR;
   }
-  insertar_simbolo(tablas->tabla_global, identificador, valor);
-  insertar_simbolo(tablas->tabla_local, identificador, valor);
+  insertar_simbolo(tablas->tabla_global, identificador,categoria,
+                                          tipo,
+                                          categoria_estructura,
+                                          tamanio,
+                                          n_parametros,
+                                          posicion,
+                                          n_varloc,
+                                          posicion_varloc);
+  insertar_simbolo(tablas->tabla_local, identificador,
+                                          categoria,
+                                          tipo,
+                                          categoria_estructura,
+                                          tamanio,
+                                          n_parametros,
+                                          posicion,
+                                          n_varloc,
+                                          posicion_varloc);
   tablas->hay_local = 1;
   return OK;
 }

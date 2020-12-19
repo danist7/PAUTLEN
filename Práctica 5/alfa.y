@@ -95,7 +95,7 @@ int num_arg_funcion = 0;        /* Numero de parametros al LLAMAR a una funcion 
 %right TOK_NOT
 %%
 
-programa                  :   TOK_MAIN inicio TOK_LLAVEIZQUIERDA declaraciones funciones sentencias TOK_LLAVEDERECHA
+programa                  :   TOK_MAIN inicio TOK_LLAVEIZQUIERDA declaraciones escribir_TS funciones escribir_MAIN sentencias TOK_LLAVEDERECHA
                               {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }\n");
                                escribir_fin(yyout);
                                LiberarTablas(tabla);}
@@ -107,6 +107,15 @@ inicio:                   :  {  tabla = CrearTablas();
                                 }
                                 escribir_subseccion_data(yyout);
                                 escribir_cabecera_bss(yyout);}
+                          ;
+
+escribir_TS               :   {
+                               escribir_segmento_codigo(yyout);
+                             }
+                          ;
+escribir_MAIN             :   {
+                               escribir_inicio_main(yyout);
+                              }
                           ;
 declaraciones             :   declaracion
                               {fprintf(yyout,";R2:\t<declaraciones> ::= <declaracion>\n");}
@@ -195,7 +204,7 @@ fn_name                   :   TOK_FUNCTION tipo TOK_IDENTIFICADOR
                                 if (BusquedaElemento(tabla, $3.lexema) == NULL){
                                   simbolo *simbolo;
                                   strcpy($$.lexema, $3.lexema);
-                                  /* Insertamos la funcion en la tabla */
+                                  /* Abrimos ambito local de tipo funcion en la tabla */
                                   AperturaAmbito(tabla, $3.lexema, FUNCION, tipo, categoria_estructura, tamanio, 0, posicion, 0, posicion_varloc);
                                   /* Reseteamos los valores */
                                   tamanio = 1;
