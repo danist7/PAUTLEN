@@ -16,3 +16,5 @@ R90 DANI
 R91 DANI
 R92 DANI
 R108 LUCIA
+
+SOLO QUEDA hacer y comprobar los errores de funciones

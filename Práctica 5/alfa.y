@@ -153,13 +153,14 @@ tipo                      :   TOK_INT
                           ;
 clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO TOK_CONSTANTE_ENTERA TOK_CORCHETEDERECHO
                               {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");
-                              if($4.valor_entero <= 0 || $4.valor_entero > MAX_TAMANIO_VECTOR){
+                              tamanio = $4.valor_entero;
+                              if(tamanio <= 0 || tamanio > MAX_TAMANIO_VECTOR){
                                 printf("****Error semantico en lin %lu: El tamanyo del vector excede los limites permitidos (1,64).\n", nlines); //TODO en el enunciado nos piden aqui dar el nombre del vector pero no se puede
                                 LiberarTablas(tabla);
                                 return -1;
                               }
                               if (Ambito(tabla) == LOCAL) {
-                                printf("****Error semantico en lin %lu: Declaracion de vector en ambito local.\n", nlines, $1.lexema); //DUDA: He puesto esto para el error 15 pero no estoy seguro
+                                printf("****Error semantico en lin %lu: Declaracion de vector en ambito local.\n", nlines); //DUDA: He puesto esto para el error 15 pero no estoy seguro
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -328,7 +329,24 @@ asignacion                :   TOK_IDENTIFICADOR TOK_ASIGNACION exp
                                 }
                               }
                           |   elemento_vector TOK_ASIGNACION exp
-                              {fprintf(yyout,";R44:\t<asignacion> ::= <elemento_vector> = <exp>\n");}
+                              {fprintf(yyout,";R44:\t<asignacion> ::= <elemento_vector> = <exp>\n");
+                                simbolo *simbolo;
+                                if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
+                                  printf("****Error semantico en lin %lu: Acceso a variable no declarada (%s).\n", nlines, $1.lexema);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                if ($1.tipo != $3.tipo) {
+                                  printf("****Error semantico en lin %lu: Asignacion incompatible.\n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                char aux[MAX_TAM_ENTERO];
+                                sprintf(aux, "%d", $1.valor_entero);
+                                escribir_operando(yyout, aux, 0);
+                                escribir_elemento_vector(yyout, simbolo->identificador, simbolo->tamanio, $3.es_direccion);
+                                asignarDestinoEnPila(yyout, $3.es_direccion);
+                              }
                           ;
 elemento_vector           :   TOK_IDENTIFICADOR TOK_CORCHETEIZQUIERDO exp TOK_CORCHETEDERECHO
                               {fprintf(yyout,";R48:\t<elemento_vector> ::= <identificador> [ <exp> ]\n");
@@ -339,7 +357,7 @@ elemento_vector           :   TOK_IDENTIFICADOR TOK_CORCHETEIZQUIERDO exp TOK_CO
                                 return -1;
                               }
                               if (Ambito(tabla) == LOCAL) {
-                                printf("****Error semantico en lin %lu: Acceso vector en ambito local.\n", nlines, $1.lexema); //DUDA: Error extra
+                                printf("****Error semantico en lin %lu: Acceso vector en ambito local.\n", nlines); //DUDA: Error extra
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -356,7 +374,7 @@ elemento_vector           :   TOK_IDENTIFICADOR TOK_CORCHETEIZQUIERDO exp TOK_CO
                               $$.tipo = simbolo->tipo;
                               $$.es_direccion = 1;
                               $$.valor_entero = $3.valor_entero;
-                              escribir_elemento_vector(yyout, simbolo->identificador, tamanio, $3.es_direccion);
+                              escribir_elemento_vector(yyout, simbolo->identificador, simbolo->tamanio, $3.es_direccion);
                               }
                           ;
 condicional               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA

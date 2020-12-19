@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall
 LIBS = tokens.h lex.yy.c alfa.tab.c tabla_simbolos.c generacion.c
-OUTS = funciones1 funciones2 funciones3 funciones4
+EXES = funciones1 funciones2 funciones3 funciones4
 
 all: alfa nasm
 
@@ -10,12 +10,12 @@ alfa:
 	bison -d alfa.y
 	$(CC) $(CFLAGS) alfa.c $(LIBS) -o alfa
 
-nasm: $(OUTS)
+nasm: $(EXES)
 
-$(OUTS):
+$(EXES):
 	./alfa ejemplos/$@.alf salidas/$@.asm
 	nasm -g -o $@.o -f elf32 salidas/$@.asm
 	gcc -m32 -o $@ $@.o lib/alfalib.o
 
 clean:
-	rm -rf lex.yy.c $(OUTS) $(OUTS).o salidas/*.asm
+	rm -rf lex.yy.c alfa $(EXES) *.o salidas/*.asm
