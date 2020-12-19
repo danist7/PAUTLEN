@@ -1494,7 +1494,7 @@ yyreduce:
 #line 111 "alfa.y"
                               {  tabla = CrearTablas();
                                 if(tabla == NULL){
-                                  print("No existe la tabla de símbolos\n");
+                                  printf("No existe la tabla de símbolos\n");
                                   return -1;
                                 }
                                 escribir_subseccion_data(yyout);
@@ -1613,7 +1613,7 @@ yyreduce:
                               {
                               fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
                               if (funcion_retorno < 1){
-                                print("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, (yyvsp[-2].atributos).lexema);
+                                printf("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, (yyvsp[-2].atributos).lexema);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -1973,7 +1973,7 @@ yyreduce:
   case 52:
 #line 427 "alfa.y"
                               {if (dentro_par_fun == 1){
-                                print("***Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n");
+                                printf("***Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n");
                                 LiberarTablas(tabla);
                                 return -1;
                               }

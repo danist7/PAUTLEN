@@ -110,7 +110,7 @@ programa                  :   TOK_MAIN inicio TOK_LLAVEIZQUIERDA declaraciones e
 inicio                    :   %empty
                               {  tabla = CrearTablas();
                                 if(tabla == NULL){
-                                  print("No existe la tabla de símbolos\n");
+                                  printf("No existe la tabla de símbolos\n");
                                   return -1;
                                 }
                                 escribir_subseccion_data(yyout);
@@ -176,7 +176,7 @@ funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
                               {
                               fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
                               if (funcion_retorno < 1){
-                                print("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, $1.lexema);
+                                printf("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -425,7 +425,7 @@ escritura                 :   TOK_PRINTF exp
                           ;
 retorno_funcion           :   TOK_RETURN exp
                               {if (dentro_par_fun == 1){
-                                print("***Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n");
+                                printf("***Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n");
                                 LiberarTablas(tabla);
                                 return -1;
                               }
