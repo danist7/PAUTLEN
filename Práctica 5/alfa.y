@@ -96,9 +96,8 @@ int num_arg_funcion = 0;        /* Numero de parametros al LLAMAR a una funcion 
 
 
 %left TOK_IGUAL TOK_MENORIGUAL  TOK_MENOR TOK_MAYORIGUAL TOK_MAYOR TOK_DISTINTO
-%left TOK_AND TOK_OR
-%left TOK_MAS TOK_MENOS
-%left TOK_ASTERISCO TOK_DIVISION
+%left TOK_MAS TOK_MENOS TOK_OR
+%left TOK_ASTERISCO TOK_DIVISION TOK_AND
 %right TOK_NOT
 %%
 
@@ -153,13 +152,13 @@ tipo                      :   TOK_INT
                               {fprintf(yyout,";R11:\t<tipo> ::= boolean\n");
                                tipo = BOOLEANO;}
                           ;
-clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO constante_entera TOK_CORCHETEDERECHO
+clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO TOK_CONSTANTE_ENTERA TOK_CORCHETEDERECHO
                               {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");
-                              int longitud = $4.valor_entero;
-                              if(longitud <= 0 || longitud > MAX_TAMANIO_VECTOR){
-                                printf("****Error semantico en lin %lu: El tamanyo del vector %s excede los limites permitidos (1,64).\n", nlines, $1.lexema);
-                                LiberarTablas(tabla);
-                                return -1;
+                               tamanio = $4.valor_entero;
+                               if(tamanio <= 0 || tamanio > MAX_TAMANIO_VECTOR){
+                                 printf("****Error semantico en lin %lu: El tamanyo del vector %s excede los limites permitidos (1,64).\n", nlines, $1.lexema);
+                                 LiberarTablas(tabla);
+                                 return -1;
                               }}
                           ;
 identificadores           :   identificador

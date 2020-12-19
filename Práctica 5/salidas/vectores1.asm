@@ -5,17 +5,21 @@ mensaje_error_fuera_rango dd "Indice fuera de rango",0
 segment .bss
 __esp resd 1
 ;D:	{
-;D:	boolean
-;R11:	<tipo> ::= boolean
-;R9:	<clase_escalar> ::= <tipo>
-;R5:	<clase> ::= <clase_escalar>
-;D:	a
+;D:	array
+;D:	int
+;R10:	<tipo> ::= int
+;D:	[
+;D:	3
+;D:	]
+;R15:	<clase_vector> ::= array <tipo> [ <constante_entera> ]
+;R7:	<clase> ::= <clase_vector>
+;D:	vector1
 ;R108:	<identificador> ::= TOK_IDENTIFICADOR
-_a resd 1
+_vector1 resd 3
 ;D:	;
 ;R18:	<identificadores> ::= <identificador>
 ;R4:	<declaracion> ::= <clase> <identificadores> ;
-;D:	a
+;D:	vector1
 ;R2:	<declaraciones> ::= <declaracion>
 segment .text
 global main
@@ -24,122 +28,129 @@ extern print_int, print_boolean, print_string, print_blank, print_endofline
 ;R21:	<funciones> ::= 
 main:
 mov [__esp], esp
-;D:	=
-;D:	true
-;R102:	<constante_logica> ::= true
-mov dword eax, 1
-push dword eax
-;R99:	<constante> ::= <constante_logica>
-;R81:	<exp> ::= <constante>
-;D:	;
-;R43:	<asignacion> ::= <identificador> = <exp>
-pop dword [_a]
-;R34:	<sentencia_simple> ::= <asignacion>
-;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	if
-;D:	(
-;D:	a
-;D:	)
-;R80:	<exp> ::= <identificador>
-push dword _a
-pop eax
-mov eax,[eax]
-cmp eax, 0
-je near fin_then_0
-;D:	{
-;D:	printf
-;D:	1
-;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
-mov dword eax, 1
-push dword eax
-;R100:	<constante> ::= <constante_entera>
-;R81:	<exp> ::= <constante>
-;D:	;
-;R56:	<escritura> ::= printf <exp>
-call print_int
-add esp, 4
-call print_endofline
-;R36:	<sentencia_simple> ::= <escritura>
-;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	}
-;R30:	<sentencias> ::= <sentencia>
-;D:	else
-jmp near fin_ifelse_0
-fin_then_0:
-;D:	{
-;D:	printf
+;D:	[
 ;D:	0
 ;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
 mov dword eax, 0
 push dword eax
 ;R100:	<constante> ::= <constante_entera>
 ;R81:	<exp> ::= <constante>
-;D:	;
-;R56:	<escritura> ::= printf <exp>
-call print_int
-add esp, 4
-call print_endofline
-;R36:	<sentencia_simple> ::= <escritura>
-;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	}
-;R30:	<sentencias> ::= <sentencia>
-;R51:	<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }
-fin_ifelse_0:
-;R40:	<bloque> ::= <condicional>
-;R33:	<sentencia> ::= <bloque>
-;D:	a
+;D:	]
+;R48:	<elemento_vector> ::= <identificador> [ <exp> ]
 ;D:	=
-;D:	false
-;R103:	<constante_logica> ::= false
-mov dword eax, 0
+;D:	10
+;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
+mov dword eax, 10
 push dword eax
-;R99:	<constante> ::= <constante_logica>
+;R100:	<constante> ::= <constante_entera>
 ;R81:	<exp> ::= <constante>
 ;D:	;
-;R43:	<asignacion> ::= <identificador> = <exp>
-pop dword [_a]
+;R44:	<asignacion> ::= <elemento_vector> = <exp>
 ;R34:	<sentencia_simple> ::= <asignacion>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	if
-;D:	(
-;D:	a
-;D:	)
-;R80:	<exp> ::= <identificador>
-push dword _a
-pop eax
-mov eax,[eax]
-cmp eax, 0
-je near fin_then_1
-;D:	{
-;D:	printf
+;D:	vector1
+;D:	[
 ;D:	1
 ;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
 mov dword eax, 1
 push dword eax
 ;R100:	<constante> ::= <constante_entera>
 ;R81:	<exp> ::= <constante>
+;D:	]
+;R48:	<elemento_vector> ::= <identificador> [ <exp> ]
+;D:	=
+;D:	20
+;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
+mov dword eax, 20
+push dword eax
+;R100:	<constante> ::= <constante_entera>
+;R81:	<exp> ::= <constante>
 ;D:	;
-;R56:	<escritura> ::= printf <exp>
-call print_int
-add esp, 4
-call print_endofline
-;R36:	<sentencia_simple> ::= <escritura>
+;R44:	<asignacion> ::= <elemento_vector> = <exp>
+;R34:	<sentencia_simple> ::= <asignacion>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	}
-;R30:	<sentencias> ::= <sentencia>
-;D:	else
-jmp near fin_ifelse_1
-fin_then_1:
-;D:	{
+;D:	vector1
+;D:	[
+;D:	2
+;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
+mov dword eax, 2
+push dword eax
+;R100:	<constante> ::= <constante_entera>
+;R81:	<exp> ::= <constante>
+;D:	]
+;R48:	<elemento_vector> ::= <identificador> [ <exp> ]
+;D:	=
+;D:	30
+;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
+mov dword eax, 30
+push dword eax
+;R100:	<constante> ::= <constante_entera>
+;R81:	<exp> ::= <constante>
+;D:	;
+;R44:	<asignacion> ::= <elemento_vector> = <exp>
+;R34:	<sentencia_simple> ::= <asignacion>
+;R32:	<sentencia> ::= <sentencia_simple> ;
 ;D:	printf
+;D:	vector1
+;D:	[
 ;D:	0
 ;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
 mov dword eax, 0
 push dword eax
 ;R100:	<constante> ::= <constante_entera>
 ;R81:	<exp> ::= <constante>
+;D:	]
+;R48:	<elemento_vector> ::= <identificador> [ <exp> ]
+;R85:	<exp> ::= <elemento_vector>
 ;D:	;
 ;R56:	<escritura> ::= printf <exp>
+pop eax
+mov eax, [eax]
+push eax
+call print_int
+add esp, 4
+call print_endofline
+;R36:	<sentencia_simple> ::= <escritura>
+;R32:	<sentencia> ::= <sentencia_simple> ;
+;D:	printf
+;D:	vector1
+;D:	[
+;D:	1
+;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
+mov dword eax, 1
+push dword eax
+;R100:	<constante> ::= <constante_entera>
+;R81:	<exp> ::= <constante>
+;D:	]
+;R48:	<elemento_vector> ::= <identificador> [ <exp> ]
+;R85:	<exp> ::= <elemento_vector>
+;D:	;
+;R56:	<escritura> ::= printf <exp>
+pop eax
+mov eax, [eax]
+push eax
+call print_int
+add esp, 4
+call print_endofline
+;R36:	<sentencia_simple> ::= <escritura>
+;R32:	<sentencia> ::= <sentencia_simple> ;
+;D:	printf
+;D:	vector1
+;D:	[
+;D:	2
+;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
+mov dword eax, 2
+push dword eax
+;R100:	<constante> ::= <constante_entera>
+;R81:	<exp> ::= <constante>
+;D:	]
+;R48:	<elemento_vector> ::= <identificador> [ <exp> ]
+;R85:	<exp> ::= <elemento_vector>
+;D:	;
+;R56:	<escritura> ::= printf <exp>
+pop eax
+mov eax, [eax]
+push eax
 call print_int
 add esp, 4
 call print_endofline
@@ -147,12 +158,8 @@ call print_endofline
 ;R32:	<sentencia> ::= <sentencia_simple> ;
 ;D:	}
 ;R30:	<sentencias> ::= <sentencia>
-;R51:	<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }
-fin_ifelse_1:
-;R40:	<bloque> ::= <condicional>
-;R33:	<sentencia> ::= <bloque>
-;D:	}
-;R30:	<sentencias> ::= <sentencia>
+;R31:	<sentencias> ::= <sentencia> <sentencias>
+;R31:	<sentencias> ::= <sentencia> <sentencias>
 ;R31:	<sentencias> ::= <sentencia> <sentencias>
 ;R31:	<sentencias> ::= <sentencia> <sentencias>
 ;R31:	<sentencias> ::= <sentencia> <sentencias>
