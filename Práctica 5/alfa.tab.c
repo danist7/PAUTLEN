@@ -1766,7 +1766,7 @@ yyreduce:
                               (yyval.atributos).tipo = simbolo->tipo;
                               (yyval.atributos).es_direccion = 1;
                               (yyval.atributos).valor_entero = (yyvsp[-1].atributos).valor_entero;
-                              //TODO USAR AQUI EL Escribir elemento vector
+                              escribir_elemento_vector(yyout, identificador, tamanio, (yyvsp[-1].atributos).es_direccion);
                               }
 #line 1772 "alfa.tab.c" /* yacc.c:1646  */
     break;

@@ -344,7 +344,7 @@ elemento_vector           :   TOK_IDENTIFICADOR TOK_CORCHETEIZQUIERDO exp TOK_CO
                               $$.tipo = simbolo->tipo;
                               $$.es_direccion = 1;
                               $$.valor_entero = $3.valor_entero;
-                              //TODO USAR AQUI EL Escribir elemento vector
+                              escribir_elemento_vector(yyout, simbolo->identificador, tamanio, $3.es_direccion);
                               }
                           ;
 condicional               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
