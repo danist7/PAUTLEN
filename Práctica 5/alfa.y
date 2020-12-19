@@ -20,7 +20,7 @@ int funcion_retorno = 0;        /* Comprueba que hay un return en la funcion */
 int funcion_tipo;               /* Tipo de una funcion (entero o booleano) */
 int etiqueta = 0;
 
-int dentro_par_fun = 0;         /* Esta a 1 si estamos si estamos dentro de los parentesis de una funcion y a 0 si estamos fuera */
+int dentro_llamada_fun = 0;         /* Esta a 1 si estamos si estamos dentro de los parentesis de una funcion y a 0 si estamos fuera */
 int categoria_estructura;       /* Es ESCALAR o VECTOR */
 int posicion_parametro = 0;     /* Solo para elementos de tipo parametro, posicion en orden, empieza por 0 */
 int posicion = 0;               /* Solo para variables locales, su posición */
@@ -193,7 +193,7 @@ funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
                               posicion_parametro = 0;
                               }
                           ;
-fn_declaration            :   fn_name TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISIZQUIERDO TOK_CORCHETEIZQUIERDO declaraciones_funcion
+fn_declaration            :   fn_name TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA declaraciones_funcion
                               {
                                simbolo *simbolo;
                                simbolo = BusquedaElemento(tabla, $1.lexema);
@@ -360,7 +360,7 @@ condicional               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA se
 if_exp                    :   TOK_IF TOK_PARENTESISIZQUIERDO exp
                               {
                               if ($3.tipo != BOOLEANO) {
-                                printf("****Error semantico en lin %lu: Condicional con condicion tipo int.\n", nlines);
+                                printf("****Error semantico en lin %lu: Condicional con condicion de tipo int.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -382,7 +382,7 @@ bucle                     :   while_exp TOK_LLAVEIZQUIERDA sentencias TOK_LLAVED
 while_exp                 :   while TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO
                               {
                               if ($3.tipo != BOOLEANO) {
-                                printf("****Error semantico en lin %lu: Condicional con condicion tipo int.\n", nlines);
+                                printf("****Error semantico en lin %lu: Bucle con condicion de tipo int.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -422,7 +422,7 @@ escritura                 :   TOK_PRINTF exp
                                escribir(yyout, 0, $2.tipo);}
                           ;
 retorno_funcion           :   TOK_RETURN exp
-                              {if (dentro_par_fun == 1){
+                              {if (dentro_llamada_fun == 1){
                                 printf("****Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
@@ -556,7 +556,7 @@ exp                       :   exp TOK_MAS exp
                                   }
                                   else {
                                     escribir_operando(yyout, $1.lexema, 1);
-                                    if ( dentro_par_fun == 1){
+                                    if ( dentro_llamada_fun == 1){
                                       operandoEnPilaAArgumento(yyout, 1);
                                     }
                                   }
@@ -589,7 +589,7 @@ exp                       :   exp TOK_MAS exp
                                 LiberarTablas(tabla);
                                 return -1;
                               }
-                              if (num_arg_funcion == simbolo->n_parametros) {
+                              if (num_arg_funcion != simbolo->n_parametros) {
                                 printf("****Error semantico en lin %lu: Numero incorrecto de parametros en llamada a función.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
@@ -597,13 +597,13 @@ exp                       :   exp TOK_MAS exp
                               $$.tipo = simbolo->tipo;
                               llamarFuncion(yyout, $1.lexema, simbolo->n_parametros);
                               limpiarPila(yyout, simbolo->n_parametros);
-                              dentro_par_fun = 0;
+                              dentro_llamada_fun = 0;
                               }
                           ;
 idf_llamada_funcion       :   TOK_IDENTIFICADOR
                               {
                                 simbolo *simbolo;
-                                if (dentro_par_fun == 1){
+                                if (dentro_llamada_fun == 1){
                                   printf("****Error semantico en lin %lu: No esta permitido el uso de llamadas a funciones como parametros de otras funciones.\n", nlines);
                                   LiberarTablas(tabla);
                                   return -1;
@@ -619,14 +619,14 @@ idf_llamada_funcion       :   TOK_IDENTIFICADOR
                                   return -1;
                                 }
                                 num_arg_funcion = 0;
-                                dentro_par_fun = 1;
+                                dentro_llamada_fun = 1;
                                 strcpy($$.lexema, $1.lexema);
                               }
                           ;
 lista_expresiones         :   exp resto_lista_expresiones
                               {
                                 fprintf(yyout,";R89:\t<lista_expresiones> ::= <exp> <resto_lista_expresiones>\n");
-                                if(dentro_par_fun == 1){
+                                if(dentro_llamada_fun == 1){
                                   num_arg_funcion++;
                                 }
                               }
@@ -636,7 +636,7 @@ lista_expresiones         :   exp resto_lista_expresiones
 resto_lista_expresiones   :   TOK_COMA exp resto_lista_expresiones
                               {
                                 fprintf(yyout,";R91:\t<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>\n");
-                                if(dentro_par_fun == 1){
+                                if(dentro_llamada_fun == 1){
                                   num_arg_funcion++;
                                 }
                               }

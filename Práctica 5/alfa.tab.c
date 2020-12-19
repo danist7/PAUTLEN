@@ -510,7 +510,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   148
+#define YYLAST   149
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  41
@@ -646,13 +646,13 @@ static const yytype_int16 yypact[] =
       99,   105,   -39,   -39,   -39,     7,   -39,   -39,   -39,   103,
       17,    17,    17,   -39,    27,    17,    17,    17,   -39,   -39,
      -39,   -21,   107,   -39,   -39,   -39,   -21,   -39,   -39,   -39,
-      17,   100,   106,   117,    17,   130,   116,   119,   -39,    44,
+      17,   100,   106,   117,    17,   130,   115,   119,   -39,    44,
      -21,   -21,    66,   118,    39,   -39,    17,    17,    17,    17,
       17,    17,    17,   -21,   117,   117,   113,    11,   -39,   -39,
-     120,     7,   -39,   -39,   -39,    17,    17,    17,    17,    17,
-      17,   -39,    39,    39,   -39,   -39,     6,     6,    89,   122,
-     115,   121,   -39,   -39,    45,   119,   -21,   -21,   -21,   -21,
-     -21,   -21,    17,   -39,   -39,   128,   -39,   -39,   -39,   -39,
+     116,     7,   -39,   -39,   -39,    17,    17,    17,    17,    17,
+      17,   -39,    39,    39,   -39,   -39,     6,     6,    89,   120,
+     121,   122,   -39,   -39,    45,   119,   -21,   -21,   -21,   -21,
+     -21,   -21,    17,   -39,   -39,   129,   -39,   -39,   -39,   -39,
       89,   -39
 };
 
@@ -680,13 +680,13 @@ static const yytype_int8 yydefact[] =
 };
 
   /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
      -39,   -39,   -39,   -39,   -39,   -10,   -39,   -39,   -39,    -6,
-     -39,   114,   123,   -39,   -39,   -39,   -39,     8,    34,   -39,
+     -39,   114,   123,   -39,   -39,   -39,   -39,     8,    35,   -39,
      -39,   -29,   -39,   -39,   -39,   -39,   -15,   -39,   -39,   -39,
-     -39,   -39,   -39,   -39,   -39,   -39,   -38,   -39,   -39,    -4,
-     -39,   -39,   -39,   127,   -39
+     -39,   -39,   -39,   -39,   -39,   -39,   -38,   -39,   -39,    -2,
+     -39,   -39,   -39,   128,   -39
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -717,11 +717,11 @@ static const yytype_int16 yytable[] =
      117,   118,   119,   120,   150,    85,   142,    63,    62,    77,
       79,    80,    81,    82,    96,    97,    98,    99,   100,   101,
       34,    83,   104,    84,   147,   102,    88,    35,   105,    36,
-      37,    38,    39,   108,   110,   111,   132,   121,   145,   -46,
-     134,   144,    56,   149,   146,   135,   151,    33,    30
+      37,    38,    39,   108,   110,   111,   132,   121,   134,   144,
+     -46,     0,    56,   149,   145,   146,   135,    33,   151,    30
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
       10,    39,     8,    32,    25,    26,    27,    28,    29,    30,
       25,    20,    41,     6,     7,    24,    22,    32,     5,     0,
@@ -736,8 +736,8 @@ static const yytype_uint8 yycheck[] =
       34,    35,    36,    37,   142,   111,    17,     3,    18,    23,
       16,    24,    19,    11,    25,    26,    27,    28,    29,    30,
        3,    22,    22,    18,   134,    18,    23,    10,    22,    12,
-      13,    14,    15,     3,    18,    16,    23,    19,    23,    11,
-      20,    19,    28,   135,    23,   111,   150,    24,    21
+      13,    14,    15,     3,    19,    16,    23,    19,    22,    19,
+      11,    -1,    28,   135,    23,    23,   111,    24,   150,    21
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -755,9 +755,9 @@ static const yytype_int8 yystos[] =
       24,    19,    11,    22,    18,    50,    57,    59,    23,    77,
       77,    77,    77,    81,    77,    77,    25,    26,    27,    28,
       29,    30,    18,    77,    22,    22,    62,    77,     3,    60,
-      18,    16,    58,    21,    19,    32,    33,    34,    35,    36,
+      19,    16,    58,    21,    19,    32,    33,    34,    35,    36,
       37,    19,    77,    77,    77,    77,    77,    77,    77,    79,
-      62,    62,    23,    19,    20,    59,    77,    77,    77,    77,
+      62,    62,    23,    19,    22,    59,    77,    77,    77,    77,
       77,    77,    17,    80,    19,    23,    23,    46,    61,    58,
       77,    80
 };
@@ -1887,7 +1887,7 @@ yyreduce:
 #line 361 "alfa.y"
                               {
                               if ((yyvsp[0].atributos).tipo != BOOLEANO) {
-                                printf("****Error semantico en lin %lu: Condicional con condicion tipo int.\n", nlines);
+                                printf("****Error semantico en lin %lu: Condicional con condicion de tipo int.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -1918,7 +1918,7 @@ yyreduce:
 #line 383 "alfa.y"
                               {
                               if ((yyvsp[-1].atributos).tipo != BOOLEANO) {
-                                printf("****Error semantico en lin %lu: Condicional con condicion tipo int.\n", nlines);
+                                printf("****Error semantico en lin %lu: Bucle con condicion de tipo int.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
