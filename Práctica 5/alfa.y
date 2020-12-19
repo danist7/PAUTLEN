@@ -314,7 +314,6 @@ asignacion                :   TOK_IDENTIFICADOR TOK_ASIGNACION exp
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
-                                // TODO funcion ambito
                                 if(Ambito(tabla) == GLOBAL){
                                   asignar(yyout, $1.lexema, $3.es_direccion);
                                 }else{
