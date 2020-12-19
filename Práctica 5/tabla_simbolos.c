@@ -186,7 +186,7 @@ int CierreAmbito(tablas_smb* tablas) {
     return ERROR;
   }
   eliminar_tabla(tablas->tabla_local);
-  tablas->hay_local = 1;
+  tablas->hay_local = 0;
   return OK;
 }
 

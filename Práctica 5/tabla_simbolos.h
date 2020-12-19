@@ -27,10 +27,34 @@ typedef struct _simbolo {
 
 typedef struct _tablas_smb tablas_smb;
 
+/**
+ * Funcion: CrearTablas
+ * Parametros: void
+ * Return: una nueva tabla estructura con las tablas global y local
+ *
+ * Reserva memoria para las tablas global y local de la estructura tablas_smb
+ */
 tablas_smb * CrearTablas(void);
 
+/**
+ * Funcion: LiberarTablas
+ * Parametros: estructura tablas_smb
+ * Return: void
+ *
+ * Hace un free de cada simbolo de las tablas y de ambas tablas
+ */
 void LiberarTablas(tablas_smb* tablas);
 
+/**
+ * Funcion: InsercionElemento
+ * Parametros: la estructura de tablas y todos los atributos de un simbolo
+ * Return: ERROR si insertamos un elemento que ya existia
+ *         FATAL_ERROR si no se reserva bien la memoria
+ *         OK si todo fue bien
+ *
+ * Inserta un nuevo elemento en la tabla de simbolos local si hay_local es 1
+ * y sino lo inserta en la tabla de simbolos global
+ */
 int InsercionElemento(tablas_smb* tablas, char * identificador,
                        int categoria,
                        int tipo,
@@ -41,21 +65,59 @@ int InsercionElemento(tablas_smb* tablas, char * identificador,
                        int n_varloc,
                        int posicion_varloc);
 
-/* Si hay abierto ámbito local, busca un elemento primero en el ámbito local.
-Y luego en el ámbito global.
-En caso contrario, busca solo en el ambito global.
-Devuelve NULL en caso de no encontrarlo */
+
+/**
+ * Funcion: BusquedaElemento
+ * Parametros: la estructura con ambas tablas y el identificador a buscar
+ * Return: simbolo del elemento que buscamos con identificador o NULL
+ *
+ * Si hay abierto ámbito local, busca un elemento primero en el ámbito local.
+ * Y luego en el ámbito global.
+ * En caso contrario, busca solo en el ambito global.
+ * Devuelve NULL en caso de no encontrarlo
+ */
 simbolo *BusquedaElemento(tablas_smb* tablas, char* identificador);
 
-/* Si hay abierto ámbito local, busca un elemento solo en el ámbito local.
-En caso contrario, busca solo en el ambito global
-Devuelve NULL en caso de no encontrarlo */
+
+/**
+ * Funcion: BusquedaEnAmbitoActual
+ * Parametros: la estructura con ambas tablas y el identificador a buscar
+ * Return: simbolo del elemento que buscamos con identificador o NULL
+ *
+ * Si hay abierto ámbito local, busca un elemento solo en el ámbito local.
+ * En caso contrario, busca solo en el ambito global
+ * Devuelve NULL en caso de no encontrarlo
+ */
 simbolo *BusquedaEnAmbitoActual(tablas_smb* tablas, char* identificador);
 
+/**
+ * Funcion: AperturaAmbito
+ * Parametros: la estructura con ambas tablas, el identificador a buscar
+ * Return: ERROR si intentamos abrir un ambito local cuando ya hay uno
+ *         OK si se abre el ambito local con exito
+ *
+ * Inicializa un ambito local 
+ */
 int AperturaAmbito(tablas_smb* tablas, char* identificador, int valor);
 
+/**
+ * Funcion: CierreAmbito
+ * Parametros: la estructura con ambas tablas
+ * Return: ERROR si intentamos cerrar el ambito local sin que haya
+ *         OK si cerramos el ambito local con exito
+ *
+ * Cierra y elimina los simbolos del ambito local, volviendo al ambito local
+ */
 int CierreAmbito(tablas_smb* tablas);
 
+/**
+ * Funcion: Ambito
+ * Parametros: la estructura con ambas tablas
+ * Return: 1 si el ambito es local
+ *         0 si el ambito es global
+ *
+ * Devuelve el valor de la variable hay_local
+ */
 int Ambito(tablas_smb* tablas);
 
 

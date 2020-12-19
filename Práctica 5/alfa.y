@@ -170,6 +170,8 @@ funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
                               }
                               simbolo->n_parametros = num_total_parametros;
                               num_total_parametros = 0;
+                              num_total_varlocs = 0;
+                              posicion_parametro = 0;
                               }
                           ;
 fn_declaration            :   fn_name TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISIZQUIERDO TOK_CORCHETEIZQUIERDO declaraciones_funcion
@@ -192,12 +194,20 @@ fn_name                   :   TOK_FUNCTION tipo TOK_IDENTIFICADOR
                                 /* La funcion no existia y la metemos en tabla simbolos */
                                 if (BusquedaElemento(tabla, $3.lexema) == NULL){
                                   simbolo *simbolo;
-                                  //TODO
-
+                                  strcpy($$.lexema, $3.lexema);
+                                  /* Insertamos la funcion en la tabla */
+                                  AperturaAmbito(tabla, $3.lexema, FUNCION, tipo, categoria_estructura, tamanio, 0, posicion, 0, posicion_varloc);
+                                  /* Reseteamos los valores */
+                                  tamanio = 1;
+                                  num_total_varlocs = 0;
+                                  posicion_parametro = 0;
+                                  num_total_parametros = 0;
+                                  funcion_retorno = 0;
+                                  funcion_tipo = tipo;
                                 }
                                 /* La funcion ya existe */
                                 else{
-                                  printf("***Error semantico en lin %lu: Declaracion duplicada\n",nlines);
+                                  printf("***Error semantico en lin %lu: Declaracion duplicada\n", nlines);
                                   LiberarTablas(tablas);
                                   return -1;
                                 }
@@ -227,7 +237,7 @@ idpf                      :   TOK_IDENTIFICADOR
                                   return -1;
                                 }
                                }else{
-                                 printf("****Error semantico en lin %li: Declaracion duplicada.\n",nlines);
+                                 printf("****Error semantico en lin %li: Declaracion duplicada.\n", nlines);
                                  LiberarTablas(tabla);
                                  return -1;
                                }
