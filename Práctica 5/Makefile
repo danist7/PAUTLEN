@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall
 LIBS = tokens.h lex.yy.c alfa.tab.c tabla_simbolos.c generacion.c
-OUTS = casobasico
+OUTS = logicas2
 
 all: alfa nasm ejec
 

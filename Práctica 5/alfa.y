@@ -193,7 +193,7 @@ funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
                               posicion_parametro = 0;
                               }
                           ;
-fn_declaration            :   fn_name TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISIZQUIERDO TOK_CORCHETEIZQUIERDO declaraciones_funcion
+fn_declaration            :   fn_name TOK_PARENTESISIZQUIERDO parametros_funcion TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA declaraciones_funcion
                               {
                                simbolo *simbolo;
                                simbolo = BusquedaElemento(tabla, $1.lexema);
