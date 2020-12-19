@@ -23,7 +23,7 @@ int etiqueta = 0;
 int dentro_par_fun = 0;         /* Esta a 1 si estamos si estamos dentro de los parentesis de una funcion y a 0 si estamos fuera */
 int categoria_estructura;       /* Es ESCALAR o VECTOR */
 int posicion_parametro = 0;     /* Solo para elementos de tipo parametro, posicion en orden, empieza por 0 */
-int posicion = 0;               /* Solo para variables locales, su posición*/
+int posicion = 0;               /* Solo para variables locales, su posición */
 int num_arg_funcion = 0;        /* Numero de parametros al LLAMAR a una funcion */
 %}
 
