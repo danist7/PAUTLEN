@@ -542,7 +542,7 @@ exp                       :   exp TOK_MAS exp
                                 return -1;
                               }
                               if (simbolo->categoria == FUNCION || simbolo->categoria_estructura == VECTOR) {
-                                printf("****Error semantico en lin %lu: Intento de indexacion que no es de tipo vector.\n", nlines);
+                                printf("****Error semantico en lin %lu: Asignacion incompatible.\n", nlines); //DUDA: No se si es este error
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -551,7 +551,15 @@ exp                       :   exp TOK_MAS exp
                               if (simbolo->categoria == PARAMETRO) {
                                 escribirParametro(yyout, simbolo->posicion, num_total_parametros);
                               } else if (simbolo->categoria == VARIABLE) {
-                                escribirVariableLocal(yyout, simbolo->posicion_varloc);
+                                  if (Ambito(tabla) == LOCAL) {
+                                    escribirVariableLocal(yyout, simbolo->posicion_varloc);
+                                  }
+                                  else {
+                                    escribir_operando(yyout, $1.lexema, 1);
+                                    if ( dentro_par_fun == 1){
+                                      operandoEnPilaAArgumento(yyout, 1);
+                                    }
+                                  }
                               }}
                           |   constante
                               {fprintf(yyout,";R81:\t<exp> ::= <constante>\n");
