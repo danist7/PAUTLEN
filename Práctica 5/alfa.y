@@ -250,7 +250,7 @@ parametro_funcion         :   tipo idpf
 idpf                      :   TOK_IDENTIFICADOR
                               {
                                if(BusquedaEnAmbitoActual(tabla, $1.lexema) == NULL){
-                                if(InsercionElemento(tabla, $1.lexema, PARAMETRO, tipo, ESCALAR, tamanio, num_total_parametros, posicion_parametro, 0, 0) == FATAL_ERROR){
+                                if(InsercionElemento(tabla, $1.lexema, PARAMETRO, tipo, ESCALAR, 1, 0, posicion_parametro, 0, 0) == FATAL_ERROR){
                                   printf("****Error en la tabla de simbolos\n");
                                   LiberarTablas(tabla);
                                   return -1;
@@ -416,7 +416,7 @@ lectura                   :   TOK_SCANF TOK_IDENTIFICADOR
                                 LiberarTablas(tabla);
                                 return -1;
                                }
-                              leer(yyout, $2.lexema, $2.tipo);}
+                              leer(yyout, $2.lexema, simbolo->tipo);}
                           ;
 escritura                 :   TOK_PRINTF exp
                               {fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");
