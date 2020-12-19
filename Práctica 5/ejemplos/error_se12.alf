@@ -1,3 +1,5 @@
+// El indice en una operacion de indexacion tiene que ser de tipo entero en linea 9
+
 main
 {
     array int[10] vector;

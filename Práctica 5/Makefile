@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall
 LIBS = tokens.h lex.yy.c alfa.tab.c tabla_simbolos.c generacion.c
-OUTS = error_se1 error_se2 error_se3 error_se4 error_se5  error_se6 error_se7 error_se8 error_se9 error_se10
+OUTS = funciones1 funciones2 funciones3 funciones4
 
 all: alfa nasm
 
@@ -17,6 +17,8 @@ nasm: $(OUTS)
 
 $(OUTS):
 	./alfa ejemplos/$@.alf salidas/$@.asm
+	nasm -g -o $@.o -f elf32 salidas/$@.asm
+	gcc -m32 -o $@ $@.o lib/alfalib.o
 
 
 #$(OUTS):

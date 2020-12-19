@@ -16,34 +16,81 @@ _x resd 1
 ;D:	y
 ;R108:	<identificador> ::= TOK_IDENTIFICADOR
 _y resd 1
+;D:	,
+;D:	resultado
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+_resultado resd 1
 ;D:	;
 ;R18:	<identificadores> ::= <identificador>
 ;R19:	<identificadores> ::= <identificador> , <identificadores>
+;R19:	<identificadores> ::= <identificador> , <identificadores>
 ;R4:	<declaracion> ::= <clase> <identificadores> ;
-;D:	boolean
-;R11:	<tipo> ::= boolean
-;R9:	<clase_escalar> ::= <tipo>
-;R5:	<clase> ::= <clase_escalar>
-;D:	a
-;R108:	<identificador> ::= TOK_IDENTIFICADOR
-_a resd 1
-;D:	;
-;R18:	<identificadores> ::= <identificador>
-;R4:	<declaracion> ::= <clase> <identificadores> ;
-;D:	x
+;D:	function
 ;R2:	<declaraciones> ::= <declaracion>
-;R3:	<declaraciones> ::= <declaracion> <declaraciones>
 segment .text
 global main
 extern scan_int, scan_boolean
 extern print_int, print_boolean, print_string, print_blank, print_endofline
+;D:	int
+;R10:	<tipo> ::= int
+;D:	suma
+;D:	(
+;D:	int
+;R10:	<tipo> ::= int
+;D:	num1
+;R27:	<parametro_funcion> ::= <tipo> <identificador>
+;D:	;
+;D:	int
+;R10:	<tipo> ::= int
+;D:	num2
+;R27:	<parametro_funcion> ::= <tipo> <identificador>
+;D:	)
+;R26:	<resto_parametros_funcion> ::= 
+;R25:	<resto_parametros_funcion> ::= ; <parametro_funcion> <resto_parametros_funcion>
+;R23:	<parametros_funcion> ::= <parametro_funcion> <resto_parametros_funcion>
+;D:	{
+;D:	return
+;R29:	<declaraciones_funcion> ::= 
+_suma:
+push ebp
+mov ebp, esp
+sub esp, 4*0
+;D:	num1
+;D:	+
+;R80:	<exp> ::= <identificador>
+lea eax, [ebp + 12]
+push dword eax
+;D:	num2
+;D:	;
+;R80:	<exp> ::= <identificador>
+lea eax, [ebp + 8]
+push dword eax
+;R72:	<exp> ::= <exp> + <exp>
+pop dword eax
+mov dword ecx, [eax]
+pop dword eax
+mov dword ebx, [eax]
+add ebx, ecx
+push dword ebx
+;R61:	<retorno_funcion> ::= return <exp>
+pop dword eax
+mov esp, ebp
+pop dword ebp
+ret
+;R38:	<sentencia_simple> ::= <retorno_funcion>
+;R32:	<sentencia> ::= <sentencia_simple> ;
+;D:	}
+;R30:	<sentencias> ::= <sentencia>
+;R22:	<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }
+;D:	x
 ;R21:	<funciones> ::= 
+;R20:	<funciones> ::= <funcion> <funciones>
 main:
 mov [__esp], esp
 ;D:	=
-;D:	13
+;D:	1
 ;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
-mov dword eax, 13
+mov dword eax, 1
 push dword eax
 ;R100:	<constante> ::= <constante_entera>
 ;R81:	<exp> ::= <constante>
@@ -54,9 +101,9 @@ pop dword [_x]
 ;R32:	<sentencia> ::= <sentencia_simple> ;
 ;D:	y
 ;D:	=
-;D:	54
+;D:	3
 ;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
-mov dword eax, 54
+mov dword eax, 3
 push dword eax
 ;R100:	<constante> ::= <constante_entera>
 ;R81:	<exp> ::= <constante>
@@ -65,270 +112,188 @@ push dword eax
 pop dword [_y]
 ;R34:	<sentencia_simple> ::= <asignacion>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	a
+;D:	resultado
 ;D:	=
+;D:	suma
 ;D:	(
 ;D:	x
-;D:	<
+;D:	,
 ;R80:	<exp> ::= <identificador>
 push dword _x
+pop eax
+mov eax, [eax]
+push eax
 ;D:	y
 ;D:	)
 ;R80:	<exp> ::= <identificador>
 push dword _y
-;R97:	<comparacion> ::= <exp> < <exp>
-pop dword eax
-mov dword ecx, [eax]
-pop dword eax
-mov dword ebx, [eax]
-cmp ebx, ecx
-jl menor_escribe_0
-push dword 0
-jmp menor_0
-menor_escribe_0:
-push dword 1
-menor_0:
-;R83:	<exp> ::= ( <comparacion> )
+pop eax
+mov eax, [eax]
+push eax
+;R92:	<resto_lista_expresiones> ::= 
+;R91:	<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>
+;R89:	<lista_expresiones> ::= <exp> <resto_lista_expresiones>
+;R88:	<exp> ::= <identificador> ( <lista_expresiones> )
+call _suma
+add esp, 8
+push dword eax
+add esp, 8
 ;D:	;
 ;R43:	<asignacion> ::= <identificador> = <exp>
-pop dword [_a]
+pop dword [_resultado]
 ;R34:	<sentencia_simple> ::= <asignacion>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
 ;D:	printf
-;D:	a
+;D:	resultado
 ;D:	;
 ;R80:	<exp> ::= <identificador>
-push dword _a
+push dword _resultado
 ;R56:	<escritura> ::= printf <exp>
 pop eax
 mov eax, [eax]
 push eax
-call print_boolean
+call print_int
 add esp, 4
 call print_endofline
 ;R36:	<sentencia_simple> ::= <escritura>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	a
+;D:	resultado
 ;D:	=
+;D:	suma
 ;D:	(
 ;D:	x
-;D:	<=
+;D:	,
 ;R80:	<exp> ::= <identificador>
 push dword _x
-;D:	y
+pop eax
+mov eax, [eax]
+push eax
+;D:	1
+;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
+mov dword eax, 1
+push dword eax
+;R100:	<constante> ::= <constante_entera>
+;R81:	<exp> ::= <constante>
 ;D:	)
-;R80:	<exp> ::= <identificador>
-push dword _y
-;R95:	<comparacion> ::= <exp> <= <exp>
-pop dword eax
-mov dword ecx, [eax]
-pop dword eax
-mov dword ebx, [eax]
-cmp ebx, ecx
-jle menorigual_escribe_1
-push dword 0
-jmp menorigual_1
-menorigual_escribe_1:
-push dword 1
-menorigual_1:
-;R83:	<exp> ::= ( <comparacion> )
+;R92:	<resto_lista_expresiones> ::= 
+;R91:	<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>
+;R89:	<lista_expresiones> ::= <exp> <resto_lista_expresiones>
+;R88:	<exp> ::= <identificador> ( <lista_expresiones> )
+call _suma
+add esp, 8
+push dword eax
+add esp, 8
 ;D:	;
 ;R43:	<asignacion> ::= <identificador> = <exp>
-pop dword [_a]
+pop dword [_resultado]
 ;R34:	<sentencia_simple> ::= <asignacion>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
 ;D:	printf
-;D:	a
+;D:	resultado
 ;D:	;
 ;R80:	<exp> ::= <identificador>
-push dword _a
+push dword _resultado
 ;R56:	<escritura> ::= printf <exp>
 pop eax
 mov eax, [eax]
 push eax
-call print_boolean
+call print_int
 add esp, 4
 call print_endofline
 ;R36:	<sentencia_simple> ::= <escritura>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	a
+;D:	resultado
 ;D:	=
+;D:	suma
 ;D:	(
-;D:	x
-;D:	!=
-;R80:	<exp> ::= <identificador>
-push dword _x
+;D:	10
+;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
+mov dword eax, 10
+push dword eax
+;R100:	<constante> ::= <constante_entera>
+;R81:	<exp> ::= <constante>
+;D:	,
 ;D:	y
 ;D:	)
 ;R80:	<exp> ::= <identificador>
 push dword _y
-;R94:	<comparacion> ::= <exp> != <exp>
-pop dword eax
-mov dword ecx, [eax]
-pop dword eax
-mov dword ebx, [eax]
-cmp ebx, ecx
-jne distinto_escribe_2
-push dword 0
-jmp distinto_2
-distinto_escribe_2:
-push dword 1
-distinto_2:
-;R83:	<exp> ::= ( <comparacion> )
+pop eax
+mov eax, [eax]
+push eax
+;R92:	<resto_lista_expresiones> ::= 
+;R91:	<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>
+;R89:	<lista_expresiones> ::= <exp> <resto_lista_expresiones>
+;R88:	<exp> ::= <identificador> ( <lista_expresiones> )
+call _suma
+add esp, 8
+push dword eax
+add esp, 8
 ;D:	;
 ;R43:	<asignacion> ::= <identificador> = <exp>
-pop dword [_a]
+pop dword [_resultado]
 ;R34:	<sentencia_simple> ::= <asignacion>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
 ;D:	printf
-;D:	a
+;D:	resultado
 ;D:	;
 ;R80:	<exp> ::= <identificador>
-push dword _a
+push dword _resultado
 ;R56:	<escritura> ::= printf <exp>
 pop eax
 mov eax, [eax]
 push eax
-call print_boolean
+call print_int
 add esp, 4
 call print_endofline
 ;R36:	<sentencia_simple> ::= <escritura>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	a
+;D:	resultado
 ;D:	=
+;D:	suma
 ;D:	(
-;D:	x
-;D:	>
-;R80:	<exp> ::= <identificador>
-push dword _x
-;D:	y
+;D:	3
+;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
+mov dword eax, 3
+push dword eax
+;R100:	<constante> ::= <constante_entera>
+;R81:	<exp> ::= <constante>
+;D:	,
+;D:	5
+;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
+mov dword eax, 5
+push dword eax
+;R100:	<constante> ::= <constante_entera>
+;R81:	<exp> ::= <constante>
 ;D:	)
-;R80:	<exp> ::= <identificador>
-push dword _y
-;R98:	<comparacion> ::= <exp> > <exp>
-pop dword eax
-mov dword ecx, [eax]
-pop dword eax
-mov dword ebx, [eax]
-cmp ebx, ecx
-jg mayor_escribe_3
-push dword 0
-jmp mayor_3
-mayor_escribe_3:
-push dword 1
-mayor_3:
-;R83:	<exp> ::= ( <comparacion> )
+;R92:	<resto_lista_expresiones> ::= 
+;R91:	<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>
+;R89:	<lista_expresiones> ::= <exp> <resto_lista_expresiones>
+;R88:	<exp> ::= <identificador> ( <lista_expresiones> )
+call _suma
+add esp, 8
+push dword eax
+add esp, 8
 ;D:	;
 ;R43:	<asignacion> ::= <identificador> = <exp>
-pop dword [_a]
+pop dword [_resultado]
 ;R34:	<sentencia_simple> ::= <asignacion>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
 ;D:	printf
-;D:	a
+;D:	resultado
 ;D:	;
 ;R80:	<exp> ::= <identificador>
-push dword _a
+push dword _resultado
 ;R56:	<escritura> ::= printf <exp>
 pop eax
 mov eax, [eax]
 push eax
-call print_boolean
-add esp, 4
-call print_endofline
-;R36:	<sentencia_simple> ::= <escritura>
-;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	a
-;D:	=
-;D:	(
-;D:	x
-;D:	>=
-;R80:	<exp> ::= <identificador>
-push dword _x
-;D:	y
-;D:	)
-;R80:	<exp> ::= <identificador>
-push dword _y
-;R96:	<comparacion> ::= <exp> >= <exp>
-pop dword eax
-mov dword ecx, [eax]
-pop dword eax
-mov dword ebx, [eax]
-cmp ebx, ecx
-jge mayorigual_escribe_4
-push dword 0
-jmp mayorigual_4
-mayorigual_escribe_4:
-push dword 1
-mayorigual_4:
-;R83:	<exp> ::= ( <comparacion> )
-;D:	;
-;R43:	<asignacion> ::= <identificador> = <exp>
-pop dword [_a]
-;R34:	<sentencia_simple> ::= <asignacion>
-;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	printf
-;D:	a
-;D:	;
-;R80:	<exp> ::= <identificador>
-push dword _a
-;R56:	<escritura> ::= printf <exp>
-pop eax
-mov eax, [eax]
-push eax
-call print_boolean
-add esp, 4
-call print_endofline
-;R36:	<sentencia_simple> ::= <escritura>
-;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	a
-;D:	=
-;D:	(
-;D:	x
-;D:	==
-;R80:	<exp> ::= <identificador>
-push dword _x
-;D:	y
-;D:	)
-;R80:	<exp> ::= <identificador>
-push dword _y
-;R93:	<comparacion> ::= <exp> == <exp>
-pop dword eax
-mov dword ecx, [eax]
-pop dword eax
-mov dword ebx, [eax]
-cmp ebx, ecx
-je igual_escribe_5
-push dword 0
-jmp igual_5
-igual_escribe_5:
-push dword 1
-igual_5:
-;R83:	<exp> ::= ( <comparacion> )
-;D:	;
-;R43:	<asignacion> ::= <identificador> = <exp>
-pop dword [_a]
-;R34:	<sentencia_simple> ::= <asignacion>
-;R32:	<sentencia> ::= <sentencia_simple> ;
-;D:	printf
-;D:	a
-;D:	;
-;R80:	<exp> ::= <identificador>
-push dword _a
-;R56:	<escritura> ::= printf <exp>
-pop eax
-mov eax, [eax]
-push eax
-call print_boolean
+call print_int
 add esp, 4
 call print_endofline
 ;R36:	<sentencia_simple> ::= <escritura>
 ;R32:	<sentencia> ::= <sentencia_simple> ;
 ;D:	}
 ;R30:	<sentencias> ::= <sentencia>
-;R31:	<sentencias> ::= <sentencia> <sentencias>
-;R31:	<sentencias> ::= <sentencia> <sentencias>
-;R31:	<sentencias> ::= <sentencia> <sentencias>
-;R31:	<sentencias> ::= <sentencia> <sentencias>
 ;R31:	<sentencias> ::= <sentencia> <sentencias>
 ;R31:	<sentencias> ::= <sentencia> <sentencias>
 ;R31:	<sentencias> ::= <sentencia> <sentencias>

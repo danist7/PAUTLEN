@@ -1,3 +1,5 @@
+// Tamanyio del vector excede los limites permitidos en linea 5
+
 main
 {
     array int[100] vector1;

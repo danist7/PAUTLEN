@@ -1,3 +1,5 @@
+// Intento de indexacion de una variable que no es de tipo vector en linea 7
+
 main
 {
     int x, y;

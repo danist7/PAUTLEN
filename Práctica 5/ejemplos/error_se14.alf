@@ -1,3 +1,5 @@
+// No esta permitido el uso de llamadas a funciones como parametros de otras funciones en linea 22
+
 main
 {
 
@@ -21,8 +23,3 @@ main
 
 	printf resultado;
 }
-
-
-
-
-

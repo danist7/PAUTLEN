@@ -16,25 +16,43 @@ _x resd 1
 ;D:	y
 ;R108:	<identificador> ::= TOK_IDENTIFICADOR
 _y resd 1
+;D:	,
+;D:	resultado
+;R108:	<identificador> ::= TOK_IDENTIFICADOR
+_resultado resd 1
 ;D:	;
 ;R18:	<identificadores> ::= <identificador>
 ;R19:	<identificadores> ::= <identificador> , <identificadores>
+;R19:	<identificadores> ::= <identificador> , <identificadores>
 ;R4:	<declaracion> ::= <clase> <identificadores> ;
-;D:	z
+;D:	function
 ;R2:	<declaraciones> ::= <declaracion>
 segment .text
 global main
 extern scan_int, scan_boolean
 extern print_int, print_boolean, print_string, print_blank, print_endofline
-;R21:	<funciones> ::= 
-main:
-mov [__esp], esp
-;D:	=
-;D:	0
-;R104:	<constante_entera> ::= TOK_CONSTANTE_ENTERA
-mov dword eax, 0
-push dword eax
-;R100:	<constante> ::= <constante_entera>
-;R81:	<exp> ::= <constante>
+;D:	int
+;R10:	<tipo> ::= int
+;D:	suma
+;D:	(
+;D:	int
+;R10:	<tipo> ::= int
+;D:	num1
+;R27:	<parametro_funcion> ::= <tipo> <identificador>
 ;D:	;
-;R43:	<asignacion> ::= <identificador> = <exp>
+;D:	int
+;R10:	<tipo> ::= int
+;D:	num2
+;R27:	<parametro_funcion> ::= <tipo> <identificador>
+;D:	)
+;R26:	<resto_parametros_funcion> ::= 
+;R25:	<resto_parametros_funcion> ::= ; <parametro_funcion> <resto_parametros_funcion>
+;R23:	<parametros_funcion> ::= <parametro_funcion> <resto_parametros_funcion>
+;D:	{
+;D:	array
+;D:	int
+;R10:	<tipo> ::= int
+;D:	[
+;D:	10
+;D:	]
+;R15:	<clase_vector> ::= array <tipo> [ <constante_entera> ]
