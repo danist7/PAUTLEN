@@ -21,7 +21,7 @@ typedef struct _simbolo {
   int n_parametros;          /* Número de parámetros que tiene una funcion */
   int posicion;              /* Solo para elementos de tipo parametro, posicion en orden, empieza por 0 */
   int n_varloc;              /* Numero de variables locales, solo para elementos FUNCION */
-  int posicion_varloc;       /* Posicion de la variable local, solo para elementos FUNCION */
+  int posicion_varloc;       /* Posicion de la variable local, solo para elementos variable local de funcion */
   UT_hash_handle hh;         /* makes this structure hashable */
 } simbolo;
 
