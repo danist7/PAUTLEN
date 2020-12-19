@@ -117,7 +117,7 @@ int InsercionElemento(tablas_smb* tablas, char * identificador,
                        int n_parametros,
                        int posicion,
                        int n_varloc,
-                       int posicion_varloc); {
+                       int posicion_varloc) {
   if (tablas->hay_local == 1) {
     return insertar_simbolo(tablas->tabla_local, identificador,
                             categoria,

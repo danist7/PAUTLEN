@@ -37,7 +37,7 @@ int num_arg_funcion = 0;        /* Numero de parametros al LLAMAR a una funcion 
 %token TOK_MAIN
 %token TOK_INT
 %token TOK_BOOLEAN
-%token TOK_ARRAY
+%token <atributos> TOK_ARRAY
 %token TOK_FUNCTION
 %token TOK_IF
 %token TOK_ELSE
@@ -80,10 +80,17 @@ int num_arg_funcion = 0;        /* Numero de parametros al LLAMAR a una funcion 
 %type <atributos> identificador
 %type <atributos> comparacion
 %type <atributos> exp
+%type <atributos> idf_llamada_funcion
 %type <atributos> condicional
+%type <atributos> if_exp
+%type <atributos> if_else_exp
 %type <atributos> bucle
+%type <atributos> while_exp
+%type <atributos> while
 %type <atributos> elemento_vector
 %type <atributos> funcion
+%type <atributos> fn_declaration
+%type <atributos> fn_name
 
 
 
@@ -100,20 +107,23 @@ programa                  :   TOK_MAIN inicio TOK_LLAVEIZQUIERDA declaraciones e
                                escribir_fin(yyout);
                                LiberarTablas(tabla);}
                           ;
-inicio:                   :  {  tabla = CrearTablas();
+inicio                    :   %empty
+                              {  tabla = CrearTablas();
                                 if(tabla == NULL){
-                                  print("No existe la tabla de símbolos\n");
+                                  printf("No existe la tabla de símbolos\n");
                                   return -1;
                                 }
                                 escribir_subseccion_data(yyout);
-                                escribir_cabecera_bss(yyout);}
+                                escribir_cabecera_bss(yyout);
+                              }
                           ;
-
-escribir_TS               :   {
+escribir_TS               :   %empty
+                              {
                                escribir_segmento_codigo(yyout);
-                             }
+                              }
                           ;
-escribir_MAIN             :   {
+escribir_MAIN             :   %empty
+                              {
                                escribir_inicio_main(yyout);
                               }
                           ;
@@ -145,7 +155,7 @@ tipo                      :   TOK_INT
                           ;
 clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO constante_entera TOK_CORCHETEDERECHO
                               {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");
-                              longitud = $4.valor_entero;
+                              int longitud = $4.valor_entero;
                               if(longitud <= 0 || longitud > MAX_TAMANIO_VECTOR){
                                 printf("****Error semántico en lin %lu: El tamanyo del vector %s excede los limites permitidos (1,64).\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
@@ -166,7 +176,7 @@ funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
                               {
                               fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
                               if (funcion_retorno < 1){
-                                print("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, $1.lexema);
+                                printf("***Error semántico en lin %li : Funcion %s sin sentencia return\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -205,7 +215,7 @@ fn_name                   :   TOK_FUNCTION tipo TOK_IDENTIFICADOR
                                   simbolo *simbolo;
                                   strcpy($$.lexema, $3.lexema);
                                   /* Abrimos ambito local de tipo funcion en la tabla */
-                                  AperturaAmbito(tabla, $3.lexema, FUNCION, tipo, categoria_estructura, tamanio, 0, posicion, 0, posicion_varloc);
+                                  AperturaAmbito(tabla, $3.lexema, FUNCION, tipo, categoria_estructura, tamanio, 0, posicion, 0, 0);
                                   /* Reseteamos los valores */
                                   tamanio = 1;
                                   num_total_varlocs = 0;
@@ -217,7 +227,7 @@ fn_name                   :   TOK_FUNCTION tipo TOK_IDENTIFICADOR
                                 /* La funcion ya existe */
                                 else{
                                   printf("***Error semantico en lin %lu: Declaracion duplicada\n", nlines);
-                                  LiberarTablas(tablas);
+                                  LiberarTablas(tabla);
                                   return -1;
                                 }
                               }
@@ -240,7 +250,7 @@ parametro_funcion         :   tipo idpf
 idpf                      :   TOK_IDENTIFICADOR
                               {
                                if(BusquedaEnAmbitoActual(tabla, $1.lexema) == NULL){
-                                if(InsercionElemento(tabla, $1.lexema, PARAMETRO, tipo, ESCALAR, tamanio, num_total_parametros, posicion_parametro, num_total_varlocs, posicion) == FATAL_ERROR){
+                                if(InsercionElemento(tabla, $1.lexema, PARAMETRO, tipo, ESCALAR, tamanio, num_total_parametros, posicion_parametro, 0, 0) == FATAL_ERROR){
                                   printf("***Error en la tabla de simbolos\n");
                                   LiberarTablas(tabla);
                                   return -1;
@@ -316,7 +326,7 @@ asignacion                :   TOK_IDENTIFICADOR TOK_ASIGNACION exp
                           |   elemento_vector TOK_ASIGNACION exp
                               {fprintf(yyout,";R44:\t<asignacion> ::= <elemento_vector> = <exp>\n");}
                           ;
-elemento_vector           :   identificador TOK_CORCHETEIZQUIERDO exp TOK_CORCHETEDERECHO
+elemento_vector           :   TOK_IDENTIFICADOR TOK_CORCHETEIZQUIERDO exp TOK_CORCHETEDERECHO
                               {fprintf(yyout,";R48:\t<elemento_vector> ::= <identificador> [ <exp> ]\n");
                               simbolo *simbolo;
                               if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
@@ -363,7 +373,7 @@ if_exp                    :   TOK_IF TOK_PARENTESISIZQUIERDO exp
 if_else_exp               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
                               {
                               $$.etiqueta = $1.etiqueta;
-                              ifthenelse_fin_then(yyout, $$etiqueta);
+                              ifthenelse_fin_then(yyout, $$.etiqueta);
                               }
                           ;
 bucle                     :   while_exp TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
@@ -380,16 +390,16 @@ while_exp                 :   while TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDE
                               }
 
                               $$.etiqueta =$1.etiqueta;
-                              while_exp_pila(yyout, $2.es_direccion, $$.etiqueta)
+                              while_exp_pila(yyout, $3.es_direccion, $$.etiqueta);
                               }
                           ;
-while_exp                 :   TOK_WHILE
+while                     :   TOK_WHILE
                               {
                               $$.etiqueta = etiqueta++;
                               while_inicio(yyout, $$.etiqueta);
                               }
                           ;
-lectura                   :   TOK_SCANF identificador
+lectura                   :   TOK_SCANF TOK_IDENTIFICADOR
                               {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");
                                simbolo *simbolo;
                                simbolo = BusquedaElemento(tabla, $2.lexema);
@@ -415,7 +425,7 @@ escritura                 :   TOK_PRINTF exp
                           ;
 retorno_funcion           :   TOK_RETURN exp
                               {if (dentro_par_fun == 1){
-                                print("***Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n");
+                                printf("***Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n");
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -496,7 +506,7 @@ exp                       :   exp TOK_MAS exp
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
-                                y(yyout, $1.es_direccion, $2.es_direccion);
+                                y(yyout, $1.es_direccion, $3.es_direccion);
                                 $$.tipo = BOOLEANO;
                                 $$.es_direccion = 0;
                               }
@@ -508,7 +518,7 @@ exp                       :   exp TOK_MAS exp
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
-                                o(yyout, $1.es_direccion, $2.es_direccion);
+                                o(yyout, $1.es_direccion, $3.es_direccion);
                                 $$.tipo = BOOLEANO;
                                 $$.es_direccion = 0;
                               }
@@ -520,12 +530,12 @@ exp                       :   exp TOK_MAS exp
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
-                                no(yyout, $1.es_direccion, etiqueta);
+                                no(yyout, $2.es_direccion, etiqueta);
                                 etiqueta++;
                                 $$.tipo = BOOLEANO;
                                 $$.es_direccion = 0;
                               }
-                          |   identificador
+                          |   TOK_IDENTIFICADOR
                               {fprintf(yyout,";R80:\t<exp> ::= <identificador>\n");
                               simbolo *simbolo;
                               if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
@@ -544,7 +554,7 @@ exp                       :   exp TOK_MAS exp
                                 escribirParametro(yyout, simbolo->posicion, num_total_parametros);
                               } else if (simbolo->categoria == VARIABLE) {
                                 escribirVariableLocal(yyout, simbolo->posicion_varloc);
-                              }
+                              }}
                           |   constante
                               {fprintf(yyout,";R81:\t<exp> ::= <constante>\n");
                                 $$.tipo = $1.tipo;
@@ -567,7 +577,8 @@ exp                       :   exp TOK_MAS exp
                               }
                           |   idf_llamada_funcion TOK_PARENTESISIZQUIERDO lista_expresiones TOK_PARENTESISDERECHO
                               {fprintf(yyout,";R88:\t<exp> ::= <identificador> ( <lista_expresiones> )\n");
-                              if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
+                              simbolo *simbolo;
+                              if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL) {
                                 printf("****Error semántico en lin %lu: Acceso a variable no declarada (%s)\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
                                 return -1;
@@ -580,13 +591,13 @@ exp                       :   exp TOK_MAS exp
                               $$.tipo = simbolo->tipo;
                               llamarFuncion(yyout, $1.lexema, simbolo->n_parametros);
                               limpiarPila(yyout, simbolo->n_parametros);
-                              dentro_par_funcion = 0;
+                              dentro_par_fun = 0;
                               }
                           ;
 idf_llamada_funcion       :   TOK_IDENTIFICADOR
                               {
                                 simbolo *simbolo;
-                                if (dentro_par_funcion = 1){
+                                if (dentro_par_fun = 1){
                                   printf("****Error semántico en lin %lu: No esta permitido el uso de llamadas a funciones como parametros de otras funciones.\n", nlines);
                                   LiberarTablas(tabla);
                                   return -1;
@@ -602,8 +613,8 @@ idf_llamada_funcion       :   TOK_IDENTIFICADOR
                                   return -1;
                                 }
                                 num_arg_funcion = 0;
-                                dentro_par_funcion = 1;
-                                $$.lexema = $1.lexema;
+                                dentro_par_fun = 1;
+                                strcpy($$.lexema, $1.lexema);
                               }
                           ;
 lista_expresiones         :   exp resto_lista_expresiones
@@ -751,13 +762,15 @@ constante_entera          :   TOK_CONSTANTE_ENTERA
 identificador             :   TOK_IDENTIFICADOR
                               {fprintf(yyout,";R108:\t<identificador> ::= TOK_IDENTIFICADOR\n");
                                /* Si la variable no estaba declarada antes, la declaramos */
-                               if (BusquedaElemento(tabla, $1.lexema) == NULL){
+                               if (BusquedaEnAmbitoActual(tabla, $1.lexema) == NULL){
                                 if (Ambito(tabla) == LOCAL){
                                   num_total_varlocs++;
-                                }
-                                InsercionElemento(tabla, $1.lexema, categoria, tipo, categoria_estructura, tamanio, num_total_parametros, posicion, n_varloc, posicion_varloc);
-                                if (Ambito(tabla) == LOCAL){
                                   posicion++;
+                                  InsercionElemento(tabla, $1.lexema, VARIABLE, tipo, categoria_estructura, tamanio, num_total_parametros, posicion, 0, num_total_varlocs);
+                                }
+                                if (Ambito(tabla) == GLOBAL){
+                                  InsercionElemento(tabla, $1.lexema, VARIABLE, tipo, categoria_estructura, tamanio, num_total_parametros, posicion, 0, num_total_varlocs);
+                                  declarar_variable(yyout, $1.lexema, tipo, tamanio);
                                 }
                                 declarar_variable(yyout, $1.lexema, tipo, tamanio);
                                }
