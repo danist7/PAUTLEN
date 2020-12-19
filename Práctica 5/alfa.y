@@ -159,7 +159,7 @@ clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO constante_ent
                               if(longitud <= 0 || longitud > MAX_TAMANIO_VECTOR){
                                 printf("****Error semantico en lin %lu: El tamanyo del vector %s excede los limites permitidos (1,64).\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }}
                           ;
 identificadores           :   identificador
@@ -212,7 +212,6 @@ fn_name                   :   TOK_FUNCTION tipo TOK_IDENTIFICADOR
                               {
                                 /* La funcion no existia y la metemos en tabla simbolos */
                                 if (BusquedaElemento(tabla, $3.lexema) == NULL){
-                                  simbolo *simbolo;
                                   strcpy($$.lexema, $3.lexema);
                                   /* Abrimos ambito local de tipo funcion en la tabla */
                                   AperturaAmbito(tabla, $3.lexema, 0, 0);
@@ -332,17 +331,17 @@ elemento_vector           :   TOK_IDENTIFICADOR TOK_CORCHETEIZQUIERDO exp TOK_CO
                               if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
                                 printf("****Error semantico en lin %lu: Acceso a variable no declarada (%s).\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }
                               if (simbolo->categoria_estructura != VECTOR) {
                                 printf("****Error semantico en lin %lu: Intento de indexacion que no es de tipo vector.\n", nlines);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }
                               if ($3.tipo != ENTERO) {
                                 printf("****Error semantico en lin %lu: El indice en una operacion de indexacion tiene que ser de tipo entero.\n", nlines);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }
                               $$.tipo = simbolo->tipo;
                               $$.es_direccion = 1;
@@ -425,7 +424,7 @@ escritura                 :   TOK_PRINTF exp
                           ;
 retorno_funcion           :   TOK_RETURN exp
                               {if (dentro_par_fun == 1){
-                                printf("****Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n");
+                                printf("****Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -541,12 +540,12 @@ exp                       :   exp TOK_MAS exp
                               if ((simbolo = BusquedaElemento(tabla, $1.lexema)) == NULL){
                                 printf("****Error semantico en lin %lu: Acceso a variable no declarada (%s).\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }
                               if (simbolo->categoria == FUNCION || simbolo->categoria_estructura == VECTOR) {
                                 printf("****Error semantico en lin %lu: Intento de indexacion que no es de tipo vector.\n", nlines);
                                 LiberarTablas(tabla);
-                                return;
+                                return -1;
                               }
                               $$.tipo = simbolo->tipo;
                               $$.es_direccion = 1;
@@ -597,7 +596,7 @@ exp                       :   exp TOK_MAS exp
 idf_llamada_funcion       :   TOK_IDENTIFICADOR
                               {
                                 simbolo *simbolo;
-                                if (dentro_par_fun = 1){
+                                if (dentro_par_fun == 1){
                                   printf("****Error semantico en lin %lu: No esta permitido el uso de llamadas a funciones como parametros de otras funciones.\n", nlines);
                                   LiberarTablas(tabla);
                                   return -1;
