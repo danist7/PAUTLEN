@@ -1791,7 +1791,7 @@ yyreduce:
 #line 361 "alfa.y" /* yacc.c:1646  */
     {
                               if ((yyvsp[0].atributos).tipo != BOOLEANO) {
-                                printf("****Error semantico en lin %lu: Condicional con condicion tipo int.\n", nlines);
+                                printf("****Error semantico en lin %lu: Condicional con condicion de tipo int.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -1822,7 +1822,7 @@ yyreduce:
 #line 383 "alfa.y" /* yacc.c:1646  */
     {
                               if ((yyvsp[-1].atributos).tipo != BOOLEANO) {
-                                printf("****Error semantico en lin %lu: Condicional con condicion tipo int.\n", nlines);
+                                printf("****Error semantico en lin %lu: Bucle con condicion de tipo int.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
