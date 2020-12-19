@@ -94,7 +94,6 @@ int num_arg_funcion = 0;        /* Numero de parametros al LLAMAR a una funcion 
 
 
 
-
 %left TOK_IGUAL TOK_MENORIGUAL  TOK_MENOR TOK_MAYORIGUAL TOK_MAYOR TOK_DISTINTO
 %left TOK_MAS TOK_MENOS TOK_OR
 %left TOK_ASTERISCO TOK_DIVISION TOK_AND
@@ -154,12 +153,17 @@ tipo                      :   TOK_INT
                           ;
 clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO TOK_CONSTANTE_ENTERA TOK_CORCHETEDERECHO
                               {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");
-                               tamanio = $4.valor_entero;
-                               if(tamanio <= 0 || tamanio > MAX_TAMANIO_VECTOR){
-                                 printf("****Error semantico en lin %lu: El tamanyo del vector %s excede los limites permitidos (1,64).\n", nlines, $1.lexema);
-                                 LiberarTablas(tabla);
-                                 return -1;
-                              }}
+                              if($4.valor_entero <= 0 || $4.valor_entero > MAX_TAMANIO_VECTOR){
+                                printf("****Error semantico en lin %lu: El tamanyo del vector excede los limites permitidos (1,64).\n", nlines); //TODO en el enunciado nos piden aqui dar el nombre del vector pero no se puede
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              if (Ambito(tabla) == LOCAL) {
+                                printf("****Error semantico en lin %lu: Declaracion de vector en ambito local.\n", nlines, $1.lexema); //DUDA: He puesto esto para el error 15 pero no estoy seguro
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
+                              }
                           ;
 identificadores           :   identificador
                               {fprintf(yyout,";R18:\t<identificadores> ::= <identificador>\n");}
@@ -175,10 +179,12 @@ funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
                               {
                               fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
                               if (funcion_retorno < 1){
-                                printf("****Error semantico en lin %lu : Funcion %s sin sentencia return\n", nlines, $1.lexema);
+                                printf("****Error semantico en lin %lu : Funcion %s sin sentencia de retorno\n", nlines, $1.lexema);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
+                              CierreAmbito(tabla);
+                              // Tras cerrar el simbolo guardamos la informacion pertinente en el simbolo de la tabla global
                               simbolo *simbolo;
                               simbolo = BusquedaElemento(tabla, $1.lexema);
                               if (simbolo == NULL){
@@ -243,7 +249,8 @@ resto_parametros_funcion  :   TOK_PUNTOYCOMA parametro_funcion resto_parametros_
 parametro_funcion         :   tipo idpf
                               {fprintf(yyout,";R27:\t<parametro_funcion> ::= <tipo> <identificador>\n");
                                num_total_parametros++;
-                               posicion_parametro++;}
+                               posicion_parametro++;
+                              }
                           ;
 idpf                      :   TOK_IDENTIFICADOR
                               {
@@ -331,8 +338,13 @@ elemento_vector           :   TOK_IDENTIFICADOR TOK_CORCHETEIZQUIERDO exp TOK_CO
                                 LiberarTablas(tabla);
                                 return -1;
                               }
+                              if (Ambito(tabla) == LOCAL) {
+                                printf("****Error semantico en lin %lu: Acceso vector en ambito local.\n", nlines, $1.lexema); //DUDA: Error extra
+                                LiberarTablas(tabla);
+                                return -1;
+                              }
                               if (simbolo->categoria_estructura != VECTOR) {
-                                printf("****Error semantico en lin %lu: Intento de indexacion que no es de tipo vector.\n", nlines);
+                                printf("****Error semantico en lin %lu: Intento de indexacion de una variable que no es de tipo vector.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -548,7 +560,7 @@ exp                       :   exp TOK_MAS exp
                               $$.tipo = simbolo->tipo;
                               $$.es_direccion = 1;
                               if (simbolo->categoria == PARAMETRO) {
-                                escribirParametro(yyout, simbolo->posicion, num_total_parametros);
+                                escribirParametro(yyout, simbolo->posicion, posicion_parametro);
                               } else if (simbolo->categoria == VARIABLE) {
                                   if (Ambito(tabla) == LOCAL) {
                                     escribirVariableLocal(yyout, simbolo->posicion_varloc);
