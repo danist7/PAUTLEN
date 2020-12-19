@@ -10,9 +10,6 @@ alfa:
 	bison -d alfa.y
 	$(CC) $(CFLAGS) alfa.c $(LIBS) -o alfa
 
-#nasm:
-#	./alfa ejemplos/$(OUTS).alf salidas/$(OUTS).asm
-
 nasm: $(OUTS)
 
 $(OUTS):
@@ -20,10 +17,5 @@ $(OUTS):
 	nasm -g -o $@.o -f elf32 salidas/$@.asm
 	gcc -m32 -o $@ $@.o lib/alfalib.o
 
-
-#$(OUTS):
-#	nasm -g -o $@.o -f elf32 salidas/$@.asm
-#	gcc -m32 -o $@ $@.o lib/alfalib.o
-
 clean:
-	rm -rf lex.yy.c alfa $(OUTS) $(OUTS).o salidas/$(OUTS).asm
+	rm -rf lex.yy.c $(OUTS) $(OUTS).o salidas/*.asm
