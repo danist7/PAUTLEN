@@ -20,7 +20,7 @@ int funcion_retorno = 0;        /* Comprueba que hay un return en la funcion */
 int funcion_tipo;               /* Tipo de una funcion (entero o booleano) */
 int etiqueta = 0;
 
-int dentro_llamada_fun = 0;         /* Esta a 1 si estamos si estamos dentro de los parentesis de una funcion y a 0 si estamos fuera */
+int dentro_llamada_fun = 0;     /* Esta a 1 si estamos si estamos dentro de los parentesis de una funcion y a 0 si estamos fuera */
 int categoria_estructura;       /* Es ESCALAR o VECTOR */
 int posicion_parametro = 0;     /* Solo para elementos de tipo parametro, posicion en orden, empieza por 0 */
 int posicion = 0;               /* Solo para variables locales, su posición */
@@ -194,6 +194,7 @@ funcion                   :   fn_declaration sentencias TOK_LLAVEDERECHA
                                 return -1;
                               }
                               simbolo->n_parametros = num_total_parametros;
+                              simbolo->tipo = funcion_tipo;
                               num_total_parametros = 0;
                               num_total_varlocs = 0;
                               posicion_parametro = 0;
@@ -210,6 +211,7 @@ fn_declaration            :   fn_name TOK_PARENTESISIZQUIERDO parametros_funcion
                                }
                                simbolo->n_parametros = num_total_parametros;
                                simbolo->n_varloc = num_total_varlocs;
+                               simbolo->tipo = funcion_tipo;
                                strcpy($$.lexema, $1.lexema);
                                declararFuncion(yyout, $1.lexema, num_total_varlocs);
                               }
@@ -315,7 +317,6 @@ asignacion                :   TOK_IDENTIFICADOR TOK_ASIGNACION exp
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
-
                                 if (simbolo->tipo != $3.tipo) {
                                   printf("****Error semantico en lin %lu: Asignacion incompatible. \n", nlines);
                                   LiberarTablas(tabla);
@@ -378,12 +379,14 @@ elemento_vector           :   TOK_IDENTIFICADOR TOK_CORCHETEIZQUIERDO exp TOK_CO
                               }
                           ;
 condicional               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }\n");
-                              ifthen_fin(yyout, $1.etiqueta);
+                              {
+                                fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }\n");
+                                ifthen_fin(yyout, $1.etiqueta);
                               }
                           |   if_else_exp TOK_ELSE TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R51:\t<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }\n");
-                              ifthenelse_fin(yyout, $1.etiqueta);
+                              {
+                                fprintf(yyout,";R51:\t<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }\n");
+                                ifthenelse_fin(yyout, $1.etiqueta);
                               }
                           ;
 if_exp                    :   TOK_IF TOK_PARENTESISIZQUIERDO exp
@@ -404,8 +407,9 @@ if_else_exp               :   if_exp TOK_PARENTESISDERECHO TOK_LLAVEIZQUIERDA se
                               }
                           ;
 bucle                     :   while_exp TOK_LLAVEIZQUIERDA sentencias TOK_LLAVEDERECHA
-                              {fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");
-                              while_fin(yyout, $1.etiqueta);
+                              {
+                                fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");
+                                while_fin(yyout, $1.etiqueta);
                               }
                           ;
 while_exp                 :   while TOK_PARENTESISIZQUIERDO exp TOK_PARENTESISDERECHO
@@ -427,7 +431,8 @@ while                     :   TOK_WHILE
                               }
                           ;
 lectura                   :   TOK_SCANF TOK_IDENTIFICADOR
-                              {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");
+                              {
+                               fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");
                                simbolo *simbolo;
                                simbolo = BusquedaElemento(tabla, $2.lexema);
 
@@ -443,27 +448,32 @@ lectura                   :   TOK_SCANF TOK_IDENTIFICADOR
                                 LiberarTablas(tabla);
                                 return -1;
                                }
-                              leer(yyout, $2.lexema, simbolo->tipo);}
+                              leer(yyout, $2.lexema, simbolo->tipo);
+                          }
                           ;
 escritura                 :   TOK_PRINTF exp
-                              {fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");
+                              {
+                               fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");
                                operandoEnPilaAArgumento(yyout, $2.es_direccion);
-                               escribir(yyout, 0, $2.tipo);}
+                               escribir(yyout, 0, $2.tipo);
+                             }
                           ;
 retorno_funcion           :   TOK_RETURN exp
-                              {if (dentro_llamada_fun == 1){
-                                printf("****Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n", nlines);
-                                LiberarTablas(tabla);
-                                return -1;
-                              }
-                              fprintf(yyout,";R61:\t<retorno_funcion> ::= return <exp>\n");
-                              if (funcion_tipo != $2.tipo){
-                                printf("****Error semantico en lin %lu: Tipo incorrecto en retorno.\n", nlines);
-                                LiberarTablas(tabla);
-                                return -1;
-                              }
-                              funcion_retorno++;
-                              retornarFuncion(yyout, $2.es_direccion);}
+                              {
+                                if (dentro_llamada_fun == 1){
+                                  printf("****Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                fprintf(yyout,";R61:\t<retorno_funcion> ::= return <exp>\n");
+                                if (funcion_tipo != $2.tipo){
+                                  printf("****Error semantico en lin %lu: Tipo incorrecto en retorno.\n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                funcion_retorno++;
+                                retornarFuncion(yyout, $2.es_direccion);
+                            }
                           ;
 exp                       :   exp TOK_MAS exp
                               {
@@ -578,7 +588,7 @@ exp                       :   exp TOK_MAS exp
                               $$.tipo = simbolo->tipo;
                               $$.es_direccion = 1;
                               if (simbolo->categoria == PARAMETRO) {
-                                escribirParametro(yyout, simbolo->posicion, posicion_parametro);
+                                escribirParametro(yyout, simbolo->posicion, num_total_parametros);
                               } else if (simbolo->categoria == VARIABLE) {
                                   if (Ambito(tabla) == LOCAL) {
                                     escribirVariableLocal(yyout, simbolo->posicion_varloc);
@@ -625,7 +635,6 @@ exp                       :   exp TOK_MAS exp
                               }
                               $$.tipo = simbolo->tipo;
                               llamarFuncion(yyout, $1.lexema, simbolo->n_parametros);
-                              limpiarPila(yyout, simbolo->n_parametros);
                               dentro_llamada_fun = 0;
                               }
                           ;

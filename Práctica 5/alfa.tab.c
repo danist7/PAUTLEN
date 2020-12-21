@@ -1,9 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.5.1.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
-   Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,14 +40,11 @@
    define necessary library symbols; they are noted "INFRINGES ON
    USER NAME SPACE" below.  */
 
-/* Undocumented macros, especially those whose name start with YY_,
-   are private implementation details.  Do not rely on them.  */
-
 /* Identify Bison output.  */
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.5.1"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -65,8 +61,8 @@
 
 
 
-/* First part of user prologue.  */
-#line 2 "alfa.y"
+/* Copy the first part of user declarations.  */
+#line 2 "alfa.y" /* yacc.c:339  */
 
 #include <stdio.h>
 #include <string.h>
@@ -88,32 +84,19 @@ int funcion_retorno = 0;        /* Comprueba que hay un return en la funcion */
 int funcion_tipo;               /* Tipo de una funcion (entero o booleano) */
 int etiqueta = 0;
 
-int dentro_llamada_fun = 0;         /* Esta a 1 si estamos si estamos dentro de los parentesis de una funcion y a 0 si estamos fuera */
+int dentro_llamada_fun = 0;     /* Esta a 1 si estamos si estamos dentro de los parentesis de una funcion y a 0 si estamos fuera */
 int categoria_estructura;       /* Es ESCALAR o VECTOR */
 int posicion_parametro = 0;     /* Solo para elementos de tipo parametro, posicion en orden, empieza por 0 */
 int posicion = 0;               /* Solo para variables locales, su posición */
 int num_arg_funcion = 0;        /* Numero de parametros al LLAMAR a una funcion */
 
-#line 98 "alfa.tab.c"
+#line 94 "alfa.tab.c" /* yacc.c:339  */
 
-# ifndef YY_CAST
-#  ifdef __cplusplus
-#   define YY_CAST(Type, Val) static_cast<Type> (Val)
-#   define YY_REINTERPRET_CAST(Type, Val) reinterpret_cast<Type> (Val)
-#  else
-#   define YY_CAST(Type, Val) ((Type) (Val))
-#   define YY_REINTERPRET_CAST(Type, Val) ((Type) (Val))
-#  endif
-# endif
 # ifndef YY_NULLPTR
-#  if defined __cplusplus
-#   if 201103L <= __cplusplus
-#    define YY_NULLPTR nullptr
-#   else
-#    define YY_NULLPTR 0
-#   endif
+#  if defined __cplusplus && 201103L <= __cplusplus
+#   define YY_NULLPTR nullptr
 #  else
-#   define YY_NULLPTR ((void*)0)
+#   define YY_NULLPTR 0
 #  endif
 # endif
 
@@ -125,8 +108,8 @@ int num_arg_funcion = 0;        /* Numero de parametros al LLAMAR a una funcion 
 # define YYERROR_VERBOSE 0
 #endif
 
-/* Use api.header.include to #include this header
-   instead of duplicating it here.  */
+/* In a future release of Bison, this section will be replaced
+   by #include "alfa.tab.h".  */
 #ifndef YY_YY_ALFA_TAB_H_INCLUDED
 # define YY_YY_ALFA_TAB_H_INCLUDED
 /* Debug traces.  */
@@ -185,15 +168,16 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+
 union YYSTYPE
 {
-#line 30 "alfa.y"
+#line 30 "alfa.y" /* yacc.c:355  */
 
   tipo_atributos atributos;
 
-#line 195 "alfa.tab.c"
-
+#line 179 "alfa.tab.c" /* yacc.c:355  */
 };
+
 typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -206,81 +190,36 @@ int yyparse (void);
 
 #endif /* !YY_YY_ALFA_TAB_H_INCLUDED  */
 
+/* Copy the second part of user declarations.  */
 
+#line 196 "alfa.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
 #endif
 
-/* On compilers that do not define __PTRDIFF_MAX__ etc., make sure
-   <limits.h> and (if available) <stdint.h> are included
-   so that the code can choose integer types of a good width.  */
-
-#ifndef __PTRDIFF_MAX__
-# include <limits.h> /* INFRINGES ON USER NAME SPACE */
-# if defined __STDC_VERSION__ && 199901 <= __STDC_VERSION__
-#  include <stdint.h> /* INFRINGES ON USER NAME SPACE */
-#  define YY_STDINT_H
-# endif
+#ifdef YYTYPE_UINT8
+typedef YYTYPE_UINT8 yytype_uint8;
+#else
+typedef unsigned char yytype_uint8;
 #endif
 
-/* Narrow types that promote to a signed type and that can represent a
-   signed or unsigned integer of at least N bits.  In tables they can
-   save space and decrease cache pressure.  Promoting to a signed type
-   helps avoid bugs in integer arithmetic.  */
-
-#ifdef __INT_LEAST8_MAX__
-typedef __INT_LEAST8_TYPE__ yytype_int8;
-#elif defined YY_STDINT_H
-typedef int_least8_t yytype_int8;
+#ifdef YYTYPE_INT8
+typedef YYTYPE_INT8 yytype_int8;
 #else
 typedef signed char yytype_int8;
 #endif
 
-#ifdef __INT_LEAST16_MAX__
-typedef __INT_LEAST16_TYPE__ yytype_int16;
-#elif defined YY_STDINT_H
-typedef int_least16_t yytype_int16;
+#ifdef YYTYPE_UINT16
+typedef YYTYPE_UINT16 yytype_uint16;
 #else
-typedef short yytype_int16;
+typedef unsigned short int yytype_uint16;
 #endif
 
-#if defined __UINT_LEAST8_MAX__ && __UINT_LEAST8_MAX__ <= __INT_MAX__
-typedef __UINT_LEAST8_TYPE__ yytype_uint8;
-#elif (!defined __UINT_LEAST8_MAX__ && defined YY_STDINT_H \
-       && UINT_LEAST8_MAX <= INT_MAX)
-typedef uint_least8_t yytype_uint8;
-#elif !defined __UINT_LEAST8_MAX__ && UCHAR_MAX <= INT_MAX
-typedef unsigned char yytype_uint8;
+#ifdef YYTYPE_INT16
+typedef YYTYPE_INT16 yytype_int16;
 #else
-typedef short yytype_uint8;
-#endif
-
-#if defined __UINT_LEAST16_MAX__ && __UINT_LEAST16_MAX__ <= __INT_MAX__
-typedef __UINT_LEAST16_TYPE__ yytype_uint16;
-#elif (!defined __UINT_LEAST16_MAX__ && defined YY_STDINT_H \
-       && UINT_LEAST16_MAX <= INT_MAX)
-typedef uint_least16_t yytype_uint16;
-#elif !defined __UINT_LEAST16_MAX__ && USHRT_MAX <= INT_MAX
-typedef unsigned short yytype_uint16;
-#else
-typedef int yytype_uint16;
-#endif
-
-#ifndef YYPTRDIFF_T
-# if defined __PTRDIFF_TYPE__ && defined __PTRDIFF_MAX__
-#  define YYPTRDIFF_T __PTRDIFF_TYPE__
-#  define YYPTRDIFF_MAXIMUM __PTRDIFF_MAX__
-# elif defined PTRDIFF_MAX
-#  ifndef ptrdiff_t
-#   include <stddef.h> /* INFRINGES ON USER NAME SPACE */
-#  endif
-#  define YYPTRDIFF_T ptrdiff_t
-#  define YYPTRDIFF_MAXIMUM PTRDIFF_MAX
-# else
-#  define YYPTRDIFF_T long
-#  define YYPTRDIFF_MAXIMUM LONG_MAX
-# endif
+typedef short int yytype_int16;
 #endif
 
 #ifndef YYSIZE_T
@@ -288,27 +227,15 @@ typedef int yytype_uint16;
 #  define YYSIZE_T __SIZE_TYPE__
 # elif defined size_t
 #  define YYSIZE_T size_t
-# elif defined __STDC_VERSION__ && 199901 <= __STDC_VERSION__
+# elif ! defined YYSIZE_T
 #  include <stddef.h> /* INFRINGES ON USER NAME SPACE */
 #  define YYSIZE_T size_t
 # else
-#  define YYSIZE_T unsigned
+#  define YYSIZE_T unsigned int
 # endif
 #endif
 
-#define YYSIZE_MAXIMUM                                  \
-  YY_CAST (YYPTRDIFF_T,                                 \
-           (YYPTRDIFF_MAXIMUM < YY_CAST (YYSIZE_T, -1)  \
-            ? YYPTRDIFF_MAXIMUM                         \
-            : YY_CAST (YYSIZE_T, -1)))
-
-#define YYSIZEOF(X) YY_CAST (YYPTRDIFF_T, sizeof (X))
-
-/* Stored state numbers (used for stacks). */
-typedef yytype_uint8 yy_state_t;
-
-/* State numbers in computations.  */
-typedef int yy_state_fast_t;
+#define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
 
 #ifndef YY_
 # if defined YYENABLE_NLS && YYENABLE_NLS
@@ -322,19 +249,30 @@ typedef int yy_state_fast_t;
 # endif
 #endif
 
-#ifndef YY_ATTRIBUTE_PURE
-# if defined __GNUC__ && 2 < __GNUC__ + (96 <= __GNUC_MINOR__)
-#  define YY_ATTRIBUTE_PURE __attribute__ ((__pure__))
+#ifndef YY_ATTRIBUTE
+# if (defined __GNUC__                                               \
+      && (2 < __GNUC__ || (__GNUC__ == 2 && 96 <= __GNUC_MINOR__)))  \
+     || defined __SUNPRO_C && 0x5110 <= __SUNPRO_C
+#  define YY_ATTRIBUTE(Spec) __attribute__(Spec)
 # else
-#  define YY_ATTRIBUTE_PURE
+#  define YY_ATTRIBUTE(Spec) /* empty */
 # endif
 #endif
 
+#ifndef YY_ATTRIBUTE_PURE
+# define YY_ATTRIBUTE_PURE   YY_ATTRIBUTE ((__pure__))
+#endif
+
 #ifndef YY_ATTRIBUTE_UNUSED
-# if defined __GNUC__ && 2 < __GNUC__ + (7 <= __GNUC_MINOR__)
-#  define YY_ATTRIBUTE_UNUSED __attribute__ ((__unused__))
+# define YY_ATTRIBUTE_UNUSED YY_ATTRIBUTE ((__unused__))
+#endif
+
+#if !defined _Noreturn \
+     && (!defined __STDC_VERSION__ || __STDC_VERSION__ < 201112)
+# if defined _MSC_VER && 1200 <= _MSC_VER
+#  define _Noreturn __declspec (noreturn)
 # else
-#  define YY_ATTRIBUTE_UNUSED
+#  define _Noreturn YY_ATTRIBUTE ((__noreturn__))
 # endif
 #endif
 
@@ -345,13 +283,13 @@ typedef int yy_state_fast_t;
 # define YYUSE(E) /* empty */
 #endif
 
-#if defined __GNUC__ && ! defined __ICC && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
 /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
-# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN                            \
-    _Pragma ("GCC diagnostic push")                                     \
-    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")              \
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
+    _Pragma ("GCC diagnostic push") \
+    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")\
     _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
-# define YY_IGNORE_MAYBE_UNINITIALIZED_END      \
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END \
     _Pragma ("GCC diagnostic pop")
 #else
 # define YY_INITIAL_VALUE(Value) Value
@@ -364,20 +302,6 @@ typedef int yy_state_fast_t;
 # define YY_INITIAL_VALUE(Value) /* Nothing. */
 #endif
 
-#if defined __cplusplus && defined __GNUC__ && ! defined __ICC && 6 <= __GNUC__
-# define YY_IGNORE_USELESS_CAST_BEGIN                          \
-    _Pragma ("GCC diagnostic push")                            \
-    _Pragma ("GCC diagnostic ignored \"-Wuseless-cast\"")
-# define YY_IGNORE_USELESS_CAST_END            \
-    _Pragma ("GCC diagnostic pop")
-#endif
-#ifndef YY_IGNORE_USELESS_CAST_BEGIN
-# define YY_IGNORE_USELESS_CAST_BEGIN
-# define YY_IGNORE_USELESS_CAST_END
-#endif
-
-
-#define YY_ASSERT(E) ((void) (0 && (E)))
 
 #if ! defined yyoverflow || YYERROR_VERBOSE
 
@@ -454,17 +378,17 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
 {
-  yy_state_t yyss_alloc;
+  yytype_int16 yyss_alloc;
   YYSTYPE yyvs_alloc;
 };
 
 /* The size of the maximum gap between one aligned stack and the next.  */
-# define YYSTACK_GAP_MAXIMUM (YYSIZEOF (union yyalloc) - 1)
+# define YYSTACK_GAP_MAXIMUM (sizeof (union yyalloc) - 1)
 
 /* The size of an array large to enough to hold all stacks, each with
    N elements.  */
 # define YYSTACK_BYTES(N) \
-     ((N) * (YYSIZEOF (yy_state_t) + YYSIZEOF (YYSTYPE)) \
+     ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE)) \
       + YYSTACK_GAP_MAXIMUM)
 
 # define YYCOPY_NEEDED 1
@@ -477,11 +401,11 @@ union yyalloc
 # define YYSTACK_RELOCATE(Stack_alloc, Stack)                           \
     do                                                                  \
       {                                                                 \
-        YYPTRDIFF_T yynewbytes;                                         \
+        YYSIZE_T yynewbytes;                                            \
         YYCOPY (&yyptr->Stack_alloc, Stack, yysize);                    \
         Stack = &yyptr->Stack_alloc;                                    \
-        yynewbytes = yystacksize * YYSIZEOF (*Stack) + YYSTACK_GAP_MAXIMUM; \
-        yyptr += yynewbytes / YYSIZEOF (*yyptr);                        \
+        yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
+        yyptr += yynewbytes / sizeof (*yyptr);                          \
       }                                                                 \
     while (0)
 
@@ -493,12 +417,12 @@ union yyalloc
 # ifndef YYCOPY
 #  if defined __GNUC__ && 1 < __GNUC__
 #   define YYCOPY(Dst, Src, Count) \
-      __builtin_memcpy (Dst, Src, YY_CAST (YYSIZE_T, (Count)) * sizeof (*(Src)))
+      __builtin_memcpy (Dst, Src, (Count) * sizeof (*(Src)))
 #  else
 #   define YYCOPY(Dst, Src, Count)              \
       do                                        \
         {                                       \
-          YYPTRDIFF_T yyi;                      \
+          YYSIZE_T yyi;                         \
           for (yyi = 0; yyi < (Count); yyi++)   \
             (Dst)[yyi] = (Src)[yyi];            \
         }                                       \
@@ -521,18 +445,17 @@ union yyalloc
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  152
 
+/* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
+   by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   295
 
-
-/* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
-   as returned by yylex, with out-of-bounds checking.  */
 #define YYTRANSLATE(YYX)                                                \
-  (0 <= (YYX) && (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
+  ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
 /* YYTRANSLATE[TOKEN-NUM] -- Symbol number corresponding to TOKEN-NUM
-   as returned by yylex.  */
-static const yytype_int8 yytranslate[] =
+   as returned by yylex, without out-of-bounds checking.  */
+static const yytype_uint8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -568,17 +491,17 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int16 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
        0,   103,   103,   108,   118,   123,   128,   130,   133,   136,
      139,   143,   147,   150,   154,   169,   171,   174,   176,   179,
-     202,   217,   240,   242,   245,   247,   250,   256,   270,   272,
-     275,   277,   280,   282,   285,   287,   289,   291,   294,   296,
-     299,   331,   351,   380,   384,   389,   400,   406,   411,   423,
-     429,   448,   453,   468,   480,   492,   504,   516,   528,   540,
-     552,   565,   593,   598,   603,   608,   613,   632,   655,   662,
-     665,   672,   675,   688,   701,   714,   727,   740,   754,   760,
-     767,   776,   786,   797
+     203,   219,   242,   244,   247,   249,   252,   258,   272,   274,
+     277,   279,   282,   284,   287,   289,   291,   293,   296,   298,
+     301,   332,   352,   381,   386,   392,   403,   409,   415,   427,
+     433,   454,   461,   478,   490,   502,   514,   526,   538,   550,
+     562,   575,   603,   608,   613,   618,   623,   641,   664,   671,
+     674,   681,   684,   697,   710,   723,   736,   749,   763,   769,
+     776,   785,   795,   806
 };
 #endif
 
@@ -614,7 +537,7 @@ static const char *const yytname[] =
 # ifdef YYPRINT
 /* YYTOKNUM[NUM] -- (External) token number corresponding to the
    (internal) symbol number NUM (which must be that of a token).  */
-static const yytype_int16 yytoknum[] =
+static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
@@ -624,14 +547,14 @@ static const yytype_int16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF (-38)
+#define YYPACT_NINF -38
 
-#define yypact_value_is_default(Yyn) \
-  ((Yyn) == YYPACT_NINF)
+#define yypact_value_is_default(Yystate) \
+  (!!((Yystate) == (-38)))
 
-#define YYTABLE_NINF (-68)
+#define YYTABLE_NINF -68
 
-#define yytable_value_is_error(Yyn) \
+#define yytable_value_is_error(Yytable_value) \
   0
 
   /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
@@ -659,7 +582,7 @@ static const yytype_int8 yypact[] =
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
      Performed when YYTABLE does not specify something else to do.  Zero
      means the default is an error.  */
-static const yytype_int8 yydefact[] =
+static const yytype_uint8 yydefact[] =
 {
        0,     3,     0,     0,     1,     0,    12,    13,     0,     4,
        6,     0,     9,    11,    10,     0,    18,     7,    83,     0,
@@ -742,7 +665,7 @@ static const yytype_int16 yycheck[] =
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
-static const yytype_int8 yystos[] =
+static const yytype_uint8 yystos[] =
 {
        0,     5,    42,    43,     0,    22,     6,     7,     8,    46,
       47,    48,    49,    50,    51,    50,    44,    46,     3,    52,
@@ -763,7 +686,7 @@ static const yytype_int8 yystos[] =
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
-static const yytype_int8 yyr1[] =
+static const yytype_uint8 yyr1[] =
 {
        0,    41,    42,    43,    44,    45,    46,    46,    47,    48,
       48,    49,    50,    50,    51,    52,    52,    53,    53,    54,
@@ -777,7 +700,7 @@ static const yytype_int8 yyr1[] =
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
-static const yytype_int8 yyr2[] =
+static const yytype_uint8 yyr2[] =
 {
        0,     2,     9,     0,     0,     0,     1,     2,     3,     1,
        1,     1,     1,     1,     5,     1,     3,     2,     0,     3,
@@ -803,22 +726,22 @@ static const yytype_int8 yyr2[] =
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Value)                                    \
-  do                                                              \
-    if (yychar == YYEMPTY)                                        \
-      {                                                           \
-        yychar = (Token);                                         \
-        yylval = (Value);                                         \
-        YYPOPSTACK (yylen);                                       \
-        yystate = *yyssp;                                         \
-        goto yybackup;                                            \
-      }                                                           \
-    else                                                          \
-      {                                                           \
-        yyerror (YY_("syntax error: cannot back up")); \
-        YYERROR;                                                  \
-      }                                                           \
-  while (0)
+#define YYBACKUP(Token, Value)                                  \
+do                                                              \
+  if (yychar == YYEMPTY)                                        \
+    {                                                           \
+      yychar = (Token);                                         \
+      yylval = (Value);                                         \
+      YYPOPSTACK (yylen);                                       \
+      yystate = *yyssp;                                         \
+      goto yybackup;                                            \
+    }                                                           \
+  else                                                          \
+    {                                                           \
+      yyerror (YY_("syntax error: cannot back up")); \
+      YYERROR;                                                  \
+    }                                                           \
+while (0)
 
 /* Error token number */
 #define YYTERROR        1
@@ -858,39 +781,37 @@ do {                                                                      \
 } while (0)
 
 
-/*-----------------------------------.
-| Print this symbol's value on YYO.  |
-`-----------------------------------*/
+/*----------------------------------------.
+| Print this symbol's value on YYOUTPUT.  |
+`----------------------------------------*/
 
 static void
-yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
 {
-  FILE *yyoutput = yyo;
-  YYUSE (yyoutput);
+  FILE *yyo = yyoutput;
+  YYUSE (yyo);
   if (!yyvaluep)
     return;
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
-    YYPRINT (yyo, yytoknum[yytype], *yyvaluep);
+    YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
 # endif
-  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   YYUSE (yytype);
-  YY_IGNORE_MAYBE_UNINITIALIZED_END
 }
 
 
-/*---------------------------.
-| Print this symbol on YYO.  |
-`---------------------------*/
+/*--------------------------------.
+| Print this symbol on YYOUTPUT.  |
+`--------------------------------*/
 
 static void
-yy_symbol_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
 {
-  YYFPRINTF (yyo, "%s %s (",
+  YYFPRINTF (yyoutput, "%s %s (",
              yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
 
-  yy_symbol_value_print (yyo, yytype, yyvaluep);
-  YYFPRINTF (yyo, ")");
+  yy_symbol_value_print (yyoutput, yytype, yyvaluep);
+  YYFPRINTF (yyoutput, ")");
 }
 
 /*------------------------------------------------------------------.
@@ -899,7 +820,7 @@ yy_symbol_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
 `------------------------------------------------------------------*/
 
 static void
-yy_stack_print (yy_state_t *yybottom, yy_state_t *yytop)
+yy_stack_print (yytype_int16 *yybottom, yytype_int16 *yytop)
 {
   YYFPRINTF (stderr, "Stack now");
   for (; yybottom <= yytop; yybottom++)
@@ -922,20 +843,20 @@ do {                                                            \
 `------------------------------------------------*/
 
 static void
-yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp, int yyrule)
+yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule)
 {
-  int yylno = yyrline[yyrule];
+  unsigned long int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
   int yyi;
-  YYFPRINTF (stderr, "Reducing stack by rule %d (line %d):\n",
+  YYFPRINTF (stderr, "Reducing stack by rule %d (line %lu):\n",
              yyrule - 1, yylno);
   /* The symbols being reduced.  */
   for (yyi = 0; yyi < yynrhs; yyi++)
     {
       YYFPRINTF (stderr, "   $%d = ", yyi + 1);
       yy_symbol_print (stderr,
-                       yystos[+yyssp[yyi + 1 - yynrhs]],
-                       &yyvsp[(yyi + 1) - (yynrhs)]
+                       yystos[yyssp[yyi + 1 - yynrhs]],
+                       &(yyvsp[(yyi + 1) - (yynrhs)])
                                               );
       YYFPRINTF (stderr, "\n");
     }
@@ -979,13 +900,13 @@ int yydebug;
 
 # ifndef yystrlen
 #  if defined __GLIBC__ && defined _STRING_H
-#   define yystrlen(S) (YY_CAST (YYPTRDIFF_T, strlen (S)))
+#   define yystrlen strlen
 #  else
 /* Return the length of YYSTR.  */
-static YYPTRDIFF_T
+static YYSIZE_T
 yystrlen (const char *yystr)
 {
-  YYPTRDIFF_T yylen;
+  YYSIZE_T yylen;
   for (yylen = 0; yystr[yylen]; yylen++)
     continue;
   return yylen;
@@ -1021,12 +942,12 @@ yystpcpy (char *yydest, const char *yysrc)
    backslash-backslash).  YYSTR is taken from yytname.  If YYRES is
    null, do not copy; instead, return the length of what the result
    would have been.  */
-static YYPTRDIFF_T
+static YYSIZE_T
 yytnamerr (char *yyres, const char *yystr)
 {
   if (*yystr == '"')
     {
-      YYPTRDIFF_T yyn = 0;
+      YYSIZE_T yyn = 0;
       char const *yyp = yystr;
 
       for (;;)
@@ -1039,10 +960,7 @@ yytnamerr (char *yyres, const char *yystr)
           case '\\':
             if (*++yyp != '\\')
               goto do_not_strip_quotes;
-            else
-              goto append;
-
-          append:
+            /* Fall through.  */
           default:
             if (yyres)
               yyres[yyn] = *yyp;
@@ -1057,10 +975,10 @@ yytnamerr (char *yyres, const char *yystr)
     do_not_strip_quotes: ;
     }
 
-  if (yyres)
-    return yystpcpy (yyres, yystr) - yyres;
-  else
+  if (! yyres)
     return yystrlen (yystr);
+
+  return yystpcpy (yyres, yystr) - yyres;
 }
 # endif
 
@@ -1073,19 +991,19 @@ yytnamerr (char *yyres, const char *yystr)
    *YYMSG_ALLOC to the required number of bytes.  Return 2 if the
    required number of bytes is too large to store.  */
 static int
-yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
-                yy_state_t *yyssp, int yytoken)
+yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
+                yytype_int16 *yyssp, int yytoken)
 {
+  YYSIZE_T yysize0 = yytnamerr (YY_NULLPTR, yytname[yytoken]);
+  YYSIZE_T yysize = yysize0;
   enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
   /* Internationalized format string. */
   const char *yyformat = YY_NULLPTR;
-  /* Arguments of yyformat: reported tokens (one for the "unexpected",
-     one per "expected"). */
+  /* Arguments of yyformat. */
   char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
-  /* Actual size of YYARG. */
+  /* Number of reported tokens (one for the "unexpected", one per
+     "expected"). */
   int yycount = 0;
-  /* Cumulated lengths of YYARG.  */
-  YYPTRDIFF_T yysize = 0;
 
   /* There are many possibilities here to consider:
      - If this state is a consistent state with a default action, then
@@ -1112,9 +1030,7 @@ yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
   */
   if (yytoken != YYEMPTY)
     {
-      int yyn = yypact[+*yyssp];
-      YYPTRDIFF_T yysize0 = yytnamerr (YY_NULLPTR, yytname[yytoken]);
-      yysize = yysize0;
+      int yyn = yypact[*yyssp];
       yyarg[yycount++] = yytname[yytoken];
       if (!yypact_value_is_default (yyn))
         {
@@ -1139,12 +1055,11 @@ yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
                   }
                 yyarg[yycount++] = yytname[yyx];
                 {
-                  YYPTRDIFF_T yysize1
-                    = yysize + yytnamerr (YY_NULLPTR, yytname[yyx]);
-                  if (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM)
-                    yysize = yysize1;
-                  else
+                  YYSIZE_T yysize1 = yysize + yytnamerr (YY_NULLPTR, yytname[yyx]);
+                  if (! (yysize <= yysize1
+                         && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
                     return 2;
+                  yysize = yysize1;
                 }
               }
         }
@@ -1156,7 +1071,6 @@ yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
       case N:                               \
         yyformat = S;                       \
       break
-    default: /* Avoid compiler warnings. */
       YYCASE_(0, YY_("syntax error"));
       YYCASE_(1, YY_("syntax error, unexpected %s"));
       YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
@@ -1167,13 +1081,10 @@ yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
     }
 
   {
-    /* Don't count the "%s"s in the final size, but reserve room for
-       the terminator.  */
-    YYPTRDIFF_T yysize1 = yysize + (yystrlen (yyformat) - 2 * yycount) + 1;
-    if (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM)
-      yysize = yysize1;
-    else
+    YYSIZE_T yysize1 = yysize + yystrlen (yyformat);
+    if (! (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
       return 2;
+    yysize = yysize1;
   }
 
   if (*yymsg_alloc < yysize)
@@ -1199,8 +1110,8 @@ yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
         }
       else
         {
-          ++yyp;
-          ++yyformat;
+          yyp++;
+          yyformat++;
         }
   }
   return 0;
@@ -1243,7 +1154,7 @@ int yynerrs;
 int
 yyparse (void)
 {
-    yy_state_fast_t yystate;
+    int yystate;
     /* Number of tokens to shift before error messages enabled.  */
     int yyerrstatus;
 
@@ -1255,16 +1166,16 @@ yyparse (void)
        to reallocate them elsewhere.  */
 
     /* The state stack.  */
-    yy_state_t yyssa[YYINITDEPTH];
-    yy_state_t *yyss;
-    yy_state_t *yyssp;
+    yytype_int16 yyssa[YYINITDEPTH];
+    yytype_int16 *yyss;
+    yytype_int16 *yyssp;
 
     /* The semantic value stack.  */
     YYSTYPE yyvsa[YYINITDEPTH];
     YYSTYPE *yyvs;
     YYSTYPE *yyvsp;
 
-    YYPTRDIFF_T yystacksize;
+    YYSIZE_T yystacksize;
 
   int yyn;
   int yyresult;
@@ -1278,7 +1189,7 @@ yyparse (void)
   /* Buffer for error messages, and its allocated size.  */
   char yymsgbuf[128];
   char *yymsg = yymsgbuf;
-  YYPTRDIFF_T yymsg_alloc = sizeof yymsgbuf;
+  YYSIZE_T yymsg_alloc = sizeof yymsgbuf;
 #endif
 
 #define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
@@ -1299,54 +1210,46 @@ yyparse (void)
   yychar = YYEMPTY; /* Cause a token to be read.  */
   goto yysetstate;
 
-
 /*------------------------------------------------------------.
-| yynewstate -- push a new state, which is found in yystate.  |
+| yynewstate -- Push a new state, which is found in yystate.  |
 `------------------------------------------------------------*/
-yynewstate:
+ yynewstate:
   /* In all cases, when you get here, the value and location stacks
      have just been pushed.  So pushing a state here evens the stacks.  */
   yyssp++;
 
-
-/*--------------------------------------------------------------------.
-| yysetstate -- set current state (the top of the stack) to yystate.  |
-`--------------------------------------------------------------------*/
-yysetstate:
-  YYDPRINTF ((stderr, "Entering state %d\n", yystate));
-  YY_ASSERT (0 <= yystate && yystate < YYNSTATES);
-  YY_IGNORE_USELESS_CAST_BEGIN
-  *yyssp = YY_CAST (yy_state_t, yystate);
-  YY_IGNORE_USELESS_CAST_END
+ yysetstate:
+  *yyssp = yystate;
 
   if (yyss + yystacksize - 1 <= yyssp)
-#if !defined yyoverflow && !defined YYSTACK_RELOCATE
-    goto yyexhaustedlab;
-#else
     {
       /* Get the current used size of the three stacks, in elements.  */
-      YYPTRDIFF_T yysize = yyssp - yyss + 1;
+      YYSIZE_T yysize = yyssp - yyss + 1;
 
-# if defined yyoverflow
+#ifdef yyoverflow
       {
         /* Give user a chance to reallocate the stack.  Use copies of
            these so that the &'s don't force the real ones into
            memory.  */
-        yy_state_t *yyss1 = yyss;
         YYSTYPE *yyvs1 = yyvs;
+        yytype_int16 *yyss1 = yyss;
 
         /* Each stack pointer address is followed by the size of the
            data in use in that stack, in bytes.  This used to be a
            conditional around just the two extra args, but that might
            be undefined if yyoverflow is a macro.  */
         yyoverflow (YY_("memory exhausted"),
-                    &yyss1, yysize * YYSIZEOF (*yyssp),
-                    &yyvs1, yysize * YYSIZEOF (*yyvsp),
+                    &yyss1, yysize * sizeof (*yyssp),
+                    &yyvs1, yysize * sizeof (*yyvsp),
                     &yystacksize);
+
         yyss = yyss1;
         yyvs = yyvs1;
       }
-# else /* defined YYSTACK_RELOCATE */
+#else /* no yyoverflow */
+# ifndef YYSTACK_RELOCATE
+      goto yyexhaustedlab;
+# else
       /* Extend the stack our own way.  */
       if (YYMAXDEPTH <= yystacksize)
         goto yyexhaustedlab;
@@ -1355,43 +1258,42 @@ yysetstate:
         yystacksize = YYMAXDEPTH;
 
       {
-        yy_state_t *yyss1 = yyss;
+        yytype_int16 *yyss1 = yyss;
         union yyalloc *yyptr =
-          YY_CAST (union yyalloc *,
-                   YYSTACK_ALLOC (YY_CAST (YYSIZE_T, YYSTACK_BYTES (yystacksize))));
+          (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
         if (! yyptr)
           goto yyexhaustedlab;
         YYSTACK_RELOCATE (yyss_alloc, yyss);
         YYSTACK_RELOCATE (yyvs_alloc, yyvs);
-# undef YYSTACK_RELOCATE
+#  undef YYSTACK_RELOCATE
         if (yyss1 != yyssa)
           YYSTACK_FREE (yyss1);
       }
 # endif
+#endif /* no yyoverflow */
 
       yyssp = yyss + yysize - 1;
       yyvsp = yyvs + yysize - 1;
 
-      YY_IGNORE_USELESS_CAST_BEGIN
-      YYDPRINTF ((stderr, "Stack size increased to %ld\n",
-                  YY_CAST (long, yystacksize)));
-      YY_IGNORE_USELESS_CAST_END
+      YYDPRINTF ((stderr, "Stack size increased to %lu\n",
+                  (unsigned long int) yystacksize));
 
       if (yyss + yystacksize - 1 <= yyssp)
         YYABORT;
     }
-#endif /* !defined yyoverflow && !defined YYSTACK_RELOCATE */
+
+  YYDPRINTF ((stderr, "Entering state %d\n", yystate));
 
   if (yystate == YYFINAL)
     YYACCEPT;
 
   goto yybackup;
 
-
 /*-----------.
 | yybackup.  |
 `-----------*/
 yybackup:
+
   /* Do appropriate processing given the current state.  Read a
      lookahead token if we need one and don't already have one.  */
 
@@ -1441,13 +1343,15 @@ yybackup:
 
   /* Shift the lookahead token.  */
   YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
+
+  /* Discard the shifted token.  */
+  yychar = YYEMPTY;
+
   yystate = yyn;
   YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
   YY_IGNORE_MAYBE_UNINITIALIZED_END
 
-  /* Discard the shifted token.  */
-  yychar = YYEMPTY;
   goto yynewstate;
 
 
@@ -1462,7 +1366,7 @@ yydefault:
 
 
 /*-----------------------------.
-| yyreduce -- do a reduction.  |
+| yyreduce -- Do a reduction.  |
 `-----------------------------*/
 yyreduce:
   /* yyn is the number of a rule to reduce with.  */
@@ -1482,17 +1386,17 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2:
-#line 104 "alfa.y"
-                              {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }\n");
+        case 2:
+#line 104 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R1:\t<programa> ::= main { <declaraciones> <funciones> <sentencias> }\n");
                                escribir_fin(yyout);
                                LiberarTablas(tabla);}
-#line 1491 "alfa.tab.c"
+#line 1395 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 109 "alfa.y"
-                              {  tabla = CrearTablas();
+#line 109 "alfa.y" /* yacc.c:1646  */
+    {  tabla = CrearTablas();
                                 if(tabla == NULL){
                                   printf("No existe la tabla de símbolos\n");
                                   return -1;
@@ -1500,81 +1404,81 @@ yyreduce:
                                 escribir_subseccion_data(yyout);
                                 escribir_cabecera_bss(yyout);
                               }
-#line 1504 "alfa.tab.c"
+#line 1408 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 119 "alfa.y"
-                              {
+#line 119 "alfa.y" /* yacc.c:1646  */
+    {
                                escribir_segmento_codigo(yyout);
                               }
-#line 1512 "alfa.tab.c"
+#line 1416 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 124 "alfa.y"
-                              {
+#line 124 "alfa.y" /* yacc.c:1646  */
+    {
                                escribir_inicio_main(yyout);
                               }
-#line 1520 "alfa.tab.c"
+#line 1424 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 129 "alfa.y"
-                              {fprintf(yyout,";R2:\t<declaraciones> ::= <declaracion>\n");}
-#line 1526 "alfa.tab.c"
+#line 129 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R2:\t<declaraciones> ::= <declaracion>\n");}
+#line 1430 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 131 "alfa.y"
-                              {fprintf(yyout,";R3:\t<declaraciones> ::= <declaracion> <declaraciones>\n");}
-#line 1532 "alfa.tab.c"
+#line 131 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R3:\t<declaraciones> ::= <declaracion> <declaraciones>\n");}
+#line 1436 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 134 "alfa.y"
-                              {fprintf(yyout,";R4:\t<declaracion> ::= <clase> <identificadores> ;\n");}
-#line 1538 "alfa.tab.c"
+#line 134 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R4:\t<declaracion> ::= <clase> <identificadores> ;\n");}
+#line 1442 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 137 "alfa.y"
-                              {fprintf(yyout,";R5:\t<clase> ::= <clase_escalar>\n");
+#line 137 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R5:\t<clase> ::= <clase_escalar>\n");
                                categoria_estructura = ESCALAR;}
-#line 1545 "alfa.tab.c"
+#line 1449 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 140 "alfa.y"
-                              {fprintf(yyout,";R7:\t<clase> ::= <clase_vector>\n");
+#line 140 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R7:\t<clase> ::= <clase_vector>\n");
                                categoria_estructura = VECTOR;}
-#line 1552 "alfa.tab.c"
+#line 1456 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 144 "alfa.y"
-                              {fprintf(yyout,";R9:\t<clase_escalar> ::= <tipo>\n");
+#line 144 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R9:\t<clase_escalar> ::= <tipo>\n");
                                tamanio = 1;}
-#line 1559 "alfa.tab.c"
+#line 1463 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 148 "alfa.y"
-                              {fprintf(yyout,";R10:\t<tipo> ::= int\n");
+#line 148 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R10:\t<tipo> ::= int\n");
                                tipo = ENTERO;}
-#line 1566 "alfa.tab.c"
+#line 1470 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 151 "alfa.y"
-                              {fprintf(yyout,";R11:\t<tipo> ::= boolean\n");
+#line 151 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R11:\t<tipo> ::= boolean\n");
                                tipo = BOOLEANO;}
-#line 1573 "alfa.tab.c"
+#line 1477 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 155 "alfa.y"
-                              {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");
+#line 155 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");
                               tamanio = (yyvsp[-1].atributos).valor_entero;
                               if(tamanio <= 0 || tamanio > MAX_TAMANIO_VECTOR){
                                 printf("****Error semantico en lin %lu: El tamanyo del vector excede los limites permitidos (1,64).\n", nlines); //TODO en el enunciado nos piden aqui dar el nombre del vector pero no se puede
@@ -1587,36 +1491,36 @@ yyreduce:
                                 return -1;
                               }
                               }
-#line 1591 "alfa.tab.c"
+#line 1495 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 170 "alfa.y"
-                              {fprintf(yyout,";R18:\t<identificadores> ::= <identificador>\n");}
-#line 1597 "alfa.tab.c"
+#line 170 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R18:\t<identificadores> ::= <identificador>\n");}
+#line 1501 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 172 "alfa.y"
-                              {fprintf(yyout,";R19:\t<identificadores> ::= <identificador> , <identificadores>\n");}
-#line 1603 "alfa.tab.c"
+#line 172 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R19:\t<identificadores> ::= <identificador> , <identificadores>\n");}
+#line 1507 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 175 "alfa.y"
-                              {fprintf(yyout,";R20:\t<funciones> ::= <funcion> <funciones>\n");}
-#line 1609 "alfa.tab.c"
+#line 175 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R20:\t<funciones> ::= <funcion> <funciones>\n");}
+#line 1513 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 177 "alfa.y"
-                              {fprintf(yyout,";R21:\t<funciones> ::= \n");}
-#line 1615 "alfa.tab.c"
+#line 177 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R21:\t<funciones> ::= \n");}
+#line 1519 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 180 "alfa.y"
-                              {
+#line 180 "alfa.y" /* yacc.c:1646  */
+    {
                               fprintf(yyout,";R22:\t<funcion> ::= function <tipo> <identificador> ( <parametros_funcion> ) { <declaraciones_funcion> <sentencias> }\n");
                               if (funcion_retorno < 1){
                                 printf("****Error semantico en lin %lu : Funcion %s sin sentencia de retorno\n", nlines, (yyvsp[-2].atributos).lexema);
@@ -1633,16 +1537,17 @@ yyreduce:
                                 return -1;
                               }
                               simbolo->n_parametros = num_total_parametros;
+                              simbolo->tipo = funcion_tipo;
                               num_total_parametros = 0;
                               num_total_varlocs = 0;
                               posicion_parametro = 0;
                               }
-#line 1641 "alfa.tab.c"
+#line 1546 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 203 "alfa.y"
-                              {
+#line 204 "alfa.y" /* yacc.c:1646  */
+    {
                                simbolo *simbolo;
                                simbolo = BusquedaElemento(tabla, (yyvsp[-5].atributos).lexema);
                                if (simbolo == NULL){
@@ -1652,15 +1557,16 @@ yyreduce:
                                }
                                simbolo->n_parametros = num_total_parametros;
                                simbolo->n_varloc = num_total_varlocs;
+                               simbolo->tipo = funcion_tipo;
                                strcpy((yyval.atributos).lexema, (yyvsp[-5].atributos).lexema);
                                declararFuncion(yyout, (yyvsp[-5].atributos).lexema, num_total_varlocs);
                               }
-#line 1659 "alfa.tab.c"
+#line 1565 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 218 "alfa.y"
-                              {
+#line 220 "alfa.y" /* yacc.c:1646  */
+    {
                                 /* La funcion no existia y la metemos en tabla simbolos */
                                 if (BusquedaElemento(tabla, (yyvsp[0].atributos).lexema) == NULL){
                                   strcpy((yyval.atributos).lexema, (yyvsp[0].atributos).lexema);
@@ -1681,45 +1587,45 @@ yyreduce:
                                   return -1;
                                 }
                               }
-#line 1685 "alfa.tab.c"
+#line 1591 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 241 "alfa.y"
-                              {fprintf(yyout,";R23:\t<parametros_funcion> ::= <parametro_funcion> <resto_parametros_funcion>\n");}
-#line 1691 "alfa.tab.c"
+#line 243 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R23:\t<parametros_funcion> ::= <parametro_funcion> <resto_parametros_funcion>\n");}
+#line 1597 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 243 "alfa.y"
-                              {fprintf(yyout,";R24:\t<parametros_funcion> ::= \n");}
-#line 1697 "alfa.tab.c"
+#line 245 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R24:\t<parametros_funcion> ::= \n");}
+#line 1603 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 246 "alfa.y"
-                              {fprintf(yyout,";R25:\t<resto_parametros_funcion> ::= ; <parametro_funcion> <resto_parametros_funcion>\n");}
-#line 1703 "alfa.tab.c"
+#line 248 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R25:\t<resto_parametros_funcion> ::= ; <parametro_funcion> <resto_parametros_funcion>\n");}
+#line 1609 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 248 "alfa.y"
-                              {fprintf(yyout,";R26:\t<resto_parametros_funcion> ::= \n");}
-#line 1709 "alfa.tab.c"
+#line 250 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R26:\t<resto_parametros_funcion> ::= \n");}
+#line 1615 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 251 "alfa.y"
-                              {fprintf(yyout,";R27:\t<parametro_funcion> ::= <tipo> <identificador>\n");
+#line 253 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R27:\t<parametro_funcion> ::= <tipo> <identificador>\n");
                                num_total_parametros++;
                                posicion_parametro++;
                               }
-#line 1718 "alfa.tab.c"
+#line 1624 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 257 "alfa.y"
-                              {
+#line 259 "alfa.y" /* yacc.c:1646  */
+    {
                                if(BusquedaEnAmbitoActual(tabla, (yyvsp[0].atributos).lexema) == NULL){
                                 if(InsercionElemento(tabla, (yyvsp[0].atributos).lexema, PARAMETRO, tipo, ESCALAR, 1, 0, posicion_parametro, 0, 0) == FATAL_ERROR){
                                   printf("****Error en la tabla de simbolos\n");
@@ -1732,84 +1638,84 @@ yyreduce:
                                  return -1;
                                }
                               }
-#line 1736 "alfa.tab.c"
+#line 1642 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 271 "alfa.y"
-                              {fprintf(yyout,";R28:\t<declaraciones_funcion> ::= <declaraciones>\n");}
-#line 1742 "alfa.tab.c"
+#line 273 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R28:\t<declaraciones_funcion> ::= <declaraciones>\n");}
+#line 1648 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 273 "alfa.y"
-                              {fprintf(yyout,";R29:\t<declaraciones_funcion> ::= \n");}
-#line 1748 "alfa.tab.c"
+#line 275 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R29:\t<declaraciones_funcion> ::= \n");}
+#line 1654 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 276 "alfa.y"
-                              {fprintf(yyout,";R30:\t<sentencias> ::= <sentencia>\n");}
-#line 1754 "alfa.tab.c"
+#line 278 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R30:\t<sentencias> ::= <sentencia>\n");}
+#line 1660 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 278 "alfa.y"
-                              {fprintf(yyout,";R31:\t<sentencias> ::= <sentencia> <sentencias>\n");}
-#line 1760 "alfa.tab.c"
+#line 280 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R31:\t<sentencias> ::= <sentencia> <sentencias>\n");}
+#line 1666 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 281 "alfa.y"
-                              {fprintf(yyout,";R32:\t<sentencia> ::= <sentencia_simple> ;\n");}
-#line 1766 "alfa.tab.c"
+#line 283 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R32:\t<sentencia> ::= <sentencia_simple> ;\n");}
+#line 1672 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 283 "alfa.y"
-                              {fprintf(yyout,";R33:\t<sentencia> ::= <bloque>\n");}
-#line 1772 "alfa.tab.c"
+#line 285 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R33:\t<sentencia> ::= <bloque>\n");}
+#line 1678 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 286 "alfa.y"
-                              {fprintf(yyout,";R34:\t<sentencia_simple> ::= <asignacion>\n");}
-#line 1778 "alfa.tab.c"
+#line 288 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R34:\t<sentencia_simple> ::= <asignacion>\n");}
+#line 1684 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 288 "alfa.y"
-                              {fprintf(yyout,";R35:\t<sentencia_simple> ::= <lectura>\n");}
-#line 1784 "alfa.tab.c"
+#line 290 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R35:\t<sentencia_simple> ::= <lectura>\n");}
+#line 1690 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 290 "alfa.y"
-                              {fprintf(yyout,";R36:\t<sentencia_simple> ::= <escritura>\n");}
-#line 1790 "alfa.tab.c"
+#line 292 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R36:\t<sentencia_simple> ::= <escritura>\n");}
+#line 1696 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 292 "alfa.y"
-                              {fprintf(yyout,";R38:\t<sentencia_simple> ::= <retorno_funcion>\n");}
-#line 1796 "alfa.tab.c"
+#line 294 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R38:\t<sentencia_simple> ::= <retorno_funcion>\n");}
+#line 1702 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 295 "alfa.y"
-                              {fprintf(yyout,";R40:\t<bloque> ::= <condicional>\n");}
-#line 1802 "alfa.tab.c"
+#line 297 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R40:\t<bloque> ::= <condicional>\n");}
+#line 1708 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 297 "alfa.y"
-                              {fprintf(yyout,";R41:\t<bloque> ::= <bucle>\n");}
-#line 1808 "alfa.tab.c"
+#line 299 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R41:\t<bloque> ::= <bucle>\n");}
+#line 1714 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 300 "alfa.y"
-                              {
+#line 302 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R43:\t<asignacion> ::= <identificador> = <exp>\n");
                                 simbolo *simbolo;
                                 if((simbolo = BusquedaElemento(tabla, (yyvsp[-2].atributos).lexema)) == NULL){
@@ -1827,7 +1733,6 @@ yyreduce:
                                   LiberarTablas(tabla);
                                   return -1;
                                 }
-
                                 if (simbolo->tipo != (yyvsp[0].atributos).tipo) {
                                   printf("****Error semantico en lin %lu: Asignacion incompatible. \n", nlines);
                                   LiberarTablas(tabla);
@@ -1840,12 +1745,12 @@ yyreduce:
                                   asignarDestinoEnPila(yyout,(yyvsp[0].atributos).es_direccion);
                                 }
                               }
-#line 1844 "alfa.tab.c"
+#line 1749 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 332 "alfa.y"
-                              {fprintf(yyout,";R44:\t<asignacion> ::= <elemento_vector> = <exp>\n");
+#line 333 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R44:\t<asignacion> ::= <elemento_vector> = <exp>\n");
                                 simbolo *simbolo;
                                 if ((simbolo = BusquedaElemento(tabla, (yyvsp[-2].atributos).lexema)) == NULL){
                                   printf("****Error semantico en lin %lu: Acceso a variable no declarada (%s).\n", nlines, (yyvsp[-2].atributos).lexema);
@@ -1863,12 +1768,12 @@ yyreduce:
                                 escribir_elemento_vector(yyout, simbolo->identificador, simbolo->tamanio, (yyvsp[0].atributos).es_direccion);
                                 asignarDestinoEnPila(yyout, (yyvsp[0].atributos).es_direccion);
                               }
-#line 1867 "alfa.tab.c"
+#line 1772 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 352 "alfa.y"
-                              {fprintf(yyout,";R48:\t<elemento_vector> ::= <identificador> [ <exp> ]\n");
+#line 353 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R48:\t<elemento_vector> ::= <identificador> [ <exp> ]\n");
                               simbolo *simbolo;
                               if ((simbolo = BusquedaElemento(tabla, (yyvsp[-3].atributos).lexema)) == NULL){
                                 printf("****Error semantico en lin %lu: Acceso a variable no declarada (%s).\n", nlines, (yyvsp[-3].atributos).lexema);
@@ -1895,28 +1800,30 @@ yyreduce:
                               (yyval.atributos).valor_entero = (yyvsp[-1].atributos).valor_entero;
                               escribir_elemento_vector(yyout, simbolo->identificador, simbolo->tamanio, (yyvsp[-1].atributos).es_direccion);
                               }
-#line 1899 "alfa.tab.c"
+#line 1804 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 381 "alfa.y"
-                              {fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }\n");
-                              ifthen_fin(yyout, (yyvsp[-4].atributos).etiqueta);
+#line 382 "alfa.y" /* yacc.c:1646  */
+    {
+                                fprintf(yyout,";R50:\t<condicional> ::= if ( <exp> ) { <sentencias> }\n");
+                                ifthen_fin(yyout, (yyvsp[-4].atributos).etiqueta);
                               }
-#line 1907 "alfa.tab.c"
+#line 1813 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 385 "alfa.y"
-                              {fprintf(yyout,";R51:\t<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }\n");
-                              ifthenelse_fin(yyout, (yyvsp[-4].atributos).etiqueta);
+#line 387 "alfa.y" /* yacc.c:1646  */
+    {
+                                fprintf(yyout,";R51:\t<condicional> ::= if ( <exp> ) { <sentencias> } else { <sentencias> }\n");
+                                ifthenelse_fin(yyout, (yyvsp[-4].atributos).etiqueta);
                               }
-#line 1915 "alfa.tab.c"
+#line 1822 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 390 "alfa.y"
-                              {
+#line 393 "alfa.y" /* yacc.c:1646  */
+    {
                               if ((yyvsp[0].atributos).tipo != BOOLEANO) {
                                 printf("****Error semantico en lin %lu: Condicional con condicion de tipo int.\n", nlines);
                                 LiberarTablas(tabla);
@@ -1925,29 +1832,30 @@ yyreduce:
                               (yyval.atributos).etiqueta = etiqueta++;
                               ifthen_inicio(yyout, (yyvsp[0].atributos).es_direccion, (yyval.atributos).etiqueta);
                               }
-#line 1929 "alfa.tab.c"
+#line 1836 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 401 "alfa.y"
-                              {
+#line 404 "alfa.y" /* yacc.c:1646  */
+    {
                               (yyval.atributos).etiqueta = (yyvsp[-4].atributos).etiqueta;
                               ifthenelse_fin_then(yyout, (yyval.atributos).etiqueta);
                               }
-#line 1938 "alfa.tab.c"
+#line 1845 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 407 "alfa.y"
-                              {fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");
-                              while_fin(yyout, (yyvsp[-3].atributos).etiqueta);
+#line 410 "alfa.y" /* yacc.c:1646  */
+    {
+                                fprintf(yyout,";R52:\t<bucle> ::= while ( <exp> ) { <sentencias> }\n");
+                                while_fin(yyout, (yyvsp[-3].atributos).etiqueta);
                               }
-#line 1946 "alfa.tab.c"
+#line 1854 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 412 "alfa.y"
-                              {
+#line 416 "alfa.y" /* yacc.c:1646  */
+    {
                               if ((yyvsp[-1].atributos).tipo != BOOLEANO) {
                                 printf("****Error semantico en lin %lu: Bucle con condicion de tipo int.\n", nlines);
                                 LiberarTablas(tabla);
@@ -1957,21 +1865,22 @@ yyreduce:
                               (yyval.atributos).etiqueta =(yyvsp[-3].atributos).etiqueta;
                               while_exp_pila(yyout, (yyvsp[-1].atributos).es_direccion, (yyval.atributos).etiqueta);
                               }
-#line 1961 "alfa.tab.c"
+#line 1869 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 424 "alfa.y"
-                              {
+#line 428 "alfa.y" /* yacc.c:1646  */
+    {
                               (yyval.atributos).etiqueta = etiqueta++;
                               while_inicio(yyout, (yyval.atributos).etiqueta);
                               }
-#line 1970 "alfa.tab.c"
+#line 1878 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 430 "alfa.y"
-                              {fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");
+#line 434 "alfa.y" /* yacc.c:1646  */
+    {
+                               fprintf(yyout,";R54:\t<lectura> ::= scanf <identificador>\n");
                                simbolo *simbolo;
                                simbolo = BusquedaElemento(tabla, (yyvsp[0].atributos).lexema);
 
@@ -1987,39 +1896,44 @@ yyreduce:
                                 LiberarTablas(tabla);
                                 return -1;
                                }
-                              leer(yyout, (yyvsp[0].atributos).lexema, simbolo->tipo);}
-#line 1992 "alfa.tab.c"
+                              leer(yyout, (yyvsp[0].atributos).lexema, simbolo->tipo);
+                          }
+#line 1902 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 449 "alfa.y"
-                              {fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");
+#line 455 "alfa.y" /* yacc.c:1646  */
+    {
+                               fprintf(yyout,";R56:\t<escritura> ::= printf <exp>\n");
                                operandoEnPilaAArgumento(yyout, (yyvsp[0].atributos).es_direccion);
-                               escribir(yyout, 0, (yyvsp[0].atributos).tipo);}
-#line 2000 "alfa.tab.c"
+                               escribir(yyout, 0, (yyvsp[0].atributos).tipo);
+                             }
+#line 1912 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 454 "alfa.y"
-                              {if (dentro_llamada_fun == 1){
-                                printf("****Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n", nlines);
-                                LiberarTablas(tabla);
-                                return -1;
-                              }
-                              fprintf(yyout,";R61:\t<retorno_funcion> ::= return <exp>\n");
-                              if (funcion_tipo != (yyvsp[0].atributos).tipo){
-                                printf("****Error semantico en lin %lu: Tipo incorrecto en retorno.\n", nlines);
-                                LiberarTablas(tabla);
-                                return -1;
-                              }
-                              funcion_retorno++;
-                              retornarFuncion(yyout, (yyvsp[0].atributos).es_direccion);}
-#line 2018 "alfa.tab.c"
+#line 462 "alfa.y" /* yacc.c:1646  */
+    {
+                                if (dentro_llamada_fun == 1){
+                                  printf("****Error semantico en lin %lu: Sentencia de retorno fuera del cuerpo de una funcion.\n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                fprintf(yyout,";R61:\t<retorno_funcion> ::= return <exp>\n");
+                                if (funcion_tipo != (yyvsp[0].atributos).tipo){
+                                  printf("****Error semantico en lin %lu: Tipo incorrecto en retorno.\n", nlines);
+                                  LiberarTablas(tabla);
+                                  return -1;
+                                }
+                                funcion_retorno++;
+                                retornarFuncion(yyout, (yyvsp[0].atributos).es_direccion);
+                            }
+#line 1932 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 469 "alfa.y"
-                              {
+#line 479 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R72:\t<exp> ::= <exp> + <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == BOOLEANO) || ((yyvsp[0].atributos).tipo == BOOLEANO)){
                                   printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.\n",nlines);
@@ -2030,12 +1944,12 @@ yyreduce:
                                 (yyval.atributos).tipo = ENTERO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2034 "alfa.tab.c"
+#line 1948 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 481 "alfa.y"
-                              {
+#line 491 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R73:\t<exp> ::= <exp> - <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == BOOLEANO) || ((yyvsp[0].atributos).tipo == BOOLEANO)){
                                   printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.\n",nlines);
@@ -2046,12 +1960,12 @@ yyreduce:
                                 (yyval.atributos).tipo = ENTERO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2050 "alfa.tab.c"
+#line 1964 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 493 "alfa.y"
-                              {
+#line 503 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R74:\t<exp> ::= <exp> / <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == BOOLEANO) || ((yyvsp[0].atributos).tipo == BOOLEANO)){
                                   printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.\n",nlines);
@@ -2062,12 +1976,12 @@ yyreduce:
                                 (yyval.atributos).tipo = ENTERO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2066 "alfa.tab.c"
+#line 1980 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 505 "alfa.y"
-                              {
+#line 515 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R75:\t<exp> ::= <exp> * <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == BOOLEANO) || ((yyvsp[0].atributos).tipo == BOOLEANO)){
                                   printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.\n",nlines);
@@ -2078,12 +1992,12 @@ yyreduce:
                                 (yyval.atributos).tipo = ENTERO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2082 "alfa.tab.c"
+#line 1996 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 517 "alfa.y"
-                              {
+#line 527 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R76:\t<exp> ::= - <exp>\n");
                                 if((yyvsp[0].atributos).tipo == BOOLEANO){
                                   printf("****Error semantico en lin %lu: Operacion aritmetica con operandos boolean.\n",nlines);
@@ -2094,12 +2008,12 @@ yyreduce:
                                 (yyval.atributos).tipo = ENTERO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2098 "alfa.tab.c"
+#line 2012 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 529 "alfa.y"
-                              {
+#line 539 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R77:\t<exp> ::= exp> && <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == ENTERO) || ((yyvsp[0].atributos).tipo == ENTERO)){
                                   printf("****Error semantico en lin %lu: Operacion logica con operandos int.\n",nlines);
@@ -2110,12 +2024,12 @@ yyreduce:
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2114 "alfa.tab.c"
+#line 2028 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 541 "alfa.y"
-                              {
+#line 551 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R78:\t<exp> ::= <exp> || <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == ENTERO) || ((yyvsp[0].atributos).tipo == ENTERO)){
                                   printf("****Error semantico en lin %lu: Operacion logica con operandos int.\n",nlines);
@@ -2126,12 +2040,12 @@ yyreduce:
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2130 "alfa.tab.c"
+#line 2044 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 553 "alfa.y"
-                              {
+#line 563 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R79:\t<exp> ::= ! <exp>\n");
                                 if((yyvsp[0].atributos).tipo == ENTERO){
                                   printf("****Error semantico en lin %lu: Operacion logica con operandos int.\n",nlines);
@@ -2143,12 +2057,12 @@ yyreduce:
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2147 "alfa.tab.c"
+#line 2061 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 566 "alfa.y"
-                              {fprintf(yyout,";R80:\t<exp> ::= <identificador>\n");
+#line 576 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R80:\t<exp> ::= <identificador>\n");
                               simbolo *simbolo;
                               if ((simbolo = BusquedaElemento(tabla, (yyvsp[0].atributos).lexema)) == NULL){
                                 printf("****Error semantico en lin %lu: Acceso a variable no declarada (%s).\n", nlines, (yyvsp[0].atributos).lexema);
@@ -2163,7 +2077,7 @@ yyreduce:
                               (yyval.atributos).tipo = simbolo->tipo;
                               (yyval.atributos).es_direccion = 1;
                               if (simbolo->categoria == PARAMETRO) {
-                                escribirParametro(yyout, simbolo->posicion, posicion_parametro);
+                                escribirParametro(yyout, simbolo->posicion, num_total_parametros);
                               } else if (simbolo->categoria == VARIABLE) {
                                   if (Ambito(tabla) == LOCAL) {
                                     escribirVariableLocal(yyout, simbolo->posicion_varloc);
@@ -2175,48 +2089,48 @@ yyreduce:
                                     }
                                   }
                               }}
-#line 2179 "alfa.tab.c"
+#line 2093 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 594 "alfa.y"
-                              {fprintf(yyout,";R81:\t<exp> ::= <constante>\n");
+#line 604 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R81:\t<exp> ::= <constante>\n");
                                 (yyval.atributos).tipo = (yyvsp[0].atributos).tipo;
                                 (yyval.atributos).es_direccion = (yyvsp[0].atributos).es_direccion;
                               }
-#line 2188 "alfa.tab.c"
+#line 2102 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 599 "alfa.y"
-                              {fprintf(yyout,";R82:\t<exp> ::= ( <exp> )\n");
+#line 609 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R82:\t<exp> ::= ( <exp> )\n");
                                 (yyval.atributos).tipo = (yyvsp[-1].atributos).tipo;
                                 (yyval.atributos).es_direccion = (yyvsp[-1].atributos).es_direccion;
                               }
-#line 2197 "alfa.tab.c"
+#line 2111 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 604 "alfa.y"
-                              {fprintf(yyout,";R83:\t<exp> ::= ( <comparacion> )\n");
+#line 614 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R83:\t<exp> ::= ( <comparacion> )\n");
                                 (yyval.atributos).tipo = (yyvsp[-1].atributos).tipo;
                                 (yyval.atributos).es_direccion = (yyvsp[-1].atributos).es_direccion;
                               }
-#line 2206 "alfa.tab.c"
+#line 2120 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 609 "alfa.y"
-                              {fprintf(yyout,";R85:\t<exp> ::= <elemento_vector>\n");
+#line 619 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R85:\t<exp> ::= <elemento_vector>\n");
                                 (yyval.atributos).tipo = (yyvsp[0].atributos).tipo;
                                 (yyval.atributos).es_direccion = (yyvsp[0].atributos).es_direccion;
                               }
-#line 2215 "alfa.tab.c"
+#line 2129 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 614 "alfa.y"
-                              {fprintf(yyout,";R88:\t<exp> ::= <identificador> ( <lista_expresiones> )\n");
+#line 624 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R88:\t<exp> ::= <identificador> ( <lista_expresiones> )\n");
                               simbolo *simbolo;
                               if ((simbolo = BusquedaElemento(tabla, (yyvsp[-3].atributos).lexema)) == NULL) {
                                 printf("****Error semantico en lin %lu: Acceso a variable no declarada (%s).\n", nlines, (yyvsp[-3].atributos).lexema);
@@ -2230,15 +2144,14 @@ yyreduce:
                               }
                               (yyval.atributos).tipo = simbolo->tipo;
                               llamarFuncion(yyout, (yyvsp[-3].atributos).lexema, simbolo->n_parametros);
-                              limpiarPila(yyout, simbolo->n_parametros);
                               dentro_llamada_fun = 0;
                               }
-#line 2237 "alfa.tab.c"
+#line 2150 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 633 "alfa.y"
-                              {
+#line 642 "alfa.y" /* yacc.c:1646  */
+    {
                                 simbolo *simbolo;
                                 if (dentro_llamada_fun == 1){
                                   printf("****Error semantico en lin %lu: No esta permitido el uso de llamadas a funciones como parametros de otras funciones.\n", nlines);
@@ -2259,46 +2172,46 @@ yyreduce:
                                 dentro_llamada_fun = 1;
                                 strcpy((yyval.atributos).lexema, (yyvsp[0].atributos).lexema);
                               }
-#line 2263 "alfa.tab.c"
+#line 2176 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 656 "alfa.y"
-                              {
+#line 665 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R89:\t<lista_expresiones> ::= <exp> <resto_lista_expresiones>\n");
                                 if(dentro_llamada_fun == 1){
                                   num_arg_funcion++;
                                 }
                               }
-#line 2274 "alfa.tab.c"
+#line 2187 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 663 "alfa.y"
-                              {fprintf(yyout,";R90:\t<lista_expresiones> ::= \n");}
-#line 2280 "alfa.tab.c"
+#line 672 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R90:\t<lista_expresiones> ::= \n");}
+#line 2193 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 666 "alfa.y"
-                              {
+#line 675 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R91:\t<resto_lista_expresiones> ::= , <exp> <resto_lista_expresiones>\n");
                                 if(dentro_llamada_fun == 1){
                                   num_arg_funcion++;
                                 }
                               }
-#line 2291 "alfa.tab.c"
+#line 2204 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 673 "alfa.y"
-                              {fprintf(yyout,";R92:\t<resto_lista_expresiones> ::= \n");}
-#line 2297 "alfa.tab.c"
+#line 682 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R92:\t<resto_lista_expresiones> ::= \n");}
+#line 2210 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 676 "alfa.y"
-                              {
+#line 685 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R93:\t<comparacion> ::= <exp> == <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == BOOLEANO) || ((yyvsp[0].atributos).tipo == BOOLEANO)){
                                   printf("****Error semantico en lin %lu: Comparacion con operandos boolean.\n",nlines);
@@ -2310,12 +2223,12 @@ yyreduce:
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2314 "alfa.tab.c"
+#line 2227 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 689 "alfa.y"
-                              {
+#line 698 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R94:\t<comparacion> ::= <exp> != <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == BOOLEANO) || ((yyvsp[0].atributos).tipo == BOOLEANO)){
                                   printf("****Error semantico en lin %lu: Comparacion con operandos boolean.\n",nlines);
@@ -2327,12 +2240,12 @@ yyreduce:
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2331 "alfa.tab.c"
+#line 2244 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 702 "alfa.y"
-                              {
+#line 711 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R95:\t<comparacion> ::= <exp> <= <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == BOOLEANO) || ((yyvsp[0].atributos).tipo == BOOLEANO)){
                                   printf("****Error semantico en lin %lu: Comparacion con operandos boolean.\n",nlines);
@@ -2344,12 +2257,12 @@ yyreduce:
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2348 "alfa.tab.c"
+#line 2261 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 715 "alfa.y"
-                              {
+#line 724 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R96:\t<comparacion> ::= <exp> >= <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == BOOLEANO) || ((yyvsp[0].atributos).tipo == BOOLEANO)){
                                   printf("****Error semantico en lin %lu: Comparacion con operandos boolean.\n",nlines);
@@ -2361,12 +2274,12 @@ yyreduce:
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2365 "alfa.tab.c"
+#line 2278 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 728 "alfa.y"
-                              {
+#line 737 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R97:\t<comparacion> ::= <exp> < <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == BOOLEANO) || ((yyvsp[0].atributos).tipo == BOOLEANO)){
                                   printf("****Error semantico en lin %lu: Comparacion con operandos boolean.\n",nlines);
@@ -2378,12 +2291,12 @@ yyreduce:
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2382 "alfa.tab.c"
+#line 2295 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 741 "alfa.y"
-                              {
+#line 750 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R98:\t<comparacion> ::= <exp> > <exp>\n");
                                 if(((yyvsp[-2].atributos).tipo == BOOLEANO) || ((yyvsp[0].atributos).tipo == BOOLEANO)){
                                   printf("****Error semantico en lin %lu: Comparacion con operandos boolean.\n",nlines);
@@ -2395,32 +2308,32 @@ yyreduce:
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
                               }
-#line 2399 "alfa.tab.c"
+#line 2312 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 755 "alfa.y"
-                              {
+#line 764 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R99:\t<constante> ::= <constante_logica>\n");
                                 (yyval.atributos).tipo = (yyvsp[0].atributos).tipo;
                                 (yyval.atributos).es_direccion = (yyvsp[0].atributos).es_direccion;
                               }
-#line 2409 "alfa.tab.c"
+#line 2322 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 761 "alfa.y"
-                              {
+#line 770 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R100:\t<constante> ::= <constante_entera>\n");
                                 (yyval.atributos).tipo = (yyvsp[0].atributos).tipo;
                                 (yyval.atributos).es_direccion = (yyvsp[0].atributos).es_direccion;
                               }
-#line 2419 "alfa.tab.c"
+#line 2332 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 768 "alfa.y"
-                              {
+#line 777 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R102:\t<constante_logica> ::= true\n");
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
@@ -2428,12 +2341,12 @@ yyreduce:
                                 sprintf(v,"1");
                                 escribir_operando(yyout,v,0);
                               }
-#line 2432 "alfa.tab.c"
+#line 2345 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 777 "alfa.y"
-                              {
+#line 786 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R103:\t<constante_logica> ::= false\n");
                                 (yyval.atributos).tipo = BOOLEANO;
                                 (yyval.atributos).es_direccion = 0;
@@ -2441,12 +2354,12 @@ yyreduce:
                                 sprintf(v,"0");
                                 escribir_operando(yyout,v,0);
                               }
-#line 2445 "alfa.tab.c"
+#line 2358 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 787 "alfa.y"
-                              {
+#line 796 "alfa.y" /* yacc.c:1646  */
+    {
                                 fprintf(yyout,";R104:\t<constante_entera> ::= TOK_CONSTANTE_ENTERA\n");
                                 (yyval.atributos).tipo = ENTERO;
                                 (yyval.atributos).es_direccion = 0;
@@ -2455,12 +2368,12 @@ yyreduce:
                                 sprintf(v,"%d",(yyval.atributos).valor_entero);
                                 escribir_operando(yyout,v,0);
                               }
-#line 2459 "alfa.tab.c"
+#line 2372 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 798 "alfa.y"
-                              {fprintf(yyout,";R108:\t<identificador> ::= TOK_IDENTIFICADOR\n");
+#line 807 "alfa.y" /* yacc.c:1646  */
+    {fprintf(yyout,";R108:\t<identificador> ::= TOK_IDENTIFICADOR\n");
                                /* Si la variable no estaba declarada antes, la declaramos */
                                if (BusquedaEnAmbitoActual(tabla, (yyvsp[0].atributos).lexema) == NULL){
                                 if (Ambito(tabla) == LOCAL){
@@ -2479,12 +2392,11 @@ yyreduce:
                                 LiberarTablas(tabla);
                                 return -1;
                                }}
-#line 2483 "alfa.tab.c"
+#line 2396 "alfa.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2487 "alfa.tab.c"
-
+#line 2400 "alfa.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2509,13 +2421,14 @@ yyreduce:
   /* Now 'shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
      number reduced by.  */
-  {
-    const int yylhs = yyr1[yyn] - YYNTOKENS;
-    const int yyi = yypgoto[yylhs] + *yyssp;
-    yystate = (0 <= yyi && yyi <= YYLAST && yycheck[yyi] == *yyssp
-               ? yytable[yyi]
-               : yydefgoto[yylhs]);
-  }
+
+  yyn = yyr1[yyn];
+
+  yystate = yypgoto[yyn - YYNTOKENS] + *yyssp;
+  if (0 <= yystate && yystate <= YYLAST && yycheck[yystate] == *yyssp)
+    yystate = yytable[yystate];
+  else
+    yystate = yydefgoto[yyn - YYNTOKENS];
 
   goto yynewstate;
 
@@ -2547,7 +2460,7 @@ yyerrlab:
           {
             if (yymsg != yymsgbuf)
               YYSTACK_FREE (yymsg);
-            yymsg = YY_CAST (char *, YYSTACK_ALLOC (YY_CAST (YYSIZE_T, yymsg_alloc)));
+            yymsg = (char *) YYSTACK_ALLOC (yymsg_alloc);
             if (!yymsg)
               {
                 yymsg = yymsgbuf;
@@ -2598,10 +2511,12 @@ yyerrlab:
 | yyerrorlab -- error raised explicitly by YYERROR.  |
 `---------------------------------------------------*/
 yyerrorlab:
-  /* Pacify compilers when the user code never invokes YYERROR and the
-     label yyerrorlab therefore never appears in user code.  */
-  if (0)
-    YYERROR;
+
+  /* Pacify compilers like GCC when the user code never invokes
+     YYERROR and the label yyerrorlab therefore never appears in user
+     code.  */
+  if (/*CONSTCOND*/ 0)
+     goto yyerrorlab;
 
   /* Do not reclaim the symbols of the rule whose action triggered
      this YYERROR.  */
@@ -2663,14 +2578,12 @@ yyacceptlab:
   yyresult = 0;
   goto yyreturn;
 
-
 /*-----------------------------------.
 | yyabortlab -- YYABORT comes here.  |
 `-----------------------------------*/
 yyabortlab:
   yyresult = 1;
   goto yyreturn;
-
 
 #if !defined yyoverflow || YYERROR_VERBOSE
 /*-------------------------------------------------.
@@ -2682,10 +2595,6 @@ yyexhaustedlab:
   /* Fall through.  */
 #endif
 
-
-/*-----------------------------------------------------.
-| yyreturn -- parsing is finished, return the result.  |
-`-----------------------------------------------------*/
 yyreturn:
   if (yychar != YYEMPTY)
     {
@@ -2702,7 +2611,7 @@ yyreturn:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-                  yystos[+*yyssp], yyvsp);
+                  yystos[*yyssp], yyvsp);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -2715,7 +2624,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 817 "alfa.y"
+#line 826 "alfa.y" /* yacc.c:1906  */
 
 
 void yyerror(const char *s){
