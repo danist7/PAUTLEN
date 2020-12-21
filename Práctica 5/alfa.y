@@ -155,12 +155,14 @@ clase_vector              :   TOK_ARRAY tipo TOK_CORCHETEIZQUIERDO TOK_CONSTANTE
                               {fprintf(yyout,";R15:\t<clase_vector> ::= array <tipo> [ <constante_entera> ]\n");
                               tamanio = $4.valor_entero;
                               if(tamanio <= 0 || tamanio > MAX_TAMANIO_VECTOR){
-                                printf("****Error semantico en lin %lu: El tamanyo del vector excede los limites permitidos (1,64).\n", nlines); //TODO en el enunciado nos piden aqui dar el nombre del vector pero no se puede
+                                // En el enunciado se pide mostrar el nombre del vector en este error. Esto no es posible dado que el error se da
+                                // antes de leer el identificador del vector.
+                                printf("****Error semantico en lin %lu: El tamanyo del vector excede los limites permitidos (1,64).\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
                               if (Ambito(tabla) == LOCAL) {
-                                printf("****Error semantico en lin %lu: Declaracion de vector en ambito local.\n", nlines); //DUDA: He puesto esto para el error 15 pero no estoy seguro
+                                printf("****Error semantico en lin %lu: Declaracion de vector en ambito local.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -358,7 +360,7 @@ elemento_vector           :   TOK_IDENTIFICADOR TOK_CORCHETEIZQUIERDO exp TOK_CO
                                 return -1;
                               }
                               if (Ambito(tabla) == LOCAL) {
-                                printf("****Error semantico en lin %lu: Acceso vector en ambito local.\n", nlines); //DUDA: Error extra
+                                printf("****Error semantico en lin %lu: Acceso vector en ambito local.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
@@ -581,7 +583,7 @@ exp                       :   exp TOK_MAS exp
                                 return -1;
                               }
                               if (simbolo->categoria == FUNCION || simbolo->categoria_estructura == VECTOR) {
-                                printf("****Error semantico en lin %lu: Asignacion incompatible.\n", nlines); //DUDA: No se si es este error
+                                printf("****Error semantico en lin %lu: Asignacion incompatible.\n", nlines);
                                 LiberarTablas(tabla);
                                 return -1;
                               }
